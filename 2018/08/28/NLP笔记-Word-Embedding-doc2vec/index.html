@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP,word2vec,word embedding,doc2vec," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="面向读者：nlp入门，python选手，对word embedding（词嵌入）有大概了解。本文是基于doc2vec的一个关于延禧攻略剧情文本的小demo。doc2vev基于word2vec，它俩很像，使用方法也很像。有空再把原理补上。">
+<meta name="keywords" content="NLP,word2vec,word embedding,doc2vec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP笔记 - Word Embedding &#x2F;&#x2F; doc2vec 之 延禧攻略">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/08/28/NLP笔记-Word-Embedding-doc2vec/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="面向读者：nlp入门，python选手，对word embedding（词嵌入）有大概了解。本文是基于doc2vec的一个关于延禧攻略剧情文本的小demo。doc2vev基于word2vec，它俩很像，使用方法也很像。有空再把原理补上。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-02-11T07:37:14.038Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP笔记 - Word Embedding &#x2F;&#x2F; doc2vec 之 延禧攻略">
+<meta name="twitter:description" content="面向读者：nlp入门，python选手，对word embedding（词嵌入）有大概了解。本文是基于doc2vec的一个关于延禧攻略剧情文本的小demo。doc2vev基于word2vec，它俩很像，使用方法也很像。有空再把原理补上。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/08/28/NLP笔记-Word-Embedding-doc2vec/"/>
+
+
+
+
+
+  <title>NLP笔记 - Word Embedding // doc2vec 之 延禧攻略 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/08/28/NLP笔记-Word-Embedding-doc2vec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NLP笔记 - Word Embedding // doc2vec 之 延禧攻略</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-28T17:01:00+08:00">
+                2018-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/28/NLP笔记-Word-Embedding-doc2vec/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/28/NLP笔记-Word-Embedding-doc2vec/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>面向读者：</strong>nlp入门，python选手，对word embedding（词嵌入）有大概了解。<br>本文是基于doc2vec的一个关于延禧攻略剧情文本的小demo。doc2vev基于word2vec，它俩很像，使用方法也很像。有空再把原理补上。</p>
+<a id="more"></a>
+<p><a href="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/word%20embedding/yxgltext.txt" target="_blank" rel="noopener">语料文本yxgltext.txt点这里下载</a>，其实就是从百度上复制粘贴的前20集左右的剧情文字，大家可以随意更改语料文字。文件结构如下，记得下载<a href="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/word%20embedding/yxgltext.txt" target="_blank" rel="noopener">yxgltext.txt</a>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|-nlp //新建文件夹</span><br><span class="line">    |- doc2vec.py //新建python文件</span><br><span class="line">    |- data //新建文件夹</span><br><span class="line">        |- yxgltext.txt //下载语料数据放在data文件夹目录下</span><br><span class="line">    |- model //新建文件夹</span><br></pre></td></tr></table></figure>
+<p>Talk is cheap, show me the code! 上代码~~</p>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import os</span><br><span class="line">os.chdir(&quot;C:/Users/Yi/Desktop/nlp&quot;) # nlp文件夹的路径</span><br><span class="line"></span><br><span class="line">import jieba  # 中文分词工具</span><br><span class="line">import sys</span><br><span class="line">import gensim</span><br><span class="line">import sklearn</span><br><span class="line">import numpy as np</span><br><span class="line">from gensim.models.doc2vec import Doc2Vec, LabeledSentence #从gensim导入doc2vec</span><br><span class="line">TaggededDocument = gensim.models.doc2vec.TaggedDocument</span><br><span class="line"></span><br><span class="line"># 虚词，可以随意添加删除</span><br><span class="line">stoplist = [&apos;的&apos;,&apos;了&apos;,&apos;被&apos;,&apos;。&apos;,&apos;，&apos;,&apos;、&apos;,&apos;她&apos;,&apos;自己&apos;,&apos;他&apos;,&apos;并&apos;,&apos;和&apos;,&apos;都&apos;,&apos;去&apos;,&apos;\n&apos;]</span><br></pre></td></tr></table></figure>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#进行中文分词</span><br><span class="line">def  cut_files():</span><br><span class="line">    filePath = &apos;data/yxgltext.txt&apos;</span><br><span class="line">    fr = open(filePath, &apos;rb&apos;)</span><br><span class="line">    fvideo = open(&apos;data/yxglCut.txt&apos;, &quot;w&quot;)</span><br><span class="line"></span><br><span class="line">    for line in fr.readlines():</span><br><span class="line">        curLine =&apos; &apos;.join(list(jieba.cut(line)))</span><br><span class="line">        fvideo.writelines(curLine)</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">#读取分词后的数据并打标记，放到x_train供后续索引，占用很大内存（供小数据量使用）</span><br><span class="line">def get_datasest():</span><br><span class="line">    with open(&quot;data/yxglCut.txt&quot;, &apos;r&apos;) as cf:</span><br><span class="line">        docs = cf.readlines()</span><br><span class="line">        </span><br><span class="line">        # 删除常用词</span><br><span class="line">        for idx in list(range(0,len(docs))):</span><br><span class="line">            docs[idx] = &apos; &apos;.join([word for word in docs[idx].split( ) if word not in stoplist])</span><br><span class="line">        docs = [doc for doc in docs if len(doc)&gt;0]</span><br><span class="line">        print(len(docs))</span><br><span class="line"></span><br><span class="line">    x_train = []</span><br><span class="line">    for i, text in enumerate(docs):</span><br><span class="line">        word_list = text.split(&apos; &apos;)</span><br><span class="line">        l = len(word_list)</span><br><span class="line">        word_list[l - 1] = word_list[l - 1].strip()</span><br><span class="line">        document = TaggededDocument(word_list, tags=[i])</span><br><span class="line">        x_train.append(document)</span><br><span class="line"></span><br><span class="line">    return x_train</span><br><span class="line"></span><br><span class="line">#模型训练</span><br><span class="line">def train(x_train, size=200, epoch_num=1):  # size=200 意味着 每个词向量是200维的</span><br><span class="line">	# 使用 Doc2Vec 建模</span><br><span class="line">    model_dm = Doc2Vec(x_train, min_count=1, window=3, size=size, sample=1e-3, negative=5, workers=4)</span><br><span class="line">    #model_dm.train(x_train, total_examples=model_dm.corpus_count, epochs=70)</span><br><span class="line">    model_dm.save(&apos;model/model_dm_doc2vec&apos;)</span><br><span class="line"></span><br><span class="line">    return model_dm</span><br><span class="line"></span><br><span class="line">#实例</span><br><span class="line">def test():</span><br><span class="line">#    model_dm = Doc2Vec.load(&quot;model/model_dm_doc2vec&quot;)</span><br><span class="line">    test_text = [&apos;我&apos;, &apos;喜欢&apos;, &apos;傅恒&apos;]</span><br><span class="line">    inferred_vector_dm = model_dm.infer_vector(test_text)</span><br><span class="line">    </span><br><span class="line">    # 选取相关度最高的10个词</span><br><span class="line">    sims = model_dm.docvecs.most_similar([inferred_vector_dm], topn=10)</span><br><span class="line">    return sims</span><br></pre></td></tr></table></figure>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cut_files()</span><br><span class="line">x_train=get_datasest()</span><br><span class="line">model_dm = train(x_train)</span><br><span class="line">sims = test()</span><br><span class="line">for count, sim in sims:</span><br><span class="line">    sentence = x_train[count]</span><br><span class="line">    words = &apos;&apos;</span><br><span class="line">    for word in sentence[0]:</span><br><span class="line">        words = words + word + &apos; &apos;</span><br><span class="line">    print (words, sim, len(sentence[0]))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">娴妃 提议 让 从 江南 请来 名医 叶天士 为 五 阿哥 医治 皇上 应允 叶天士 肯定 五 阿哥 患 黄疸 保证 用退 黄方 就 可治好 弘历 松 口气 高 贵妃 见风使舵 向 皇上 告罪 皇上 表示 谅解 这时 纯妃 带 人 抬 此前 照料 愉 贵人 饮食 一名 蒙古 厨师 尸体 上来 了解 过愉 贵人 孕期 饮食习惯 后 叶天士 禀报 弘历 婴儿 瞳孔 金黄 怪病 多因 母体 湿热 胆汁 淤积 而生 孕妇 应当 注意 饮食 不过 分 食用 甜食 烫食 腥膻 之物 璎珞 意有 所指 是 高 贵妃 想 对付 愉 贵人 五 阿哥 高 贵妃 辩驳 纯妃 却 呈 上 证据 是 厨师 死前 留下 一封 指认 高 贵妃 血书 弘历 大为 恼火 软禁 高 贵妃 皇上 准备 离开 时 明玉 拦住 皇上 告发 璎珞 盗用 皇后 金印 璎珞 打开 匣子 里面 只是 一块 砚台 明玉因 诬告 而 受罚 随后 璎珞 拦住 纯妃 与 说话 指出 厨师 自尽 留下 血书 一事 是 策划 纯妃 提醒 璎珞 别站 错 队  0.17824654281139374 160</span><br><span class="line">高 贵妃 巧妙 利用 这次 机会 对 皇上 诉说 衷肠 赢得 弘历 谅解 与此同时 皇后 在 长春 宫门 口苦 等 弘历 不至 深感 失望 次日 璎珞 在 御花园 发泄 心中 对 皇上 辜负 皇后 不满 遇到 傅恒 璎珞 向 替 皇后 鸣不平 出言不逊 傅恒 劝阻 随即 璎珞 因 百般 查探 姐姐 死因 却 一无所获 越发 焦躁 弘历 深夜 批阅 奏章 身体 不适 召 太医 前来 诊治 发现 患 疥疮 皇后 不顾 传染 危险 执意 要 搬入 养心殿 亲自 照料 弘历 原本 让 明玉 随行 可明玉 却 将 此 差 推 给 璎珞 璎珞 为了 调查 皇上 身边 亲信 查探 姐姐 真正 死因 于是 同意 跟 明玉 调换 差事 跟随 皇后 一道 搬 养心殿 璎珞 替 皇上 上药 皇上 十分 反感 拒绝 璎珞 可 李玉 粗手笨脚 弄 痛 皇上 皇上 恼怒 璎珞 告诉 皇上 养心殿 伺候 多半 是 太监 如果 坚持 那么 只好 请 皇后 来 替 上药 皇上 无奈 只好 让 璎珞 继续 皇上 涂 药 之后 依然 燥热 瘙痒 难耐 皇后 衣不解带 地 照顾 整整 一 晚上 璎珞 见状 十分 动容 璎珞 试探 李玉 询问 乾 清宫 夜宴 当晚 曾经 离席 宗室 可惜 一无所获  0.1443883627653122 185</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(model_dm.wv[&apos;璎珞&apos;])</span><br></pre></td></tr></table></figure>
+<p>输出’璎珞’的200维词向量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">[ 1.32339250e-03 -4.36101720e-04  8.61682580e-04 -5.60876098e-04</span><br><span class="line"> -1.10074517e-03 -4.01582598e-04  1.39182212e-05  1.03741838e-03</span><br><span class="line">  1.33155310e-03  4.53286630e-04 -1.02781062e-03 -8.92800104e-04</span><br><span class="line">  1.19402306e-03 -3.00986052e-04 -1.55415002e-03 -2.69316044e-03</span><br><span class="line">  1.58681255e-03 -8.10362690e-04  5.34354069e-04 -1.31634891e-03</span><br><span class="line"> -3.59648140e-03  2.49065284e-04  8.13953171e-04 -8.55766921e-05</span><br><span class="line">  2.76492530e-04 -1.29517284e-03  1.02521526e-03  8.73336976e-04</span><br><span class="line">  1.62727723e-03 -6.10298535e-04 -1.21042994e-03 -1.87295862e-03</span><br><span class="line"> -2.03051459e-04 -3.54788470e-04  1.25130301e-03  8.69541487e-04</span><br><span class="line"> -2.45160703e-03 -9.03088134e-04  5.02681173e-03 -1.03742653e-03</span><br><span class="line">  3.97383585e-04  1.10275706e-03  3.76813230e-04 -2.43625650e-03</span><br><span class="line">  3.11101991e-04  1.97053305e-03  2.52972008e-03 -1.45180838e-03</span><br><span class="line"> -1.74685894e-03  1.52873830e-03  4.81644034e-04  1.05112646e-04</span><br><span class="line">  2.67350441e-03  8.58452288e-04  6.63276296e-05 -1.97039312e-03</span><br><span class="line">  5.31882746e-04 -4.36584116e-04  1.26765005e-03 -3.08679766e-03</span><br><span class="line">  1.69386994e-03 -2.96112709e-03  2.48387340e-03 -3.73846688e-03</span><br><span class="line"> -3.07446043e-03 -4.49631305e-04  1.78120867e-03 -1.19638827e-03</span><br><span class="line"> -2.00018892e-03 -6.16657664e-04  1.24890637e-03  1.04953512e-03</span><br><span class="line">  6.38565107e-04 -8.65224341e-04  1.56678446e-03  2.29814858e-03</span><br><span class="line"> -4.69850667e-04  6.30659808e-04  2.44404143e-03  1.34824484e-03</span><br><span class="line"> -3.52538045e-04  2.64616770e-04  9.84614133e-04 -5.64393296e-04</span><br><span class="line"> -1.46174955e-03  2.11890996e-03  2.74263322e-04 -1.95100205e-03</span><br><span class="line">  2.42348132e-03 -4.13818937e-03  1.28919329e-03 -7.49823987e-04</span><br><span class="line">  3.59561713e-03  2.89021351e-04  1.64465397e-04  3.35634919e-04</span><br><span class="line">  6.11493131e-04  2.10861443e-03  6.76521973e-04 -1.72132370e-03</span><br><span class="line"> -9.39077465e-04  1.75529323e-03 -1.22920389e-03  2.14341236e-03</span><br><span class="line"> -2.19211495e-03  1.65924046e-03  2.23257625e-03 -2.71887379e-03</span><br><span class="line"> -3.23694688e-03 -2.48166034e-03 -3.01317009e-03  1.18382962e-03</span><br><span class="line">  3.18966959e-05  3.01953492e-04  2.36387877e-03  5.23283597e-05</span><br><span class="line">  1.89765415e-03  8.61766574e-04 -2.39132158e-03 -1.02647720e-03</span><br><span class="line"> -1.90407838e-04  5.11635910e-04  1.44841790e-03  2.69743241e-03</span><br><span class="line">  1.57171465e-03 -7.98581314e-05 -3.73520626e-04  2.92094832e-04</span><br><span class="line"> -7.90165941e-05 -1.03529333e-03  3.86003614e-03  2.65925983e-03</span><br><span class="line"> -9.42493731e-04 -2.91984412e-03 -8.32679973e-04 -6.22316380e-04</span><br><span class="line">  1.62830914e-03  1.41070038e-03 -1.05310581e-03 -4.29132691e-04</span><br><span class="line"> -3.38748004e-03 -2.14482704e-03  2.66522495e-03 -1.70672731e-03</span><br><span class="line">  2.21871235e-03  7.67852471e-04 -4.05522675e-04  3.69134732e-03</span><br><span class="line"> -2.68788106e-04  8.00681883e-04  1.98179367e-03 -1.21154217e-03</span><br><span class="line"> -7.56838883e-04 -9.01334104e-04 -2.56626052e-03  4.35368915e-04</span><br><span class="line">  7.19753269e-04 -2.40792311e-03  7.30484782e-04 -1.04375300e-04</span><br><span class="line">  1.82642520e-03 -1.83782264e-04 -2.16018991e-03 -1.67128816e-03</span><br><span class="line"> -3.14951874e-03 -1.74462073e-03 -3.66404653e-04  1.16418314e-03</span><br><span class="line">  2.36262940e-03 -7.21087854e-04  2.59639206e-03 -1.85696199e-03</span><br><span class="line">  7.52747059e-04 -1.90908764e-03 -2.16792268e-03 -2.83251936e-03</span><br><span class="line"> -1.03030400e-03  3.27490713e-03  4.00006247e-04  3.08081927e-03</span><br><span class="line"> -1.79204450e-03  1.68617186e-03  9.10512696e-04  1.23125815e-03</span><br><span class="line"> -1.02122920e-03  4.01859492e-04 -3.32432962e-03  9.13784548e-04</span><br><span class="line"> -2.05583894e-03 -2.35229125e-03 -8.21198220e-04 -6.70439913e-04</span><br><span class="line"> -1.70158059e-03  3.93540040e-03  1.72487774e-03  1.93191075e-03</span><br><span class="line">  2.05451762e-03  3.47349187e-03 -2.65299017e-03 -3.04736476e-03]</span><br></pre></td></tr></table></figure>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#可以用句向量模型直接根据词向量查询相似度</span><br><span class="line">print (model_dm.wv.most_similar(&apos;璎珞&apos;))</span><br></pre></td></tr></table></figure>
+<p>输出跟“璎珞”最相关的前10个词，以及相关系数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;庆锡&apos;, 0.36982783675193787), </span><br><span class="line">(&apos;答应&apos;, 0.30098065733909607), </span><br><span class="line">(&apos;弘历&apos;, 0.29272472858428955), </span><br><span class="line">(&apos;贵妃&apos;, 0.28584328293800354), </span><br><span class="line">(&apos;发现&apos;, 0.2655611038208008), </span><br><span class="line">(&apos;认定&apos;, 0.25713881850242615), </span><br><span class="line">(&apos;不是&apos;, 0.2567000389099121), </span><br><span class="line">(&apos;多多&apos;, 0.24867823719978333), </span><br><span class="line">(&apos;又&apos;, 0.2475070059299469), </span><br><span class="line">(&apos;利用&apos;, 0.2474854439496994)]</span><br></pre></td></tr></table></figure>
+<p>看完与“璎珞”强相关的词后，也可以尝试看看“傅恒”，“皇上”的相关词。（还是心疼傅恒😭）</p>
+<p>“傅恒”的输出结果是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;谣言&apos;, 0.25737541913986206), </span><br><span class="line">(&apos;离开&apos;, 0.24646247923374176), </span><br><span class="line">(&apos;涂&apos;, 0.23385187983512878), </span><br><span class="line">(&apos;媚惑&apos;, 0.2333744615316391), </span><br><span class="line">(&apos;是&apos;, 0.2153894603252411), </span><br><span class="line">(&apos;借&apos;, 0.20425426959991455), </span><br><span class="line">(&apos;却&apos;, 0.20283949375152588), </span><br><span class="line">(&apos;璎珞&apos;, 0.20118796825408936), </span><br><span class="line">(&apos;贵人&apos;, 0.19429181516170502), </span><br><span class="line">(&apos;公道&apos;, 0.1942289024591446)]</span><br></pre></td></tr></table></figure>
+<p>语料库是前20集的内容，可以看下在前20集“傅恒”与“璎珞”的相关程度，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(model_dm.similarity(&apos;璎珞&apos;, &apos;傅恒&apos;))</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.23082738</span><br></pre></td></tr></table></figure>
+<p>同理输入看看与富察皇后和大猪蹄子的缘分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(model_dm.similarity(&apos;璎珞&apos;, &apos;皇后&apos;))</span><br><span class="line">print(model_dm.similarity(&apos;璎珞&apos;, &apos;皇上&apos;))</span><br></pre></td></tr></table></figure>
+<p>查询字典的样子，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(model_dm.wv.vocab)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#123;...</span><br><span class="line">&apos;傅恒所言&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f309e8&gt;,</span><br><span class="line"> &apos;祥瑞&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f5b438&gt;,</span><br><span class="line"> &apos;恒等&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30a58&gt;,</span><br><span class="line"> &apos;珍惜&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30a90&gt;,</span><br><span class="line"> &apos;出是&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f6eb70&gt;,</span><br><span class="line"> &apos;置之不理&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f5ba90&gt;,</span><br><span class="line"> &apos;立刻&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30b00&gt;,</span><br><span class="line"> &apos;自从&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30b38&gt;,</span><br><span class="line"> &apos;里面&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30ba8&gt;,</span><br><span class="line"> &apos;发抖&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30be0&gt;,</span><br><span class="line"> &apos;之巅&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30c18&gt;,</span><br><span class="line"> &apos;搬&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30c50&gt;,</span><br><span class="line"> &apos;对尔晴&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f5e470&gt;,</span><br><span class="line"> &apos;心惊&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f5e5f8&gt;,</span><br><span class="line"> &apos;我行我素&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f6afd0&gt;,</span><br><span class="line"> &apos;途中&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30cf8&gt;,</span><br><span class="line"> &apos;三个&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30d30&gt;,</span><br><span class="line"> &apos;原来&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30d68&gt;,</span><br><span class="line"> &apos;保护&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30da0&gt;,</span><br><span class="line"> &apos;那尔布&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x1838cf9b5c0&gt;,</span><br><span class="line"> &apos;近身&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30e48&gt;,</span><br><span class="line"> &apos;名医&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x1838a970908&gt;,</span><br><span class="line"> &apos;嫁给&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30eb8&gt;,</span><br><span class="line"> &apos;盛世&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30ef0&gt;,</span><br><span class="line"> &apos;坠落&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30f28&gt;,</span><br><span class="line"> &apos;淤积&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f74eb8&gt;,</span><br><span class="line"> &apos;隐患&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f4b470&gt;,</span><br><span class="line"> &apos;进&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f30f98&gt;,</span><br><span class="line"> &apos;侍奉&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f54048&gt;,</span><br><span class="line"> &apos;迥异&apos;: &lt;gensim.models.keyedvectors.Vocab at 0x18391f33080&gt;,</span><br><span class="line"> ...&#125;</span><br></pre></td></tr></table></figure>
+<p>查询字典大小：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(len(model_dm.wv.vocab))</span><br></pre></td></tr></table></figure>
+<p>同样，也可以把后面的剧情加进去，看看会发生什么变化😁</p>
+<p>其余操作参考链接：</p>
+<ul>
+<li><a href="https://radimrehurek.com/gensim/models/doc2vec.html#gensim.models.doc2vec.Doc2Vec" target="_blank" rel="noopener">models.doc2vec</a></li>
+<li><a href="https://radimrehurek.com/gensim/models/word2vec.html#gensim.models.word2vec.Word2Vec" target="_blank" rel="noopener">models.word2vec</a></li>
+<li><a href="https://github.com/RaRe-Technologies/gensim/blob/develop/docs/notebooks/doc2vec-lee.ipynb" target="_blank" rel="noopener">Doc2Vec Tutorial on the Lee Dataset</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/word2vec/" rel="tag"># word2vec</a>
+          
+            <a href="/tags/word-embedding/" rel="tag"># word embedding</a>
+          
+            <a href="/tags/doc2vec/" rel="tag"># doc2vec</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/24/NLP笔记-Word-Embedding/" rel="next" title="NLP笔记 - Word Embedding // bag of words">
+                <i class="fa fa-chevron-left"></i> NLP笔记 - Word Embedding // bag of words
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/03/NLP笔记-Word-Tokenization-wordcloud/" rel="prev" title="NLP笔记 - Word Tokenization // wordcloud 词云图教程">
+                NLP笔记 - Word Tokenization // wordcloud 词云图教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/08/28/NLP笔记-Word-Embedding-doc2vec/';
+          this.page.identifier = '2018/08/28/NLP笔记-Word-Embedding-doc2vec/';
+          this.page.title = 'NLP笔记 - Word Embedding // doc2vec 之 延禧攻略';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

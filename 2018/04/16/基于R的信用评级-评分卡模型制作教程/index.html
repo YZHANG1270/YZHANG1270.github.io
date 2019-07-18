@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="machine learning,R,model,scorecard," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="注：    本篇是机器学习/数据挖掘在互联网金融行业的应用，只是一个模型建立的流程介绍，不涉及详细的数据清洗逻辑，不涉及模型的调优。   本篇你需要知道的：逻辑回归、WOE、IV值、ROC、KS值。  适用人群：想入门或者想转型成互金风控建模的朋友。 如有任何疑问或建议请在下面留言或者联系我😎">
+<meta name="keywords" content="machine learning,R,model,scorecard">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于R的信用评级&#x2F;评分卡模型制作教程">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/04/16/基于R的信用评级-评分卡模型制作教程/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="注：    本篇是机器学习/数据挖掘在互联网金融行业的应用，只是一个模型建立的流程介绍，不涉及详细的数据清洗逻辑，不涉及模型的调优。   本篇你需要知道的：逻辑回归、WOE、IV值、ROC、KS值。  适用人群：想入门或者想转型成互金风控建模的朋友。 如有任何疑问或建议请在下面留言或者联系我😎">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/timeWindow.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/IV.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/ZM_score.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_zm.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/Identity.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_id.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/extration_amount.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_ext.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/contact_rela.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_cont.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/position.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_posi.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/ZM_exist.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_zmExist.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/corr1.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe1_ext.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe1_posi.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe1_zm.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe1_zmE.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe1_Id.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/logic.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/anova.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/theory1.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/theory2.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/score_bad.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/score_good.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/stat_score.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/stat_ksks.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/roc.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/KS.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/stat1.png?raw=true">
+<meta property="og:updated_time" content="2019-02-11T07:46:08.020Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于R的信用评级&#x2F;评分卡模型制作教程">
+<meta name="twitter:description" content="注：    本篇是机器学习/数据挖掘在互联网金融行业的应用，只是一个模型建立的流程介绍，不涉及详细的数据清洗逻辑，不涉及模型的调优。   本篇你需要知道的：逻辑回归、WOE、IV值、ROC、KS值。  适用人群：想入门或者想转型成互金风控建模的朋友。 如有任何疑问或建议请在下面留言或者联系我😎">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/timeWindow.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/04/16/基于R的信用评级-评分卡模型制作教程/"/>
+
+
+
+
+
+  <title>基于R的信用评级/评分卡模型制作教程 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/04/16/基于R的信用评级-评分卡模型制作教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基于R的信用评级/评分卡模型制作教程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-16T19:02:56+08:00">
+                2018-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/16/基于R的信用评级-评分卡模型制作教程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/04/16/基于R的信用评级-评分卡模型制作教程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>注：  </p>
+<ol>
+<li>本篇是机器学习/数据挖掘在互联网金融行业的应用，只是一个模型建立的流程介绍，不涉及详细的数据清洗逻辑，不涉及模型的调优。  </li>
+<li>本篇你需要知道的：逻辑回归、WOE、IV值、ROC、KS值。 </li>
+<li>适用人群：想入门或者想转型成互金风控建模的朋友。</li>
+<li>如有任何疑问或建议请在下面留言或者<a href="http://codewithzhangyi.com/about/">联系我</a>😎<a id="more"></a>
+</li>
+</ol>
+<ul>
+<li><strong>背景</strong>：在银行业悠久的历史中，信用评分卡(ScoreCard)模型广泛使用，来判别贷款申请者的逾期概率。现在成为互联网金融行业最火爆的最核心的风控模型。  </li>
+<li><strong>模型类别</strong>：<br>申请卡模型 = A卡(Application Card)，场景：贷前<br>行为卡模型 = B卡(Behaviour Card)， 场景：贷中<br>催收卡模型 = C卡(Collection Card)， 场景：贷后<br>反欺诈模型 = F卡(Anti-Fraud Card)， 场景：反欺诈  </li>
+<li><strong>特征维度</strong>：<br>A卡：用户的基本信息 + 自有app操作行为数据 + 第三方数据<br>B卡：用户的基本信息 + 自有app操作行为数据 + 第三方数据 + 历史还款行为数据<br>C卡：用户的基本信息 + 自有app操作行为数据 + 第三方数据 + 历史还款行为数据 + 催款行为数据  </li>
+<li><strong>本质</strong>：（二/多）分类模型  </li>
+<li>申请卡模型为互金行业最重要、应用最广泛的一张卡，<strong>以下介绍以A卡展开</strong>。 </li>
+</ul>
+<hr>
+<h3 id="正文：评分卡-A卡-制作流程"><a href="#正文：评分卡-A卡-制作流程" class="headerlink" title="正文：评分卡(A卡)制作流程"></a><strong>正文：评分卡(A卡)制作流程</strong></h3><p>传统评分卡使用的算法：<strong>逻辑回归</strong>(Logistics Regression)<br>传统评分卡构建步骤：</p>
+<blockquote>
+<ol>
+<li>样本收集、数据清洗、时窗切割  </li>
+<li>分箱、计算WOE和IV值、WOE的性质、变量筛选、循环以上步骤(如需要)  </li>
+<li>构建逻辑回归模型  </li>
+<li>评分卡Scaling  </li>
+<li>评估信用评分卡  </li>
+<li>选择Cut-Off分数</li>
+</ol>
+</blockquote>
+<h5 id="1-样本收集、数据清洗、时窗切割"><a href="#1-样本收集、数据清洗、时窗切割" class="headerlink" title="1. 样本收集、数据清洗、时窗切割"></a>1. 样本收集、数据清洗、时窗切割</h5><ul>
+<li><p>样本收集：导入样本数据 = data0</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 包的下载使用</span></span><br><span class="line">packages&lt;-c(<span class="string">"ggplot2"</span>,<span class="string">"dplyr"</span>,<span class="string">"smbinning"</span>,<span class="string">"data.table"</span>,<span class="string">"woe"</span>,<span class="string">"gmodels"</span>,<span class="string">"ROCR"</span>,<span class="string">"knitr"</span>,<span class="string">"reshape2"</span>,<span class="string">"Information"</span>,<span class="string">"corrgram"</span>,<span class="string">"corrplot"</span>,<span class="string">"varhandle"</span>,<span class="string">"ROCR"</span>,<span class="string">"stringr"</span>,<span class="string">"DT"</span>,<span class="string">"partykit"</span>,<span class="string">"tcltk"</span>,<span class="string">"Daim"</span>,<span class="string">"vcd"</span>,<span class="string">"caret"</span>)</span><br><span class="line">UsePackages&lt;-<span class="keyword">function</span>(p)&#123;</span><br><span class="line">  <span class="keyword">if</span> (!is.element(p,installed.packages()[,<span class="number">1</span>]))&#123;</span><br><span class="line">    install.packages(p)&#125;</span><br><span class="line">  <span class="keyword">require</span>(p,character.only = <span class="literal">TRUE</span>)&#125;</span><br><span class="line"><span class="keyword">for</span>(p <span class="keyword">in</span> packages)&#123;</span><br><span class="line">  UsePackages(p)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">library</span>(data.table)</span><br><span class="line"><span class="keyword">library</span>(dplyr)</span><br><span class="line"><span class="keyword">library</span>(ggplot2)</span><br><span class="line"><span class="keyword">library</span>(reshape2)</span><br><span class="line"><span class="keyword">library</span>(corrgram)</span><br><span class="line"><span class="keyword">library</span>(corrplot)</span><br><span class="line"><span class="keyword">library</span>(stats)</span><br><span class="line"><span class="keyword">library</span>(smbinning)</span><br><span class="line"><span class="keyword">library</span>(woe)</span><br><span class="line"><span class="keyword">library</span>(gmodels)</span><br><span class="line"><span class="keyword">library</span>(Information)</span><br><span class="line"><span class="keyword">library</span>(knitr)</span><br><span class="line"><span class="keyword">library</span>(varhandle)</span><br><span class="line"></span><br><span class="line"><span class="keyword">library</span>(ROCR)</span><br><span class="line"><span class="keyword">library</span>(stringr)</span><br><span class="line"><span class="keyword">library</span>(DT)</span><br><span class="line"><span class="keyword">library</span>(partykit)</span><br><span class="line"><span class="keyword">library</span>(tcltk)</span><br><span class="line"><span class="keyword">library</span>(Daim)</span><br><span class="line"><span class="keyword">library</span>(vcd)</span><br><span class="line"><span class="keyword">library</span>(caret)</span><br><span class="line">options(warn=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 源数据 data0 在data目录下</span></span><br><span class="line">load(<span class="string">"data/data0_LR.RData"</span>)  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据历史逾期天数overduedays 增加y变量bad ：逾期超过30天为坏客户，否则好客户</span></span><br><span class="line">data0$bad = ifelse(data0$overduedays&gt;<span class="number">30</span>, <span class="number">1</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数据清洗：本篇为假造数据，只为跑通程序做演示，不适合做数据清洗教程，故此步骤直接用清洗好的数据。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt; names(data0)  <span class="comment"># 所有特征名</span></span><br><span class="line"> <span class="comment"># [1] "extration_amount"               "ApplyHour"                      "AGE_Value"                     </span></span><br><span class="line"> <span class="comment"># [4] "CALL_RECORD_FLAG_Value"         "CONTACTS_RELATIVES_COUNT_Value" "DEGREE_Value"                  </span></span><br><span class="line"> <span class="comment"># [7] "IDENTIFICATION_RESULT_Value"    "MARITAL_STATUS_Value"           "MONTH_INCOME_Value"            </span></span><br><span class="line"><span class="comment"># [10] "POSITION_Value"                 "REJECT_COUNT_Value"             "GENDER_Value_ID_CARD"          </span></span><br><span class="line"><span class="comment"># [13] "WORK_MONTH"                     "dt_7day"                        "dt_1month"                     </span></span><br><span class="line"><span class="comment"># [16] "dt_3month"                      "FINAL_SCORE"                    "ZM_SCORE"                      </span></span><br><span class="line"><span class="comment"># [19] "state"                          "bad"                            "ZM_SCORE_EXIST"                </span></span><br><span class="line"><span class="comment"># [22] "MISSING_COUNT" </span></span><br><span class="line"></span><br><span class="line">&gt; nrow(data0) <span class="comment"># 样本数量</span></span><br><span class="line"><span class="comment"># [1] 23610</span></span><br><span class="line">&gt; ncol(data0) <span class="comment"># 特征数量</span></span><br><span class="line"><span class="comment"># [1] 22</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>时窗切割：信用评等最主要的功能为预测客户未来的违约行为，因此必须针对预测时间点进行明确的定义。这个就是时窗切割(Time Windows)。时窗的时间根据每个产品的业务逻辑确定。在此我回溯过去半年数据来预测未来新用户的逾期概率。<br>抽样时窗(Sample Windows)：进行预测时，必须回溯多久以前的客户历史行为数据。<br>观察时窗(Performance Windows)：进行预测时，要预估未来多久客户的行为结果。<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/timeWindow.png?raw=true" alt=""></p>
+</li>
+</ul>
+<h5 id="2-分箱、计算WOE和IV值、WOE的性质、变量筛选、循环以上步骤-如需要"><a href="#2-分箱、计算WOE和IV值、WOE的性质、变量筛选、循环以上步骤-如需要" class="headerlink" title="2. 分箱、计算WOE和IV值、WOE的性质、变量筛选、循环以上步骤(如需要)"></a>2. 分箱、计算WOE和IV值、WOE的性质、变量筛选、循环以上步骤(如需要)</h5><ul>
+<li>分箱(Binning)：对连续变量离散化(Discretization),对离散变量也可进行重新分箱、组合。<br><a href="https://blog.csdn.net/textboy/article/details/47008049" target="_blank" rel="noopener">分箱方式</a>：等宽分箱、等频分箱、最优分箱等。本文使用最优分箱，基于最小熵原则。</li>
+<li><p>WOE(Weight of Evidence)和IV(Infomation Value)：逻辑回归是线性的统计模式，因此遇到非线性趋势的变数会造成无法有效的建立预测模型,因此需要WOE。<br>计算逻辑<a href="https://blog.csdn.net/sscc_learning/article/details/78591210" target="_blank" rel="noopener">点击这里</a></p>
+<blockquote>
+<p>WOE = ln(Odds) = ln(%Good/%Bad) = ln(p/(1-p))<br>IV= ∑(%Good-%Bad)*WOE = ∑(%Good-%Bad)*ln(%Good/%Bad)</p>
+</blockquote>
+</li>
+<li><p>🌝WOE的性质(<strong>划重点!</strong>)：</p>
+<blockquote>
+<p>(1) WOE与风险正相关，WOE越大，风险越高，代表该层级的客户品质越差。如果WOE接近０，表示接近平均水平。（正负相关可以调节）<br>(2)进行WOE检定时，观察WOE分布的变动趋势是否符合逻辑(Logical Trend).<br>所谓Logical Trend指的是WOE变动趋势必须呈现递增、递减，或者是单纯转折模式(u型或n型)。<br>(3)如果WOE趋势呈现不稳定的锯齿状波动(W型或M型)或者是不同时窗呈现不一致的趋势，此时就必须通过重新分箱来调整，否则就必须放弃此变量。<br>(4)WOE不会因为抽样误差造成数值大幅变化。而且WOE制作的评分卡可解释性强，也是这套评分卡永流传的精髓之一。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>变量筛选：根据每个变量的分箱结果计算IV值，留下IV&gt;0.1的变量。这个0.1的数值可以改变。<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 计算dataframe里所有特征的IV值</span></span><br><span class="line">IV &lt;- create_infotables(data=data0, </span><br><span class="line">                       y=<span class="string">"bad"</span>,bins = <span class="number">10</span>, ncore = <span class="literal">NULL</span>,</span><br><span class="line">                       parallel=<span class="literal">FALSE</span>)</span><br><span class="line"><span class="comment"># 显示IV计算结果</span></span><br><span class="line">(Summary&lt;-IV$Summary)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/IV.png?raw=true" alt=""></p>
+<p>绘制每个变量的WOE分箱柱状图<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 筛选变量：留下IV&gt;0.1的变量</span></span><br><span class="line">Summary=Summary%&gt;%</span><br><span class="line">  filter(Summary$IV&gt;<span class="number">0.1</span>)%&gt;%</span><br><span class="line">  as.data.frame()</span><br><span class="line">(selected_names&lt;-Summary$Variable) <span class="comment"># 显示筛选后的变量名</span></span><br><span class="line"><span class="comment"># [1] "ZM_SCORE"                       "IDENTIFICATION_RESULT_Value"   </span></span><br><span class="line"><span class="comment"># [3] "extration_amount"               "CONTACTS_RELATIVES_COUNT_Value"</span></span><br><span class="line"><span class="comment"># [5] "POSITION_Value"                 "ZM_SCORE_EXIST"                </span></span><br><span class="line"></span><br><span class="line">num&lt;-length(selected_names) <span class="comment"># 筛选后的变量个数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制每个变量的WOE分箱柱状图</span></span><br><span class="line">names &lt;- selected_names <span class="comment"># LOOP for ALL: names&lt;-names(IV$Tables)</span></span><br><span class="line">plots &lt;- list()</span><br><span class="line">IVtable&lt;- IV$Tables</span><br><span class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:length(selected_names))&#123;</span><br><span class="line">  </span><br><span class="line">   plots[[i]] &lt;- plot_infotables(IV, names[i],same_scales=<span class="literal">FALSE</span>,show_values = <span class="literal">TRUE</span>)</span><br><span class="line">   IVtable[i]&lt;-IV$Tables$names[i]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Showing the variables whose iv &gt;0.1</span></span><br><span class="line">plots[<span class="number">1</span>:length(selected_names)]</span><br><span class="line"><span class="comment"># MultiPlot(IV, IV$Summary$Variable[1:num]) # 绘制综合图code</span></span><br><span class="line">IVtable[selected_names]</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/ZM_score.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_zm.png?raw=true" alt=""></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/Identity.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_id.png?raw=true" alt=""></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/extration_amount.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_ext.png?raw=true" alt=""></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/contact_rela.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_cont.png?raw=true" alt=""></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/position.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_posi.png?raw=true" alt=""></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/ZM_exist.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe_zmExist.png?raw=true" alt=""></p>
+<blockquote>
+<p>根据上文提到的(Logical Trend)来观察上面6个WOE分布图，ZM_SCORE, IDENTIFICATION_RESULT_Value, CONTACTS_RELATIVES_COUNT_Value, POSITION_Value, ZM_SCORE_EXIST都符合Logical Trend。<br>只有extration_amount的WOE分布呈现波浪不规则型，需要整改。</p>
+</blockquote>
+<ul>
+<li>相关性分析(CORRplot):这里只先示范协方差矩阵图<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">col1 &lt;- colorRampPalette(c(<span class="string">"#7F0000"</span>,<span class="string">"red"</span>,<span class="string">"#FF7F00"</span>,<span class="string">"yellow"</span>,<span class="string">"white"</span>,</span><br><span class="line">                           <span class="string">"cyan"</span>, <span class="string">"#007FFF"</span>, <span class="string">"blue"</span>,<span class="string">"#00007F"</span>))</span><br><span class="line">col2 &lt;- colorRampPalette(c(<span class="string">"#67001F"</span>, <span class="string">"#B2182B"</span>, <span class="string">"#D6604D"</span>, <span class="string">"#F4A582"</span>, <span class="string">"#FDDBC7"</span>,</span><br><span class="line">                           <span class="string">"#FFFFFF"</span>, <span class="string">"#D1E5F0"</span>, <span class="string">"#92C5DE"</span>, <span class="string">"#4393C3"</span>, <span class="string">"#2166AC"</span>, <span class="string">"#053061"</span>))</span><br><span class="line">col3 &lt;- colorRampPalette(c(<span class="string">"red"</span>, <span class="string">"white"</span>, <span class="string">"blue"</span>))</span><br><span class="line">col4 &lt;- colorRampPalette(c(<span class="string">"#7F0000"</span>,<span class="string">"red"</span>,<span class="string">"#FF7F00"</span>,<span class="string">"yellow"</span>,<span class="string">"#7FFF7F"</span>,</span><br><span class="line">                           <span class="string">"cyan"</span>, <span class="string">"#007FFF"</span>, <span class="string">"blue"</span>,<span class="string">"#00007F"</span>))</span><br><span class="line">wb &lt;- c(<span class="string">"white"</span>,<span class="string">"black"</span>)</span><br><span class="line">par(ask = <span class="literal">TRUE</span>)</span><br><span class="line"></span><br><span class="line">data0= data0%&gt;%</span><br><span class="line">  select(selected_names,bad)%&gt;%</span><br><span class="line">  as.data.frame()</span><br><span class="line"></span><br><span class="line">M=data0[complete.cases(data0),]</span><br><span class="line">M&lt;-cor(M)</span><br><span class="line">corrplot(M, method=<span class="string">"color"</span>, col=col1(<span class="number">20</span>), cl.length=<span class="number">21</span>,order = <span class="string">"AOE"</span>,tl.cex = <span class="number">0.6</span>,addCoef.col=<span class="string">"grey"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/corr1.png?raw=true" alt=""><br>删去CONTACTS_RELATIVES_COUNT_Value</p>
+<ul>
+<li>循环分箱步骤（分箱调整）<br>(1)extration_amount<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">data0$extration_amount=as.numeric(data0$extration_amount)</span><br><span class="line">data_tmp=data0%&gt;%</span><br><span class="line">  select(c(extration_amount,bad))%&gt;%</span><br><span class="line">  apply(<span class="number">2</span>,as.numeric)%&gt;%</span><br><span class="line">  data.frame()</span><br><span class="line"></span><br><span class="line">IV &lt;- create_infotables(data_tmp, y=<span class="string">'bad'</span>, ncore=<span class="number">2</span>,bins=<span class="number">5</span>) <span class="comment"># bins的数值随意定，一般2~10</span></span><br><span class="line">data0$extration_amount=cut(data0$extration_amount,breaks=c(-<span class="literal">Inf</span>,<span class="number">475</span>,<span class="number">671</span>,<span class="number">771</span>,<span class="number">971</span>,<span class="literal">Inf</span>),labels = IV$Tables$v$WOE[<span class="number">1</span>:length(IV$Tables$extration_amount$WOE)])</span><br><span class="line"></span><br><span class="line">ggplot(IV$Tables$extration_amount,aes(x=extration_amount,y=WOE))+</span><br><span class="line">  geom_bar(stat=<span class="string">'identity'</span>,fill=<span class="string">'lightblue'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe1_ext.png?raw=true" alt=""><br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># WOE计算结果保留，在步骤4-Scaling会再次用到</span></span><br><span class="line">IV$Tables$extration_amount$WOE</span><br><span class="line"><span class="comment"># [1] -0.4414730 -0.2142640  0.4596698  0.4386113 -0.3501923</span></span><br><span class="line">IV$Summary</span><br><span class="line"><span class="comment"># 0.1327355 #IV值</span></span><br></pre></td></tr></table></figure></p>
+<p>(2)POSITION_Value<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">data0$POSITION_Value=as.numeric(data0$POSITION_Value)</span><br><span class="line">data_tmp=data0%&gt;%</span><br><span class="line">  select(c(POSITION_Value,bad))%&gt;%</span><br><span class="line">  apply(<span class="number">2</span>,as.numeric)%&gt;%</span><br><span class="line">  data.frame()</span><br><span class="line">IV &lt;- create_infotables(data_tmp, y=<span class="string">'bad'</span>, ncore=<span class="number">2</span>,bins=<span class="number">6</span>)</span><br><span class="line">ggplot(IV$Tables$POSITION_Value,aes(x=POSITION_Value,y=WOE))+</span><br><span class="line">  geom_bar(stat=<span class="string">'identity'</span>,fill=<span class="string">'lightblue'</span>)</span><br><span class="line"></span><br><span class="line">data0$POSITION_Value=cut(data0$POSITION_Value,breaks=c(-<span class="literal">Inf</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">5</span>),labels = IV$Tables$POSITION_Value$WOE[<span class="number">1</span>:length(IV$Tables$POSITION_Value$WOE)])</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe1_posi.png?raw=true" alt=""><br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># WOE计算结果保留，在步骤4-Scaling会再次用到</span></span><br><span class="line">IV$Tables$POSITION_Value$WOE</span><br><span class="line"><span class="comment"># [1]  0.5817640 -0.2522849 -0.2905931</span></span><br><span class="line">IV$Summary</span><br><span class="line"><span class="comment"># 0.1528563</span></span><br></pre></td></tr></table></figure></p>
+<p>(3)ZM_SCORE<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">data0$ZM_SCORE=as.numeric(data0$ZM_SCORE)</span><br><span class="line">data_tmp=data0%&gt;%</span><br><span class="line">  select(c(ZM_SCORE,bad))%&gt;%</span><br><span class="line">  apply(<span class="number">2</span>,as.numeric)%&gt;%</span><br><span class="line">  data.frame()</span><br><span class="line">IV &lt;- create_infotables(data_tmp, y=<span class="string">'bad'</span>, ncore=<span class="number">2</span>,bins=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">ggplot(IV$Tables$ZM_SCORE,aes(x=ZM_SCORE,y=WOE))+</span><br><span class="line">  geom_bar(stat=<span class="string">'identity'</span>,fill=<span class="string">'lightblue'</span>)</span><br><span class="line"></span><br><span class="line">data0$ZM_SCORE=cut(data0$ZM_SCORE,breaks=c(-<span class="literal">Inf</span>,<span class="number">549</span>,<span class="number">569</span>,<span class="number">592</span>,<span class="number">609</span>,<span class="number">635</span>,<span class="literal">Inf</span>),labels = IV$Tables$ZM_SCORE$WOE[<span class="number">1</span>:length(IV$Tables$ZM_SCORE$WOE)])</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe1_zm.png?raw=true" alt=""><br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># WOE计算结果保留，在步骤4-Scaling会再次用到</span></span><br><span class="line">IV$Tables$ZM_SCORE$WOE</span><br><span class="line"><span class="comment"># [1]  0.40926664  0.30817452 -0.01635135</span></span><br><span class="line"><span class="comment"># [4] -0.38743811 -0.74663108 -1.52210534</span></span><br><span class="line">IV$Summary</span><br><span class="line"><span class="comment"># 0.2749328</span></span><br></pre></td></tr></table></figure></p>
+<p>(4)ZM_SCORE_EXIST<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">data0$ZM_SCORE_EXIST=as.numeric(data0$ZM_SCORE_EXIST)</span><br><span class="line">data_tmp=data0%&gt;%</span><br><span class="line">  select(c(ZM_SCORE_EXIST,bad))%&gt;%</span><br><span class="line">  apply(<span class="number">2</span>,as.numeric)%&gt;%</span><br><span class="line">  data.frame()</span><br><span class="line">IV &lt;- create_infotables(data_tmp, y=<span class="string">'bad'</span>, ncore=<span class="number">2</span>,bins=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">ggplot(IV$Tables$ZM_SCORE_EXIST,aes(x=ZM_SCORE_EXIST,y=WOE))+</span><br><span class="line">  geom_bar(stat=<span class="string">'identity'</span>,fill=<span class="string">'lightblue'</span>)</span><br><span class="line"></span><br><span class="line">data0$ZM_SCORE_EXIST=cut(data0$ZM_SCORE_EXIST,breaks=c(-<span class="literal">Inf</span>,<span class="number">0</span>,<span class="number">1</span>),labels = IV$Tables$ZM_SCORE_EXIST$WOE[<span class="number">1</span>:length(IV$Tables$ZM_SCORE_EXIST$WOE)])</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe1_zmE.png?raw=true" alt=""><br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># WOE计算结果保留，在步骤4-Scaling会再次用到</span></span><br><span class="line">IV$Tables$ZM_SCORE_EXIST$WOE</span><br><span class="line"><span class="comment"># [1]  0.2976555 -0.3847163</span></span><br><span class="line">IV$Summary</span><br><span class="line"><span class="comment"># 0.1134327</span></span><br></pre></td></tr></table></figure></p>
+<p>(5)IDENTIFICATION_RESULT_Value<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">data0$IDENTIFICATION_RESULT_Value=as.numeric(data0$IDENTIFICATION_RESULT_Value)</span><br><span class="line">data_tmp=data0%&gt;%</span><br><span class="line">  select(c(IDENTIFICATION_RESULT_Value,bad))%&gt;%</span><br><span class="line">  apply(<span class="number">2</span>,as.numeric)%&gt;%</span><br><span class="line">  data.frame()</span><br><span class="line">IV &lt;- create_infotables(data_tmp, y=<span class="string">'bad'</span>, ncore=<span class="number">2</span>,bins=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">ggplot(IV$Tables$IDENTIFICATION_RESULT_Value,aes(x=IDENTIFICATION_RESULT_Value,y=WOE))+</span><br><span class="line">  geom_bar(stat=<span class="string">'identity'</span>,fill=<span class="string">'lightblue'</span>)</span><br><span class="line"></span><br><span class="line">data0$IDENTIFICATION_RESULT_Value=cut(data0$IDENTIFICATION_RESULT_Value,breaks=c(-<span class="literal">Inf</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>),labels = IV$Tables$IDENTIFICATION_RESULT_Value$WOE[<span class="number">1</span>:length(IV$Tables$IDENTIFICATION_RESULT_Value$WOE)])</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/woe1_Id.png?raw=true" alt=""><br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># WOE计算结果保留，在步骤4-Scaling会再次用到</span></span><br><span class="line">IV$Tables$IDENTIFICATION_RESULT_Value$WOE</span><br><span class="line"><span class="comment"># [1]  0.6084594 -0.2568459 -0.4399638</span></span><br><span class="line">IV$Summary</span><br><span class="line"><span class="comment"># 0.1897237</span></span><br></pre></td></tr></table></figure></p>
+<p>以上的5个变量的IV&gt;0.1,且WOE分布呈Logical Trend，保存数据<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data1 = data0 <span class="comment">#备份数据，以下都对data1进行处理</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="3-构建逻辑回归模型"><a href="#3-构建逻辑回归模型" class="headerlink" title="3. 构建逻辑回归模型"></a>3. 构建逻辑回归模型</h5><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">data1[, c(<span class="number">1</span>:length(data1))] &lt;- sapply(data1[, c(<span class="number">1</span>:length(data1))], as.numeric)</span><br><span class="line">cbind(apply(data1,<span class="number">2</span>,<span class="keyword">function</span>(x)length(unique(x))),sapply(data1,class))</span><br><span class="line"></span><br><span class="line"><span class="comment">#拆分训练集与测试集，建模</span></span><br><span class="line"><span class="comment">#----------------------------------------------------------</span></span><br><span class="line"><span class="comment"># train &amp; test(80%-20%) select randomly</span></span><br><span class="line"><span class="comment">#----------------------------------------------------------</span></span><br><span class="line">nrow(data1)</span><br><span class="line">a = round(nrow(data1)*<span class="number">0.8</span>)</span><br><span class="line">b = sample(nrow(data1), a, replace = <span class="literal">FALSE</span>, prob = <span class="literal">NULL</span>)</span><br><span class="line"></span><br><span class="line">data_train= data1[b,]</span><br><span class="line">data_test = data1[-b,]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 逻辑回归建模</span></span><br><span class="line">m1=glm(bad~., data=data_train,binomial(link=<span class="string">'logit'</span>))</span><br><span class="line">summary(m1)</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/logic.png?raw=true" alt=""><br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">通过检验</span><br><span class="line">截距为<span class="number">0.72215</span></span><br><span class="line">各个系数为-<span class="number">0.39815</span>, -<span class="number">0.42831</span>, <span class="number">0.08642</span>, -<span class="number">0.24813</span>, <span class="number">0.25519</span></span><br><span class="line">这些参数都十分重要，在Scaling中再次用到</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">anova(m1,test=<span class="string">"Chisq"</span>) <span class="comment"># ANOVA 检验通过</span></span><br><span class="line"></span><br><span class="line">model=m1</span><br><span class="line"><span class="comment"># y值预测</span></span><br><span class="line">yhat_train = fitted(model)</span><br><span class="line">yhat_test  = predict(model,newdata=data_test,type=<span class="string">'response'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/anova.png?raw=true" alt=""></p>
+<h5 id="4-评分卡Scaling"><a href="#4-评分卡Scaling" class="headerlink" title="4. 评分卡Scaling"></a>4. 评分卡Scaling</h5><ul>
+<li>将WOE值转换为信用风险分数<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/theory1.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/theory2.png?raw=true" alt=""><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">data2 = data1 <span class="comment">#数据备份</span></span><br><span class="line"></span><br><span class="line">odds=sum(data2$bad==<span class="number">1</span>)/sum(data2$bad==<span class="number">0</span>)</span><br><span class="line">log(odds,base=exp(<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">B=<span class="number">40</span>/log(<span class="number">2</span>,base=exp(<span class="number">1</span>))</span><br><span class="line">A=<span class="number">200</span>-B*log(odds,base=exp(<span class="number">1</span>))</span><br><span class="line">score=yhat_test*B+A  <span class="comment">#Score=258.152490+57.707802*yhat</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">summary(score)</span><br><span class="line"><span class="comment"># Min.   1st Qu.  Median   Mean    3rd Qu.    Max. </span></span><br><span class="line"><span class="comment"># 261     268     273      274     278        295 </span></span><br><span class="line"><span class="comment">#这批客户的信用风险分值已经得出</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>好/坏客户分数分布<br>分数越高，客户的逾期风险越高，因此坏客户应该集中在分数偏高区域，反之，好客户应该集中在风险分数低分区域。<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">index=which(data_test$bad==<span class="number">1</span>)</span><br><span class="line">m=seq(<span class="number">260</span>,<span class="number">300</span>,by=<span class="number">5</span>) <span class="comment">#260，300是根据分数值域定的，5为间隔数值</span></span><br><span class="line"></span><br><span class="line">bad=cut(score[index],m)%&gt;%table%&gt;%data.frame</span><br><span class="line">colnames(bad)=c(<span class="string">'level'</span>,<span class="string">'count'</span>)</span><br><span class="line">ggplot(data = bad,aes(x =level,y=count)) + geom_bar(stat = <span class="string">'identity'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/score_bad.png?raw=true" alt="测试集中预测为坏客户(违约客户)的分数分布"><br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">index=which(data_test$bad==<span class="number">0</span>)</span><br><span class="line">good=cut(score[index],m)%&gt;%table%&gt;%data.frame</span><br><span class="line">colnames(good)=c(<span class="string">'level'</span>,<span class="string">'count'</span>)</span><br><span class="line">ggplot(data = good,aes(x =level,y=count)) + geom_bar(stat = <span class="string">'identity'</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/score_good.png?raw=true" alt="测试集中预测为好客户(正常客户)的分数分布"></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/stat_score.png?raw=true" alt="以5分为间隔将信用风险分数分成8级，客户人数在各层级的分布"></p>
+<h5 id="5-评估信用评分卡"><a href="#5-评估信用评分卡" class="headerlink" title="5. 评估信用评分卡"></a>5. 评估信用评分卡</h5><ul>
+<li>KS检验：模型区分好坏客户的力度<br>KS&gt;0.3时，模型才能用。<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/stat_ksks.png?raw=true" alt=""></li>
+<li>ROC检验：模型判别真假的准确度<br>AUC&gt;0.7时，模型才能用。<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/roc.png?raw=true" alt=""><br>此模型因为数据质量和分箱质量，所以不具有参考性，仅做跑通模型之用，具体的模型调优将另外写。<blockquote>
+<p>我的天真的是不知不觉写那么长，其实还有很多还没说，后续会慢慢写后续的。那么恭喜你，到此，你的评分卡已经做完啦~~<br>每个客户只要填写根据你筛选出来的变量的相关信息，就能得到每个人专属的信用风险分啦！🖖</p>
+<h5 id="6-选择Cut-Off分数"><a href="#6-选择Cut-Off分数" class="headerlink" title="6. 选择Cut-Off分数"></a>6. 选择Cut-Off分数</h5><p>模型做完，下一步就是要跟业务结合啦~<br>模型的作用就是评估贷款申请者的未来逾期概率。风险高的拒掉，风险低的通过申请，那么如何划定这个决策的分数界限呢？多少分数应该通过，多少分数应该拒绝？</p>
+</blockquote>
+</li>
+<li>画出每阶层的KS值，最高值对应阶层为决策阈值<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/KS.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/stat1.png?raw=true" alt=""><br>根据上图可以看出是第三阶层的KS=0.2637最大。按照之前分层的结果，这层级的客户的分数区间是(270,275]<br>(1)270分以下客户：通过<br>(2)270-275分：人工审核<br>(3)275分以上客户：拒绝<blockquote>
+<p>但是，KS只是做决策的某方面根据而已，也可根据每阶层的违约率决定决策阈值，同时也要观察每阶层的人数分布。<br>最极端的例子就是，一下子拒绝掉所有申请者，这样逾期率就是0了，但是也就关门大吉啦~<br>感谢看到这里的朋友，A卡制作就在此告一段落啦😊</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<p>课后题😉</p>
+<ol>
+<li><p>计算下面每个变量的WOE值对应的信用风险分数：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 伪代码...</span></span><br><span class="line">extration_amount</span><br><span class="line">[WOE] -<span class="number">0.4414730</span> -<span class="number">0.2142640</span>  <span class="number">0.4596698</span>  <span class="number">0.4386113</span> -<span class="number">0.3501923</span></span><br><span class="line">[系数b] <span class="number">0.08642</span></span><br><span class="line"></span><br><span class="line">POSITION_Value</span><br><span class="line">[WOE] <span class="number">0.5817640</span> -<span class="number">0.2522849</span> -<span class="number">0.2905931</span></span><br><span class="line">[系数b] -<span class="number">0.24813</span></span><br><span class="line"></span><br><span class="line">ZM_SCORE</span><br><span class="line">[WOE] <span class="number">0.40926664</span>  <span class="number">0.30817452</span> -<span class="number">0.01635135</span> -<span class="number">0.38743811</span> -<span class="number">0.74663108</span> -<span class="number">1.52210534</span></span><br><span class="line">[系数b] -<span class="number">0.39815</span></span><br><span class="line"></span><br><span class="line">ZM_SCORE_EXIST</span><br><span class="line">[WOE] <span class="number">0.2976555</span> -<span class="number">0.3847163</span></span><br><span class="line">[系数b] <span class="number">0.25519</span></span><br><span class="line"></span><br><span class="line">IDENTIFICATION_RESULT_Value$WOE</span><br><span class="line">[WOE] <span class="number">0.6084594</span> -<span class="number">0.2568459</span> -<span class="number">0.4399638</span></span><br><span class="line">[系数b] -<span class="number">0.42831</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>思考分数换算的Scaling中，A与B的作用</p>
+<blockquote>
+<p>提示：在第四大步骤Scaling中，有计算逻辑</p>
+</blockquote>
+</li>
+</ol>
+<hr>
+<p>福利❤<br><a href="https://github.com/YZHANG1270/Markdown_pic/blob/master/scoreCard/data0_LR.RData" target="_blank" rel="noopener">源数据下载👍</a></p>
+<p>打赏者在备注留下邮箱都会赠予相关材料<br>之后会增加基于大杀器XGBOOST制作的评分卡，而且有R有Python！<br>敬请期待~</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/model/" rel="tag"># model</a>
+          
+            <a href="/tags/scorecard/" rel="tag"># scorecard</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/03/2017校招社招总结（人工智能岗）/" rel="next" title="2017校招/社招总结（人工智能岗）">
+                <i class="fa fa-chevron-left"></i> 2017校招/社招总结（人工智能岗）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/19/如何搭建自己的个人网站（上）/" rel="prev" title="如何搭建自己的个人网站（上）">
+                如何搭建自己的个人网站（上） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#正文：评分卡-A卡-制作流程"><span class="nav-text">正文：评分卡(A卡)制作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-样本收集、数据清洗、时窗切割"><span class="nav-text">1. 样本收集、数据清洗、时窗切割</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-分箱、计算WOE和IV值、WOE的性质、变量筛选、循环以上步骤-如需要"><span class="nav-text">2. 分箱、计算WOE和IV值、WOE的性质、变量筛选、循环以上步骤(如需要)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-构建逻辑回归模型"><span class="nav-text">3. 构建逻辑回归模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-评分卡Scaling"><span class="nav-text">4. 评分卡Scaling</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-评估信用评分卡"><span class="nav-text">5. 评估信用评分卡</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-选择Cut-Off分数"><span class="nav-text">6. 选择Cut-Off分数</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/04/16/基于R的信用评级-评分卡模型制作教程/';
+          this.page.identifier = '2018/04/16/基于R的信用评级-评分卡模型制作教程/';
+          this.page.title = '基于R的信用评级/评分卡模型制作教程';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

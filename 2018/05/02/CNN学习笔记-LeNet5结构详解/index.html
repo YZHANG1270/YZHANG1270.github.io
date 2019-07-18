@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CNN,LeNet," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="学习卷积神经网络(CNN)是学习TensorFlow绕不开的一道坎CNN的学习计划是：【算法结构详解 + Tensorflow代码实现】  LeNet5 AlexNet VGG GoogleNet ResNet">
+<meta name="keywords" content="CNN,LeNet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CNN笔记 - LeNet5结构详解">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/05/02/CNN学习笔记-LeNet5结构详解/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="学习卷积神经网络(CNN)是学习TensorFlow绕不开的一道坎CNN的学习计划是：【算法结构详解 + Tensorflow代码实现】  LeNet5 AlexNet VGG GoogleNet ResNet">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-9.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-10.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-5.gif?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-7.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-8.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-6.gif?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-2.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-1.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-3.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-4.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-11.jpg?raw=true">
+<meta property="og:updated_time" content="2019-02-11T07:36:53.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CNN笔记 - LeNet5结构详解">
+<meta name="twitter:description" content="学习卷积神经网络(CNN)是学习TensorFlow绕不开的一道坎CNN的学习计划是：【算法结构详解 + Tensorflow代码实现】  LeNet5 AlexNet VGG GoogleNet ResNet">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-9.jpg?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/05/02/CNN学习笔记-LeNet5结构详解/"/>
+
+
+
+
+
+  <title>CNN笔记 - LeNet5结构详解 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/05/02/CNN学习笔记-LeNet5结构详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CNN笔记 - LeNet5结构详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-02T17:15:29+08:00">
+                2018-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/02/CNN学习笔记-LeNet5结构详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/02/CNN学习笔记-LeNet5结构详解/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>学习卷积神经网络(CNN)是学习TensorFlow绕不开的一道坎<br>CNN的学习计划是：【算法结构详解 + Tensorflow代码实现】</p>
+<ol>
+<li>LeNet5</li>
+<li>AlexNet</li>
+<li>VGG</li>
+<li>GoogleNet</li>
+<li>ResNet</li>
+</ol>
+</blockquote>
+<a id="more"></a>
+<p>====== 概念铺垫 ======<br>CNN有几个重要的点：局部感知、参数共享、池化。</p>
+<ul>
+<li><p><strong>局部感知</strong><br>每个神经元其实没有必要对全局图像进行感知，只需要对局部进行感知，然后在更高层将局部的信息综合起来就得到了全局的信息。<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-9.jpg?raw=true" alt=""></p>
+</li>
+<li><p><strong>参数共享</strong><br>参数共享是减少参数的有效办法。<br>具体做法是，在局部连接中隐藏层的每一个神经元连接的是一个 10×10 的局部图像，因此有10×10 个权值参数，将这 10×10 个权值参数共享给剩下的神经元。<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-10.jpg?raw=true" alt=""></p>
+</li>
+<li><p><strong>单核单通道卷积</strong><br>单个卷积核示意： 步长 Stride = 1<br>5×5 Image ——&gt;  3×3 kernel ——&gt;  (5-3+1)×(5-3+1) convolved feature map<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-5.gif?raw=true" alt=""></p>
+</li>
+<li><p><strong>多核单通道卷积</strong><br>一个卷积核提取得到的特征是不充分的。假设有k个卷积核，那么可训练的参数的个数就变为了k×10×10。注意没有包含偏置参数。每个卷积核得到一个Feature Map。卷积的过程为特征提取的过程，多核卷积中，隐层的节点数量为： k×(1000-100+1)×(1000-100+1) ，对于下图的手写数字灰度图，做单通道卷及操作：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-7.png?raw=true" alt=""></p>
+</li>
+<li><p><strong>多核多通道卷积</strong><br>当图像为RGB或ARGB（A代表透明度）时，可以在多通道进行卷积操作，或者对于堆叠卷积层来说， pooling 层之后可以继续接下一个 卷积层，对 pooling 层多个 Feature Map 的操作即为多通道卷积，下图为 两个卷积核在ARGB四通道上进行卷积操作，在生成 对应的 Feature Map 时， 这个卷积核对应4个卷积模板（这一个卷积核对应的四个模板都不一样），分别用4种不同的颜色表示，Feature Map 对应的位置的值是由四核卷积模板分别作用在4个通道的对应位置处的卷积结果相加然后取激活函数得到的，所以在四通道得到2通道的过程中，参数数目为 4×2×2×2个，其中4表示4个通道，第一个2表示生成2个卷积核，最后的2×2表示卷积核大小。见下图：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-8.png?raw=true" alt=""></p>
+</li>
+<li><p><strong>池化 pooling</strong><br>池化过程示意：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-6.gif?raw=true" alt=""></p>
+</li>
+</ul>
+<hr>
+<h4 id="正文："><a href="#正文：" class="headerlink" title="正文："></a><strong>正文：</strong></h4><p>LeNet5主要用于手写数字的自动识别<br>output输出类别共10个，为数字0,1,2,…,9</p>
+<p><strong>LeNet的8层结构：</strong><br>输入层-C1卷积层-S2池化层-C3卷积层-S4池化层-C5卷积层-F6全连接层-输出层</p>
+<p><strong>LeNet的8层全过程图：</strong><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-2.png?raw=true" alt=""></p>
+<p>下图为对应每层的参数个数parameters和连接点个数connections计算流程图，每个feature map下有该层的计算公式：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-1.jpg?raw=true" alt=""></p>
+<h4 id="输入层"><a href="#输入层" class="headerlink" title="== 输入层 =="></a>== 输入层 ==</h4><ul>
+<li>1张32×32的图片</li>
+</ul>
+<h4 id="C1卷积层"><a href="#C1卷积层" class="headerlink" title="== C1卷积层 =="></a>== C1卷积层 ==</h4><ul>
+<li>单通道，6个卷积核，得到6个feature maps</li>
+<li>kernal size: 5×5</li>
+<li>feature map size: (32-5+1)×(32-5+1)= 28×28</li>
+<li>parameters:  6×(5×5+1) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5×5为卷积模板参数，1为偏置参数</li>
+<li>connections:  6×(5×5+1) ×28×28</li>
+</ul>
+<h4 id="S2池化层"><a href="#S2池化层" class="headerlink" title="== S2池化层 =="></a>== S2池化层 ==</h4><ul>
+<li>6个池化核，得到6个feature maps</li>
+<li>kernal size：2×2</li>
+<li>feature map size: (28/2)×(28/2)= 14×14</li>
+<li>parameters:  6×(1+1)</li>
+<li>parameters计算过程：2×2 单元里的值相加然后再乘以训练参数w，再加上一个偏置参数b(每一个feature map共享相同w和b)（这个地方和之前自己想的不太一样） </li>
+<li>connections:  6×(2×2+1) ×14×14</li>
+</ul>
+<p>下图为卷积操作与池化的示意图：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-3.jpg?raw=true" alt=""></p>
+<h4 id="C3卷积层"><a href="#C3卷积层" class="headerlink" title="== C3卷积层 =="></a>== C3卷积层 ==</h4><ul>
+<li>多通道：14个通道，16个卷积核，得到16个feature maps</li>
+<li>kernal size：5×5</li>
+<li>feature map size: (14-5+1)×(14-5+1）= 10×10</li>
+<li>parameters:  6×(3×5×5+1) + 6×(4×5×5+1) + 3×(4×5×5+1) + 1×(6×5×5+1)</li>
+<li>注意此处C3并不是与S2全连接而是部分连接，见下图</li>
+<li>connections:  6×(3×5×5+1) + 6×(4×5×5+1) + 3×(4×5×5+1) + 1×(6×5×5+1) ×10×10<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-4.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/cnn-11.jpg?raw=true" alt=""></li>
+</ul>
+<blockquote>
+<p>为什么采用部分连接？ Dropout的由来<br>首先部分连接，可计算的参数就会比较少<br>其次更重要的是它能打破对称性，这样就能得到输入的不同特征集合<br>以第0个feature map描述计算过程：<br>用1个卷积核(对应3个卷积模板，但仍称为一个卷积核，可以认为是三维卷积核)分别与S2层的3个feature maps进行卷积，然后将卷积的结果相加，再加上一个偏置，再搞个激活函数就可以得出对应的feature map了</p>
+</blockquote>
+<h4 id="S4池化层"><a href="#S4池化层" class="headerlink" title="== S4池化层 =="></a>== S4池化层 ==</h4><ul>
+<li>16个池化核，得到16个feature maps</li>
+<li>kernal size：2×2</li>
+<li>feature map size: (10/2)×(10/2)= 5×5</li>
+<li>parameters:  16×(1+1)</li>
+<li>connections:  16×(2×2+1) ×5×5</li>
+</ul>
+<h4 id="C5卷积层"><a href="#C5卷积层" class="headerlink" title="== C5卷积层 =="></a>== C5卷积层 ==</h4><ul>
+<li>120个卷积核，得到120个feature maps</li>
+<li>kernal size：5×5</li>
+<li>每个feature map的大小都与上一层S4的所有feature maps进行连接，这样一个卷积核就有16个卷积模板</li>
+<li>feature map size: (5-5+1)×(5-5+1）= 1×1 &nbsp;&nbsp;&nbsp;&nbsp;这样刚好变成了全连接，但是我们不把它写成F5，因为这只是巧合</li>
+<li>parameters:  120×(16×5×5+1)</li>
+<li>connections:  120×(16×5×5+1) ×1×1</li>
+</ul>
+<h4 id="F6全连接层"><a href="#F6全连接层" class="headerlink" title="== F6全连接层 =="></a>== F6全连接层 ==</h4><ul>
+<li>Full Connection</li>
+<li>parameters:  84×(120×1×1+1)</li>
+<li>connections:  84×(120×1×1+1) ×1×1</li>
+</ul>
+<h4 id="输出层"><a href="#输出层" class="headerlink" title="== 输出层 =="></a>== 输出层 ==</h4><ul>
+<li>得到分类结果，例：结果为数字 5 </li>
+</ul>
+<hr>
+<p>代码实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">print(os.getcwd())    #显示当前路径</span><br><span class="line">os.chdir(&quot;D:/test/&quot;)  #在引号内填入你想放代码和数据的路径</span><br><span class="line"></span><br><span class="line">import tensorflow as tf   </span><br><span class="line">from tensorflow.examples.tutorials.mnist import input_data  </span><br><span class="line">  </span><br><span class="line">mnist = input_data.read_data_sets(&quot;MNIST_data/&quot;,one_hot = True)  #读取数据</span><br><span class="line">sess = tf.InteractiveSession()  </span><br><span class="line">  </span><br><span class="line">def weight_variable(shape):                               # 权值初始化设置</span><br><span class="line">    initial = tf.truncated_normal(shape,stddev=0.1)  </span><br><span class="line">    return tf.Variable(initial)  </span><br><span class="line">  </span><br><span class="line">def bias_variable(shape):                                 # 偏置bias初始化设置</span><br><span class="line">    initial = tf.constant(0.1,shape = shape)  </span><br><span class="line">    return tf.Variable(initial)  </span><br><span class="line">  </span><br><span class="line">def conv2d(x,W):  </span><br><span class="line">    return tf.nn.conv2d(x,W,strides=[1,1,1,1],padding=&apos;SAME&apos;)  </span><br><span class="line">    # 卷积strides=[首位默认为1,平行步长=1,竖直步长=1,尾位默认为1]</span><br><span class="line">  </span><br><span class="line">def max_pool_2x2(x):  </span><br><span class="line">    return tf.nn.max_pool(x,ksize=[1,2,2,1],strides=[1,2,2,1],padding=&apos;SAME&apos;) </span><br><span class="line">    # ksize=[1,2,2,1] 池化核size: 2×2</span><br><span class="line">    # 池化strides=[首位默认为1,平行步长=2,竖直步长=2,尾位默认为1]</span><br><span class="line"></span><br><span class="line"># placeholder：等待输入数据，x为占位符，接受型号为float32的数据，输入格式为矩阵[None,784]</span><br><span class="line">x = tf.placeholder(tf.float32,[None,784])   #784 = 28×28 只对输入矩阵的列数有要求</span><br><span class="line"></span><br><span class="line">y_ = tf.placeholder(tf.float32,[None,10])  </span><br><span class="line"></span><br><span class="line">x_image = tf.reshape(x,[-1,28,28,1])  # [batch=-1, height=28, width=28, in_channels=1]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Conv1 Layer 卷积层 </span><br><span class="line">W_conv1 = weight_variable([5,5,1,32]) # [5×5卷积核, in_channels=1, out_channels=32=卷积核个数]</span><br><span class="line">b_conv1 = bias_variable([32])         # [32=卷积核个数=bias个数]</span><br><span class="line">h_conv1 = tf.nn.relu(conv2d(x_image,W_conv1) + b_conv1)  # 激活函数：relu</span><br><span class="line">h_pool1 = max_pool_2x2(h_conv1)       # 池化方式：max pool 取最大值</span><br><span class="line">  </span><br><span class="line"># Conv2 Layer  </span><br><span class="line">W_conv2 = weight_variable([5,5,32,64])  </span><br><span class="line">b_conv2 = bias_variable([64])  </span><br><span class="line">h_conv2 = tf.nn.relu(conv2d(h_pool1,W_conv2) + b_conv2)  # 激活函数：relu</span><br><span class="line">h_pool2 = max_pool_2x2(h_conv2)  </span><br><span class="line">  </span><br><span class="line">W_fc1 = weight_variable([7*7*64,1024])  </span><br><span class="line">b_fc1 = bias_variable([1024])  </span><br><span class="line">h_pool2_flat = tf.reshape(h_pool2,[-1,7*7*64])  </span><br><span class="line">h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat,W_fc1) + b_fc1)  </span><br><span class="line">  </span><br><span class="line">keep_prob = tf.placeholder(tf.float32)  </span><br><span class="line">h_fc1_drop = tf.nn.dropout(h_fc1,keep_prob)  </span><br><span class="line">  </span><br><span class="line">W_fc2 = weight_variable([1024,10])  </span><br><span class="line">b_fc2 = bias_variable([10])  </span><br><span class="line">y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop,W_fc2) + b_fc2)  </span><br><span class="line"></span><br><span class="line"># 损失函数loss function: 交叉熵cross_entropy</span><br><span class="line">cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y_conv),reduction_indices=[1]))  </span><br><span class="line"></span><br><span class="line">train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)  # 优化方法：AdamOptimizer| 学习速率：(1e-4)| 交叉熵：最小化</span><br><span class="line">  </span><br><span class="line">correct_prediction = tf.equal(tf.argmax(y_conv,1),tf.argmax(y_,1))  # tf.equal返回布尔值 | tf.argmax(y_,1)：数字1代表最大值</span><br><span class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction,tf.float32))  </span><br><span class="line">  </span><br><span class="line">tf.global_variables_initializer().run()  </span><br><span class="line">for i in range(20000):  </span><br><span class="line">    batch = mnist.train.next_batch(50)          # 喂入训练集的数据</span><br><span class="line">    if i % 1000 == 0:                           # 批量梯度下降，把1000改成1：随机梯度下降</span><br><span class="line">        train_accuracy = accuracy.eval(feed_dict=&#123;x:batch[0],y_:batch[1],keep_prob:1.0&#125;) # train accuracy: accuracy.eval</span><br><span class="line">        print(&quot;step %d, training accuracy %g&quot;%(i,train_accuracy))  </span><br><span class="line">    train_step.run(feed_dict=&#123;x:batch[0],y_:batch[1],keep_prob:0.5&#125;)                     # test accuracy: accuracy.eval</span><br><span class="line">  </span><br><span class="line">print(&quot;test accuracy %g&quot;%accuracy.eval(feed_dict=&#123;x:mnist.test.images,y_:mnist.test.labels,keep_prob:1.0&#125;))</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a href="http://scs.ryerson.ca/~aharley/vis/conv/" target="_blank" rel="noopener">一个好玩的做数字分类的网站</a></li>
+<li><a href="https://graphics.stanford.edu/courses/cs178/applets/convolution.html" target="_blank" rel="noopener">另一个好玩的卷积网站</a></li>
+<li><a href="http://www.cnblogs.com/ooon/p/5415888.html" target="_blank" rel="noopener">LeNet5介绍</a></li>
+</ul>
+<p>别人的笔记看的再多也不如亲自看一遍原著论文呀~❤</p>
+<ul>
+<li><a href="https://github.com/YZHANG1270/Markdown_pic/blob/master/cnn/LeNet.pdf" target="_blank" rel="noopener">LeNet论文链接</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CNN/" rel="tag"># CNN</a>
+          
+            <a href="/tags/LeNet/" rel="tag"># LeNet</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/25/Anaconda多环境多版本python配置/" rel="next" title="Anaconda多环境多版本python配置">
+                <i class="fa fa-chevron-left"></i> Anaconda多环境多版本python配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/25/基于R的数据清洗（1）/" rel="prev" title="Machine Learning笔记 - 基于R的数据清洗（1）">
+                Machine Learning笔记 - 基于R的数据清洗（1） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#正文："><span class="nav-text">正文：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入层"><span class="nav-text">== 输入层 ==</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C1卷积层"><span class="nav-text">== C1卷积层 ==</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#S2池化层"><span class="nav-text">== S2池化层 ==</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C3卷积层"><span class="nav-text">== C3卷积层 ==</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#S4池化层"><span class="nav-text">== S4池化层 ==</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C5卷积层"><span class="nav-text">== C5卷积层 ==</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#F6全连接层"><span class="nav-text">== F6全连接层 ==</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出层"><span class="nav-text">== 输出层 ==</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/05/02/CNN学习笔记-LeNet5结构详解/';
+          this.page.identifier = '2018/05/02/CNN学习笔记-LeNet5结构详解/';
+          this.page.title = 'CNN笔记 - LeNet5结构详解';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

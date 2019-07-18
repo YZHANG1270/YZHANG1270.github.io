@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="github,hexo,personal website," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本篇涉及Hexo个人网站的域名绑定、添加评论功能、访问次数统计设置等教程。适宜人群：有追求的博主们（主题Theme未使用Next的博主们也请进）">
+<meta name="keywords" content="github,hexo,personal website">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何搭建自己的个人网站（下）">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/04/20/如何搭建自己的个人网站（下）/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="本篇涉及Hexo个人网站的域名绑定、添加评论功能、访问次数统计设置等教程。适宜人群：有追求的博主们（主题Theme未使用Next的博主们也请进）">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_21.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_19.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_20.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_22.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_23.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_24.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_25.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_26.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_27.png?raw=true">
+<meta property="og:updated_time" content="2019-02-11T07:35:34.858Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何搭建自己的个人网站（下）">
+<meta name="twitter:description" content="本篇涉及Hexo个人网站的域名绑定、添加评论功能、访问次数统计设置等教程。适宜人群：有追求的博主们（主题Theme未使用Next的博主们也请进）">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_21.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/04/20/如何搭建自己的个人网站（下）/"/>
+
+
+
+
+
+  <title>如何搭建自己的个人网站（下） | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/04/20/如何搭建自己的个人网站（下）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何搭建自己的个人网站（下）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-20T23:00:11+08:00">
+                2018-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/20/如何搭建自己的个人网站（下）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/04/20/如何搭建自己的个人网站（下）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇涉及Hexo个人网站的域名绑定、添加评论功能、访问次数统计设置等教程。<br>适宜人群：有追求的博主们（主题Theme未使用Next的博主们也请进）<br><a id="more"></a></p>
+<h2 id="域名绑定"><a href="#域名绑定" class="headerlink" title="域名绑定"></a>域名绑定</h2><p>根据上篇教程，目前默认的域名还是username.github.io，但印象中个人网站好像都是www.name.com格式的？怎么样想换吗？<br>首先✋，你得有___？  当然是域名啦！</p>
+<ul>
+<li>买域名<br>你得买一个域名。xx云都能买，我在<a href="https://dnspod.cloud.tencent.com/act/yearendsales?from=domainlist" target="_blank" rel="noopener">腾讯云</a>买的。（请给我广告费！@腾讯云）<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_21.png?raw=true" alt=""><br>我实在太喜欢Karlie Kloss，她的一个网站<a href="https://www.kodewithklossy.com" target="_blank" rel="noopener">kodewithklossy.com</a><br>那么我的肯定就是codewithzhangyi.com😜</li>
+<li><p>实名认证审核<br>买好域名之后，<a href="https://console.cloud.tencent.com/domain/mydomain" target="_blank" rel="noopener">打开域名服务</a>，可以看见你刚买的域名记录。此时你需要做实名认证，很重要，超过有效期（大概3-5天）未认证域名将被锁定。<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_19.png?raw=true" alt=""></p>
+</li>
+<li><p>备案<br>如果服务器是内地的就需要备案。Hexo网站的服务器是海外的因此可以跳过这步。</p>
+</li>
+<li><p>添加解析记录<br>认证成功后的域名才能被做解析。认证需要3-5个工作日。我的大概半天就OK了。<br>当解析状态变成【正常解析】时，点击域名记录最右侧操作的【解析】添加解析：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_20.png?raw=true" alt=""><br>解析记录设置两个：www和@，线路默认就ok<br>(1) <strong>@</strong>:记录类型选A，A记录的就是ip地址，github(官方文档)提供了两个IP地址，192.30.252.153和192.30.252.154，这两个IP地址为github的服务器地址，两个都要填上<br>(2) <strong>www</strong>:记录类型选CNAME，CNAME记录值填你的github博客网址，如我的是yzhang1270.github.io</p>
+</li>
+<li><p>本地设置修改<br>这些全部设置完成后，此时你并不能根据申请的域名访问你的博客。接着你需要做的是在hexo根目录的source文件夹里创建CNAME文件，不带任何后缀，里面添加你的域名信息，如：codewithzhangyi.com。实践证明如果此时你填写的是www.codewithzhangyi.com那么以后你只能用www.codewithzhangyi.com访问，而如果你填写的是codewithzhangyi.com，那么用www.codewithzhangyi.com和codewithzhangyi.com访问都是可以的。重新hexo g,并发布即可用新的域名访问。</p>
+</li>
+<li><p>访问出现404的原因可能是：<br>(1)绑定了个人域名，但是域名解析错误。<br>(2)域名解析正确但你的域名是通过国内注册商注册的，你的域名因没有实名制而无法访问。<br>(3)配置没问题的情况下，换个浏览器试试。<br>(4)下载的hexo有问题，重新下载。</p>
+</li>
+</ul>
+<h2 id="添加评论模块"><a href="#添加评论模块" class="headerlink" title="添加评论模块"></a>添加评论模块</h2><blockquote>
+<p>在添加评论这个设置上费了点时间，因为整顿，评论服务挂了一大片，请各位寻找教程的时候重点看时间，2017年及之前的文章就没有多大的借鉴意义，包括这篇教程也是有时限性的，谁能跟的上变化呢。</p>
+</blockquote>
+<p>(1) <strong>多说</strong> - 最多用户使用的评论，但遗憾2017年6月将暂定服务；不建议新用户使用，但为旧用户保留，也感谢多说一路的陪伴；<br>(2) <strong>网易云跟帖</strong> - 网易提供的评论组件，功能比较简单，性能优秀；管理后台在查询上还不算特别智能，但足够普通用户使用；<br>(3) <strong>畅言</strong> - 搜狐提供的评论组件，功能丰富，体验优异；但必须进行域名备案。只要域名备过案就可以通过审核。<br>(4) <strong>Disqus</strong> - 国外使用较多的评论组件。万里长城永不倒，一枝红杏出墙来，你懂的。<br>以上评论模块应该大家都知道，多说和网易云跟帖没有了，畅言要备案，对于对于挂靠在GitHub的博客非常的不友好，放弃！Disqus，不希望自己的博客，可以不分国界！也放弃！</p>
+<p>踩坑总结：使用<a href="https://github.com/imsun/gitment" target="_blank" rel="noopener">Gitment评论服务</a><br>Gitment 是作者imsun实现的一款基于 GitHub Issues 的评论系统。支持在前端直接引入，不需要任何后端代码。可以在页面进行登录、查看、评论、点赞等操作，同时有完整的 Markdown / GFM 和代码高亮支持。尤为适合各种基于 GitHub Pages 的静态博客或项目页面。</p>
+<ul>
+<li>注册 OAuth Application<br>注册一个新的<a href="https://github.com/settings/applications/new" target="_blank" rel="noopener">OAuth Application</a>，其他内容可以随意填写，但要确保填入正确的 callback URL（如 https:// yzhang1270.github.io）这个真的很重要！！！<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_22.png?raw=true" alt=""><br>创建成功后，你会得到一个 client ID 和一个 client secret，这个将被用于之后的用户登录。<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_23.png?raw=true" alt=""></li>
+<li><p>引入 Gitment<br>将下面的代码添加到你的D:\username.github.io\themes\typing\layout_partial\after-footer.ejs：<br>【提示】：我这里的主题是typing，在typing里是自带gitment的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;container&quot;&gt;&lt;/div&gt;</span><br><span class="line">&lt;link rel=&quot;stylesheet&quot; href=&quot;https://imsun.github.io/gitment/style/default.css&quot;&gt;</span><br><span class="line">&lt;script src=&quot;https://imsun.github.io/gitment/dist/gitment.browser.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">var gitment = new Gitment(&#123;</span><br><span class="line">  id: &apos;页面 ID&apos;, // 可选。默认为 location.href  这里有机关，后面会再讲到！😎</span><br><span class="line">  owner: &apos;你的 GitHub Name&apos;,              //比如我的叫YZHANG1270</span><br><span class="line">  repo: &apos;存储评论的 repo&apos;,                 //比如我的叫YZHANG1270.github.io</span><br><span class="line">  oauth: &#123;</span><br><span class="line">    client_id: &apos;你的 client ID&apos;,          //比如我的328***********</span><br><span class="line">    client_secret: &apos;你的 client secret&apos;,  //比如我的49ce***********************</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line">gitment.render(&apos;container&apos;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可选：在主题的_config.yml中配置好全局参数：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_24.png?raw=true" alt=""><br>同时也要在脚本修改指定地址。</p>
+</li>
+<li><p>初始化评论<br>页面发布后，你发现评论有个error:<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_25.png?raw=true" alt=""><br>此时，你点击<strong>Login</strong>用自己账户登陆，再刷新页面就有初始化按键，点击初始化即可：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_26.png?raw=true" alt=""><br>正常情况下，只要用GitHub账户登陆即可发布评论啦：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/hexo_web/web_27.png?raw=true" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>在评论功能设置这里踩了几个坑，进行总结一下😝</p>
+</blockquote>
+<h2 id="Gitment评论功能踩坑总结"><a href="#Gitment评论功能踩坑总结" class="headerlink" title="Gitment评论功能踩坑总结"></a>Gitment评论功能踩坑总结</h2><ul>
+<li>owner: ‘Your GitHub ID’<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">owner: &apos;你的 GitHub ID&apos;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>可以是你的GitHub用户名，也可以是GitHub id，建议直接用GitHub用户名就可以。<br>获取GitHub id的方法： https:// api.github.com/users/你的账户名</p>
+<ul>
+<li><p>Error: Not Found<br>owner或者repo配置错误了，注意名字和仓库名字的大小写。</p>
+</li>
+<li><p>Error: Comments Not Initialized<br>(1)在注册OAuth Application这个步骤中，给Authorization callback URL指定的地址错了<br>(2)还没有在该页面的Gitment评论区登陆GitHub账号<br>(3)<a href="https://github.com/imsun/gitment/issues/95" target="_blank" rel="noopener">https://github.com/imsun/gitment/issues/95</a></p>
+</li>
+<li><p>Error：validation failed<br>这个真的折腾我一下午！！(咬牙切齿.jpg)<br>issue的标签label有长度限制！labels的最大长度限制是50个字符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id: &apos;页面 ID&apos;, // 可选。默认为 location.href</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这个是之前配置的时候提到的机关。id的作用，就是针对一个文章有唯一的标识来判断这篇本章。</p>
+<p>在issues里面，可以发现是根据网页标题来新建issues的，然后每个issues有两个labels（标签），一个是gitment，另一个就是id。<br>所以明白了原理后，就是因为id太长，导致初始化失败，现在就是要让id保证在50个字符内。<br>对应配置的id为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id: &apos;&lt;%= page.title %&gt;&apos;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>彩蛋🎊：</p>
+</blockquote>
+<p>如果用网页标题也不能保证在50个字符！<br>最后，我用文章的时间，这样长度是保证在50个字符内，完美解决！（避免了文章每次更新标题或路径时，会重新创建一个issue评论的问题。）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id: &apos;&lt;%= page.date %&gt;&apos;</span><br></pre></td></tr></table></figure></p>
+<p>如果你原来没有设置id这一行，记得在这行后面加逗号，我就栽了傻了。</p>
+<ul>
+<li><p>Gitment的汉化<br>只需到模板里将原来定义CSS和JS的那两行改成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=&quot;stylesheet&quot; href=&quot;https://billts.site/extra_css/gitment.css&quot;&gt;</span><br><span class="line">&lt;script src=&quot;https://billts.site/js/gitment.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>所有文章一键初始化评论<br>到本文编写时，还没有一个完善的解决方法，就是用脚本来执行自动化，有需要的可以详细了解：<a href="https://github.com/imsun/gitment/issues/5" target="_blank" rel="noopener">https://github.com/imsun/gitment/issues/5</a></p>
+</li>
+</ul>
+<p>参考文章：<a href="https://www.jianshu.com/p/57afa4844aaa" target="_blank" rel="noopener">Gitment评论功能接入踩坑教程</a></p>
+<h2 id="文章-网站访问次数统计"><a href="#文章-网站访问次数统计" class="headerlink" title="文章/网站访问次数统计"></a>文章/网站访问次数统计</h2><p>访问次数统计也有很多方法，这里只简单介绍<a href="http://ibruce.info/2015/04/04/busuanzi/" target="_blank" rel="noopener">不蒜子</a>计数方法。很简单，就三步！</p>
+<ul>
+<li><p>安装脚本<br>打开D:\username.github.io\themes\typing\layout_partial\header.ejs<br>在最后加入下面代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script async src=&quot;//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js&quot;&gt;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示站点总访问量<br>要显示站点总访问量，复制以下代码添加到你需要显示的位置。有两种算法可选：<br>(1)算法a：pv的方式，单个用户连续点击n篇文章，记录n次访问量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;span id=&quot;busuanzi_container_site_pv&quot;&gt;</span><br><span class="line">    本站总访问量&lt;span id=&quot;busuanzi_value_site_pv&quot;&gt;&lt;/span&gt;次</span><br><span class="line">&lt;/span&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>(2)算法b：uv的方式，单个用户连续点击n篇文章，只记录1次访客数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;span id=&quot;busuanzi_container_site_uv&quot;&gt;</span><br><span class="line">  本站访客数&lt;span id=&quot;busuanzi_value_site_uv&quot;&gt;&lt;/span&gt;人次</span><br><span class="line">&lt;/span&gt;</span><br></pre></td></tr></table></figure></p>
+<p>打开themes/你的主题/layout/_partial/<br>你可以选择显示在网页的头部header.ejs文件里，文章的article.ejs文件里，或者网页的尾部after-footer.ejs文件里，等等。</p>
+<ul>
+<li>显示单页面访问量<br>要显示每篇文章的访问量，复制以下代码添加到你需要显示的位置。与上面同理。<br>算法：pv的方式，单个用户点击1篇文章，本篇文章记录1次阅读量。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;span id=&quot;busuanzi_container_page_pv&quot;&gt;</span><br><span class="line">  本文总阅读量&lt;span id=&quot;busuanzi_value_page_pv&quot;&gt;&lt;/span&gt;次</span><br><span class="line">&lt;/span&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>代码中文字是可以修改的，只要保留id正确即可。</p>
+<p>【提示】：修改标题的文章、隔天再修改内容的文章，git会根据日期做版本控制。每篇文章的访问地址会因此更改。所以为了访问数建议一次性写完不要做改动了。</p>
+<p>如果你看到这里，恭喜你，教程已经到此结束啦~快去试试吧！</p>
+<hr>
+<blockquote>
+<p>另外，我是前端零基础小白，我的专业是人工智能机器学习类的，这网页也只是我的随意尝试，这些东西有时候还是会出错，毕竟分享内容才是我的初衷，其他还有很多可以改进的地方。<br>也欢迎大家的意见和指导在下面或者在微博给我留言。我发现一个学习的小窍门就是，在你喜欢的网页右键选择【查看网页源代码】，就能偷学人家的代码啦~嘿嘿😀</p>
+<p>有一个我很喜欢的旅游博主，微博：北京小风子，她提到过心理学上有个词叫 positive reinforcement（正加强），这也是我不断写分享的初衷。<br>因为喜欢，才能坚持。希望写的东西对你有帮助，也期待你们的鼓励期待你们的打赏~</p>
+<p>愿大家都玩的开心❤</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/github/" rel="tag"># github</a>
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+            <a href="/tags/personal-website/" rel="tag"># personal website</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/19/如何搭建自己的个人网站（上）/" rel="next" title="如何搭建自己的个人网站（上）">
+                <i class="fa fa-chevron-left"></i> 如何搭建自己的个人网站（上）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25/Anaconda多环境多版本python配置/" rel="prev" title="Anaconda多环境多版本python配置">
+                Anaconda多环境多版本python配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#域名绑定"><span class="nav-text">域名绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加评论模块"><span class="nav-text">添加评论模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gitment评论功能踩坑总结"><span class="nav-text">Gitment评论功能踩坑总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章-网站访问次数统计"><span class="nav-text">文章/网站访问次数统计</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/04/20/如何搭建自己的个人网站（下）/';
+          this.page.identifier = '2018/04/20/如何搭建自己的个人网站（下）/';
+          this.page.title = '如何搭建自己的个人网站（下）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

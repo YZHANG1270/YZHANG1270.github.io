@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="kaggle,R,visualization,可视化分析," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Titanic为Kaggle入门赛之一，类别为二分类的监督模型。样本数据可自行前往官网下载，csv格式（train + test）">
+<meta name="keywords" content="kaggle,R,visualization,可视化分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kaggle日记 - 基于R的Titanic可视化分析">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/03/26/kaggle挑战日记--Titanic的图像分析/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="Titanic为Kaggle入门赛之一，类别为二分类的监督模型。样本数据可自行前往官网下载，csv格式（train + test）">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/sex.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/age.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/fare.png?raw=true">
+<meta property="og:image" content="htthttps://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/fare1.png?raw=truep://">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/pclass.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/sibsp.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/parch.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/corr.png?raw=true">
+<meta property="og:updated_time" content="2019-02-11T07:29:14.788Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kaggle日记 - 基于R的Titanic可视化分析">
+<meta name="twitter:description" content="Titanic为Kaggle入门赛之一，类别为二分类的监督模型。样本数据可自行前往官网下载，csv格式（train + test）">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/sex.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/03/26/kaggle挑战日记--Titanic的图像分析/"/>
+
+
+
+
+
+  <title>Kaggle日记 - 基于R的Titanic可视化分析 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/03/26/kaggle挑战日记--Titanic的图像分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kaggle日记 - 基于R的Titanic可视化分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-26T11:22:52+08:00">
+                2018-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/26/kaggle挑战日记--Titanic的图像分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/03/26/kaggle挑战日记--Titanic的图像分析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Titanic为Kaggle入门赛之一，类别为二分类的监督模型。<br>样本数据可自行前往官网下载，csv格式（train + test）<br><a id="more"></a></p>
+<p>以下为我用R对源字段数据的分析： </p>
+<p>get data<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">df_train = read.csv(&quot;data/train.csv&quot;)%&gt;%</span><br><span class="line">  as.data.table()  </span><br><span class="line">df_test = read.csv(&quot;data/test.csv&quot;)%&gt;%</span><br><span class="line">  as.data.table()  </span><br><span class="line">dataAll = rbind(df_train, df_test, fill = T)</span><br></pre></td></tr></table></figure></p>
+<p>多图绘制<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">multiplot &lt;- function(..., plotlist=NULL, file, cols=1, layout=NULL) &#123;</span><br><span class="line">  library(grid)</span><br><span class="line"></span><br><span class="line">  # Make a list from the ... arguments and plotlist</span><br><span class="line">  plots &lt;- c(list(...), plotlist)</span><br><span class="line"></span><br><span class="line">  numPlots = length(plots)</span><br><span class="line"></span><br><span class="line">  # If layout is NULL, then use &apos;cols&apos; to determine layout</span><br><span class="line">  if (is.null(layout)) &#123;</span><br><span class="line">    # Make the panel</span><br><span class="line">    # ncol: Number of columns of plots</span><br><span class="line">    # nrow: Number of rows needed, calculated from # of cols</span><br><span class="line">    layout &lt;- matrix(seq(1, cols * ceiling(numPlots/cols)),</span><br><span class="line">                    ncol = cols, nrow = ceiling(numPlots/cols))</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> if (numPlots==1) &#123;</span><br><span class="line">    print(plots[[1]])</span><br><span class="line"></span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    # Set up the page</span><br><span class="line">    grid.newpage()</span><br><span class="line">    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))</span><br><span class="line"></span><br><span class="line">    # Make each plot, in the correct location</span><br><span class="line">    for (i in 1:numPlots) &#123;</span><br><span class="line">      # Get the i,j matrix positions of the regions that contain this subplot</span><br><span class="line">      matchidx &lt;- as.data.frame(which(layout == i, arr.ind = TRUE))</span><br><span class="line"></span><br><span class="line">      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,</span><br><span class="line">                                      layout.pos.col = matchidx$col))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>sex<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sex_analysis = function(trainDf)&#123;</span><br><span class="line">  a&lt;-CrossTable(trainDf$Sex, trainDf$Survived)</span><br><span class="line"></span><br><span class="line">  par(mfrow=c(1,2))</span><br><span class="line">  barplot(a$t[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival count of both sexes&quot;,</span><br><span class="line">          ylab = &quot;survival count&quot;, xlab = &quot;Sex&quot;,</span><br><span class="line">          ylim = c(0,250),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;))    # 250 shall change</span><br><span class="line">  barplot(a$prop.row[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival rate of both sexes&quot;,</span><br><span class="line">          ylab = &quot;survival rate&quot;, xlab = &quot;Sex&quot;,</span><br><span class="line">          ylim = c(0,0.80),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;))   # 0.8 shall change</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sex_analysis(df_train)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/sex.png?raw=true" alt="">  </p>
+<p>age<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">age_analysis = function(trainDf)&#123;</span><br><span class="line">  ageDf = trainDf[!is.na(trainDf$Age),]</span><br><span class="line">  ageDf$Age = as.integer(ageDf$Age)</span><br><span class="line">  survivedDf = ageDf[ageDf$Survived == 1]</span><br><span class="line">  m=seq(0,max(ageDf$Age),by=5)</span><br><span class="line">  survivedAge=cut(survivedDf$Age,m)%&gt;%table%&gt;%data.frame</span><br><span class="line">  ageDfAge=cut(ageDf$Age,m)%&gt;%table%&gt;%data.frame</span><br><span class="line">  survivedAge = data.frame(survivedAge, round(survivedAge$Freq/ageDfAge$Freq, digits = 4))</span><br><span class="line">  colnames(survivedAge)=c(&apos;Age&apos;,&apos;count&apos;, &apos;prop&apos;)</span><br><span class="line">  # aveRate = sum(survivedAge$prop[1:13])/13</span><br><span class="line"></span><br><span class="line">  p1 &lt;- ggplot(data = survivedAge,aes(x =Age,y=count)) + geom_bar(stat = &apos;identity&apos;) + ggtitle(&quot;age distribution of survivors&quot;)</span><br><span class="line">  p2 &lt;- ggplot(data = survivedAge,aes(x =Age,y=prop)) + geom_bar(stat = &apos;identity&apos;) + ggtitle(&quot;age freq distribution of survivors&quot;)</span><br><span class="line">  multiplot(p1, p2)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">age_analysis(df_train)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/age.png?raw=true" alt="">  </p>
+<p>fare<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">fare_analysis = function(trainDf)&#123;</span><br><span class="line">  trainDf$Fare = as.integer(trainDf$Fare)</span><br><span class="line">  survivedDf = trainDf[trainDf$Survived == 1]</span><br><span class="line">  notSurvivedDf = trainDf[trainDf$Survived == 0]</span><br><span class="line"></span><br><span class="line">  survivedFare = survivedDf$Fare%&gt;%table%&gt;%data.frame</span><br><span class="line">  colnames(survivedFare) = c(&apos;Fare&apos;, &apos;Count&apos;)</span><br><span class="line"></span><br><span class="line">  notSurvivedFare = notSurvivedDf$Fare%&gt;%table%&gt;%data.frame</span><br><span class="line">  colnames(notSurvivedFare) = c(&apos;Fare&apos;, &apos;Count&apos;)</span><br><span class="line"></span><br><span class="line">  p1 &lt;- ggplot(data = survivedFare,aes(x =Fare,y=Count)) + geom_bar(stat = &apos;identity&apos;) + ggtitle(&quot;fare distribution of survivors&quot;)</span><br><span class="line">  p2 &lt;- ggplot(data = notSurvivedFare,aes(x =Fare,y=Count)) + geom_bar(stat = &apos;identity&apos;) + ggtitle(&quot;fare distribution of NOT survivors&quot;)</span><br><span class="line">  p3 &lt;- barplot(height = cbind(&apos;survived&apos;=  mean(survivedDf$Fare), &apos;notSurvived&apos; = mean(notSurvivedDf$Fare)),</span><br><span class="line">        main = &apos;average fare&apos;, ylab = &apos;fare&apos;, ylim = c(0,50),col = &quot;lightblue&quot;)    # 50 shall change</span><br><span class="line">  multiplot(p1, p2)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fare_analysis(df_train)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/fare.png?raw=true" alt=""></p>
+<p><img src="htthttps://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/fare1.png?raw=truep://" alt="">  </p>
+<p>pclass<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">pclass_analysis = function(trainDf)&#123;</span><br><span class="line">  a &lt;- CrossTable(trainDf$Pclass, trainDf$Survived)</span><br><span class="line"></span><br><span class="line">  par(mfrow=c(1,2))</span><br><span class="line">  barplot(a$t[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival count of pclass&quot;,</span><br><span class="line">          ylab = &quot;survival count&quot;, xlab = &quot;pclass&quot;,</span><br><span class="line">          ylim = c(0,140),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;,&quot;lightyellow&quot;))    # 250 shall change</span><br><span class="line">  barplot(a$prop.row[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival rate of pclass&quot;,</span><br><span class="line">          ylab = &quot;survival rate&quot;, xlab = &quot;pclass&quot;,</span><br><span class="line">          ylim = c(0,0.70),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;,&quot;lightyellow&quot;))   # 0.8 shall change</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">pclass_analysis(df_train)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/pclass.png?raw=true" alt="">  </p>
+<p>sibsp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">sibsp_analysis = function(trainDf)&#123;</span><br><span class="line">  trainDf = data.frame(trainDf, sibsp = ifelse(trainDf$SibSp&gt;0, 1, 0))</span><br><span class="line">  a &lt;- CrossTable(trainDf$SibSp, trainDf$Survived)</span><br><span class="line">  b &lt;- CrossTable(trainDf$sibsp, trainDf$Survived)</span><br><span class="line"></span><br><span class="line">  par(mfrow=c(2,2))</span><br><span class="line">  barplot(a$t[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival count of sibsp&quot;,</span><br><span class="line">          ylab = &quot;survival count&quot;, xlab = &quot;sibsp&quot;,</span><br><span class="line">          ylim = c(0,140),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;,&quot;lightyellow&quot;))    # 250 shall change</span><br><span class="line">  barplot(a$prop.row[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival rate of sibsp&quot;,</span><br><span class="line">          ylab = &quot;survival rate&quot;, xlab = &quot;sibsp&quot;,</span><br><span class="line">          ylim = c(0,0.70),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;,&quot;lightyellow&quot;))   # 0.8 shall change</span><br><span class="line">    barplot(b$t[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival count of sibsp&quot;,</span><br><span class="line">          ylab = &quot;survival count&quot;, xlab = &quot;sibsp&quot;,</span><br><span class="line">          ylim = c(0,250),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;,&quot;lightyellow&quot;))    # 250 shall change</span><br><span class="line">  barplot(b$prop.row[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival rate of sibsp&quot;,</span><br><span class="line">          ylab = &quot;survival rate&quot;, xlab = &quot;sibsp&quot;,</span><br><span class="line">          ylim = c(0,0.50),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;,&quot;lightyellow&quot;))   # 0.8 shall change</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sibsp_analysis(df_train)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/sibsp.png?raw=true" alt="">  </p>
+<p>Parch<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Parch_analysis = function(trainDf)&#123;</span><br><span class="line">  trainDf = data.frame(trainDf, parch = ifelse(trainDf$Parch&gt;0, 1, 0))</span><br><span class="line">  a &lt;- CrossTable(trainDf$Parch, trainDf$Survived)</span><br><span class="line">  b &lt;- CrossTable(trainDf$parch, trainDf$Survived)</span><br><span class="line"></span><br><span class="line">  par(mfrow=c(2,2))</span><br><span class="line">  barplot(a$t[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival count of Parch&quot;,</span><br><span class="line">          ylab = &quot;survival count&quot;, xlab = &quot;Parch&quot;,</span><br><span class="line">          ylim = c(0,140),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;,&quot;lightyellow&quot;))    # 250 shall change</span><br><span class="line">  barplot(a$prop.row[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival rate of Parch&quot;,</span><br><span class="line">          ylab = &quot;survival rate&quot;, xlab = &quot;Parch&quot;,</span><br><span class="line">          ylim = c(0,0.70),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;,&quot;lightyellow&quot;))   # 0.8 shall change</span><br><span class="line">    barplot(b$t[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival count of Parch&quot;,</span><br><span class="line">          ylab = &quot;survival count&quot;, xlab = &quot;Parch&quot;,</span><br><span class="line">          ylim = c(0,250),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;,&quot;lightyellow&quot;))    # 250 shall change</span><br><span class="line">  barplot(b$prop.row[,2], beside = TRUE,</span><br><span class="line">          sub = &quot;survival rate of Parch&quot;,</span><br><span class="line">          ylab = &quot;survival rate&quot;, xlab = &quot;Parch&quot;,</span><br><span class="line">          ylim = c(0,0.50),col = c(&quot;mistyrose&quot;,&quot;lightblue&quot;,&quot;lightyellow&quot;))   # 0.8 shall change</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Parch_analysis(df_train)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/parch.png?raw=true" alt="">  </p>
+<p>corr<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">col1 &lt;- colorRampPalette(c(&quot;#7F0000&quot;,&quot;red&quot;,&quot;#FF7F00&quot;,&quot;yellow&quot;,&quot;white&quot;,</span><br><span class="line">                           &quot;cyan&quot;, &quot;#007FFF&quot;, &quot;blue&quot;,&quot;#00007F&quot;))</span><br><span class="line">col2 &lt;- colorRampPalette(c(&quot;#67001F&quot;, &quot;#B2182B&quot;, &quot;#D6604D&quot;, &quot;#F4A582&quot;, &quot;#FDDBC7&quot;,</span><br><span class="line">                           &quot;#FFFFFF&quot;, &quot;#D1E5F0&quot;, &quot;#92C5DE&quot;, &quot;#4393C3&quot;, &quot;#2166AC&quot;, &quot;#053061&quot;))</span><br><span class="line">col3 &lt;- colorRampPalette(c(&quot;red&quot;, &quot;white&quot;, &quot;blue&quot;))</span><br><span class="line">col4 &lt;- colorRampPalette(c(&quot;#7F0000&quot;,&quot;red&quot;,&quot;#FF7F00&quot;,&quot;yellow&quot;,&quot;#7FFF7F&quot;,</span><br><span class="line">                           &quot;cyan&quot;, &quot;#007FFF&quot;, &quot;blue&quot;,&quot;#00007F&quot;))</span><br><span class="line">wb &lt;- c(&quot;white&quot;,&quot;black&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">par(ask = TRUE)</span><br><span class="line">#-----------------------</span><br><span class="line"># correlation analysis</span><br><span class="line"># cov = covariance matrix</span><br><span class="line"># cor = correlation matrix</span><br><span class="line">M&lt;-cor(train)</span><br><span class="line"></span><br><span class="line">corrplot(M, method=&quot;color&quot;, col=col1(20), cl.length=21,order = &quot;AOE&quot;,tl.cex = 0.6,,addCoef.col=&quot;grey&quot;)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/kaggle-titanic/corr.png?raw=true" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kaggle/" rel="tag"># kaggle</a>
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/visualization/" rel="tag"># visualization</a>
+          
+            <a href="/tags/可视化分析/" rel="tag"># 可视化分析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/20/2018-List/" rel="next" title="2018 List">
+                <i class="fa fa-chevron-left"></i> 2018 List
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/03/2017校招社招总结（人工智能岗）/" rel="prev" title="2017校招/社招总结（人工智能岗）">
+                2017校招/社招总结（人工智能岗） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/03/26/kaggle挑战日记--Titanic的图像分析/';
+          this.page.identifier = '2018/03/26/kaggle挑战日记--Titanic的图像分析/';
+          this.page.title = 'Kaggle日记 - 基于R的Titanic可视化分析';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP,jieba,tokenization,wordcloud," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="面向对象：想做简单的文本可视化分析 选手。">
+<meta name="keywords" content="NLP,jieba,tokenization,wordcloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP笔记 - Word Tokenization &#x2F;&#x2F; wordcloud 词云图教程">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/09/03/NLP笔记-Word-Tokenization-wordcloud/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="面向对象：想做简单的文本可视化分析 选手。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/test.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/test.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/alice002.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/alice003.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/alice_color.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/queen.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/queen1.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/queen.png?raw=true">
+<meta property="og:updated_time" content="2019-02-11T07:27:43.101Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP笔记 - Word Tokenization &#x2F;&#x2F; wordcloud 词云图教程">
+<meta name="twitter:description" content="面向对象：想做简单的文本可视化分析 选手。">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/test.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/09/03/NLP笔记-Word-Tokenization-wordcloud/"/>
+
+
+
+
+
+  <title>NLP笔记 - Word Tokenization // wordcloud 词云图教程 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/09/03/NLP笔记-Word-Tokenization-wordcloud/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NLP笔记 - Word Tokenization // wordcloud 词云图教程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-03T17:49:58+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/03/NLP笔记-Word-Tokenization-wordcloud/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/03/NLP笔记-Word-Tokenization-wordcloud/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>面向对象：想做简单的文本可视化分析 选手。<br><a id="more"></a></p>
+<h3 id="概念解释"><a href="#概念解释" class="headerlink" title="概念解释"></a>概念解释</h3><ul>
+<li>词云图（wordcloud）：是这两年比较火的文本可视化分析的一种，上图就知道说的啥了：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/test.png?raw=true" width="100%/"></li>
+<li><p>jieba：python库，用于中文分词。</p>
+</li>
+<li><p><a href="https://amueller.github.io/word_cloud/index.html" target="_blank" rel="noopener">wordcloud</a>：python库，用于词云图制作。</p>
+</li>
+<li><p>停用词表（stopwords）：在英文中像“the / of / a / for /…”，在中文中像“的 / 是 / 也 / 之 /…”这样的没有实际意义却出现频率较高的词。为了防止这些词抢了比如故事主角名的位置，就事先作为停用词，不进入文本分析。</p>
+</li>
+</ul>
+<p>按规矩，先上文档结构图！文档中所需文件的下载地址，<a href="https://github.com/YZHANG1270/Markdown_pic/tree/master/2018/09/wordcloud" target="_blank" rel="noopener">点这里</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">|-wordcloud //新建文件夹</span><br><span class="line">    |- data //新建文件夹</span><br><span class="line">        |- alice.txt //下载文件</span><br><span class="line">        |- yxgltext.txt //下载文件</span><br><span class="line">        |- stopwords.txt //下载文件</span><br><span class="line">        |- SourceHanSerifK-Light.otf //下载文件</span><br><span class="line">    |- plot //新建文件夹</span><br><span class="line">        |- alice_color.png //下载图片</span><br><span class="line">        |- queen.jpg //下载图片</span><br><span class="line">    |- alice1.py //新建python文件</span><br><span class="line">    |- alice2.py //新建python文件</span><br><span class="line">    |- queen.py //新建python文件</span><br></pre></td></tr></table></figure>
+<h3 id="英文词云图"><a href="#英文词云图" class="headerlink" title="英文词云图"></a>英文词云图</h3><h4 id="例子1：10行代码搞定的词云图-alice1-py"><a href="#例子1：10行代码搞定的词云图-alice1-py" class="headerlink" title="例子1：10行代码搞定的词云图 // alice1.py"></a>例子1：10行代码搞定的词云图 // alice1.py</h4><p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">Created on Mon Sep  3 17:53:03 2018</span><br><span class="line"></span><br><span class="line">@author: Yi</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">import os</span><br><span class="line">os.chdir(&quot;C:/Users/Yi/Desktop/nlp/wordcloud&quot;) # 换成你的wordcloud文件夹所在路径</span><br><span class="line">from wordcloud import WordCloud</span><br><span class="line"></span><br><span class="line">f = open(&apos;data/alice.txt&apos;).read()</span><br><span class="line">wordcloud = WordCloud(background_color=&quot;white&quot;,width=1000, height=860, margin=2).generate(f) </span><br><span class="line"># width,height,margin可以设置图片属性</span><br><span class="line"># generate 可以对全部文本进行自动分词,但是对中文支持不好</span><br><span class="line"># wordcloud = WordCloud(font_path = r&apos;D:\Fonts\simkai.ttf&apos;).generate(f)</span><br><span class="line"># 你可以通过font_path参数来设置字体集</span><br><span class="line"># background_color参数为设置背景颜色,默认颜色为黑色</span><br><span class="line"></span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">ax = plt.imshow(wordcloud)</span><br><span class="line">fig = ax.figure</span><br><span class="line">fig.set_size_inches(25,20)    # 可调节图片紧密 尺寸程度</span><br><span class="line">plt.axis(&quot;off&quot;)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line">wordcloud.to_file(&apos;plot/test.png&apos;)</span><br></pre></td></tr></table></figure>
+<p>输出：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/test.png?raw=true" width="50%/"></p>
+<h4 id="例子2：有形状的词云图-alice2-py"><a href="#例子2：有形状的词云图-alice2-py" class="headerlink" title="例子2：有形状的词云图 // alice2.py"></a>例子2：有形状的词云图 // alice2.py</h4><p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">Created on Tue Sep  4 10:05:29 2018</span><br><span class="line"></span><br><span class="line">@author: Yi</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">import os</span><br><span class="line">os.chdir(&quot;C:/Users/Yi/Desktop/nlp/wordcloud&quot;)</span><br><span class="line"></span><br><span class="line">from PIL import Image</span><br><span class="line">import numpy as np</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator</span><br><span class="line"></span><br><span class="line"># Read the whole text.</span><br><span class="line">text = open(&apos;data/alice.txt&apos;).read()</span><br><span class="line">alice_coloring = np.array(Image.open(&quot;plot/alice_color.png&quot;))  # 可随意更换图片</span><br><span class="line">stopwords = set(STOPWORDS)</span><br><span class="line">stopwords.add(&quot;said&quot;)</span><br><span class="line"></span><br><span class="line"># 你可以通过 mask 参数 来设置词云形状</span><br><span class="line">wc = WordCloud(background_color=&quot;white&quot;, max_words=2000, mask=alice_coloring,</span><br><span class="line">               stopwords=stopwords, max_font_size=40, random_state=42)</span><br><span class="line"># generate word cloud</span><br><span class="line">wc.generate(text)</span><br><span class="line"></span><br><span class="line"># create coloring from image</span><br><span class="line">image_colors = ImageColorGenerator(alice_coloring)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 方式 1 -------------------------------------------------------------------</span><br><span class="line"># show</span><br><span class="line"></span><br><span class="line">#fig, axes = plt.subplots(1, 3)</span><br><span class="line">#axes[0].imshow(wc, interpolation=&quot;bilinear&quot;)</span><br><span class="line">#axes[1].imshow(wc.recolor(color_func=image_colors), interpolation=&quot;bilinear&quot;)</span><br><span class="line">#axes[2].imshow(alice_coloring, cmap=plt.cm.gray, interpolation=&quot;bilinear&quot;)</span><br><span class="line">#</span><br><span class="line">#for ax in axes:</span><br><span class="line">#    ax.set_axis_off()</span><br><span class="line">#    fig = ax.figure</span><br><span class="line">#    fig.set_size_inches(25,20)                  # 可调节图片紧密 尺寸程度</span><br><span class="line">#plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 方式 2 -------------------------------------------------------------------</span><br><span class="line"># show</span><br><span class="line"># 在只设置mask的情况下,你将会得到一个拥有图片形状的词云</span><br><span class="line">plt.axis(&quot;off&quot;)</span><br><span class="line">ax = plt.imshow(wc, interpolation=&quot;bilinear&quot;)</span><br><span class="line">fig = ax.figure</span><br><span class="line">fig.set_size_inches(25,20)                  # 可调节图片紧密 尺寸程度</span><br><span class="line">plt.figure()</span><br><span class="line"># recolor wordcloud and show</span><br><span class="line"># we could also give color_func=image_colors directly in the constructor</span><br><span class="line"># 我们还可以直接在构造函数中直接给颜色</span><br><span class="line"># 通过这种方式词云将会按照给定的图片颜色布局生成字体颜色策略</span><br><span class="line">plt.axis(&quot;off&quot;)</span><br><span class="line">ax = plt.imshow(wc.recolor(color_func=image_colors), interpolation=&quot;bilinear&quot;)</span><br><span class="line">fig = ax.figure</span><br><span class="line">fig.set_size_inches(25,20)                  # 可调节图片紧密 尺寸程度</span><br><span class="line">plt.figure()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.axis(&quot;off&quot;)</span><br><span class="line">ax = plt.imshow(alice_coloring, cmap=plt.cm.gray, interpolation=&quot;bilinear&quot;)</span><br><span class="line">fig = ax.figure</span><br><span class="line">fig.set_size_inches(25,20)                  # 可调节图片紧密 尺寸程度</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>输出：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/alice002.png?raw=true" width="50%/"><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/alice003.png?raw=true" width="50%/"><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/alice_color.png?raw=true" width="50%/"></p>
+<h3 id="中文词云图"><a href="#中文词云图" class="headerlink" title="中文词云图"></a>中文词云图</h3><h4 id="例子：延禧攻略的白月光-queen-py"><a href="#例子：延禧攻略的白月光-queen-py" class="headerlink" title="例子：延禧攻略的白月光 // queen.py"></a>例子：延禧攻略的白月光 // queen.py</h4><p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/queen.jpg?raw=true" width="50%/"></p>
+<p>中文与英文还是有点不一样的，在停用词表就需要自己弄一套等等。记得跑之前要把该下载的文件下载到文件夹里。</p>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">Created on Mon Sep  3 18:27:38 2018</span><br><span class="line"></span><br><span class="line">@author: Yi</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">import os</span><br><span class="line">os.chdir(&quot;C:/Users/Yi/Desktop/nlp/wordcloud&quot;)</span><br><span class="line"> </span><br><span class="line">import jieba.analyse                          # 导入结巴分词</span><br><span class="line">import numpy as np                            # numpy</span><br><span class="line">from wordcloud import WordCloud, STOPWORDS    # 词云工具和自带的的停用词，英文</span><br><span class="line">from PIL import Image                         # 图片处理</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line"></span><br><span class="line">def handle(textfile, stopword):</span><br><span class="line">    with open(textfile, &apos;r&apos;) as f:</span><br><span class="line">        data = f.read()</span><br><span class="line"></span><br><span class="line">    wordlist = jieba.analyse.extract_tags(data, topK=100)   # 分词，取前100</span><br><span class="line">    wordStr = &quot; &quot;.join(wordlist)</span><br><span class="line">    print (wordStr)</span><br><span class="line"></span><br><span class="line">    hand = np.array(Image.open(&apos;plot/queen.jpg&apos;))    # 打开一张图片，词语以图片形状为背景分布</span><br><span class="line"></span><br><span class="line">    my_cloudword = WordCloud(</span><br><span class="line">        # wordcloud参数配置</span><br><span class="line">        width=1024,</span><br><span class="line">        height=768,</span><br><span class="line">        background_color = &apos;white&apos;,   # 背景颜色设置白色</span><br><span class="line">        mask = hand,                  # 背景图片</span><br><span class="line">        max_words = 100,              # 最大显示的字数</span><br><span class="line">        stopwords = stopword,         # 停用词</span><br><span class="line">        max_font_size = 100,           # 字体最大值</span><br><span class="line">        font_path=&apos;data/SourceHanSerifK-Light.otf&apos;,  # 设置中文字体，若是有中文的话，这句代码必须添加，不然会出现方框，不出现汉字</span><br><span class="line">        random_state=3,  # 设置有多少种随机生成状态，即有多少种配色方案</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    my_cloudword.generate(wordStr)          # 生成图片</span><br><span class="line">    my_cloudword.to_file(&apos;plot/queen.png&apos;)    # 保存</span><br><span class="line">    </span><br><span class="line">    plt.axis(&apos;off&apos;)  # 是否显示x轴、y轴下标</span><br><span class="line">    ax = plt.imshow(my_cloudword)  # 显示词云图</span><br><span class="line">    fig = ax.figure</span><br><span class="line">    fig.set_size_inches(25,20)                  # 可调节图片紧密 尺寸程度    </span><br><span class="line">    plt.show()  # 显示</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">stopwords = open(&apos;data/stopwords.txt&apos;).read()</span><br><span class="line">stopwords = set(stopwords.split(&apos;\n&apos;))</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    handle(&apos;data/yxgl.txt&apos;, stopwords)</span><br></pre></td></tr></table></figure>
+<p>输出：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/queen1.png?raw=true" width="50%/"></p>
+<p>再来一次：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/wordcloud/queen.png?raw=true" width="50%/"></p>
+<p>白月光皇后的人头形状和扇子形状都还在的。</p>
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>这里用到的文本分析的技术只停留在分词阶段，还是比较简单的。可视化分析永远是最吸引人的。快去试一下吧~😋</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/jieba/" rel="tag"># jieba</a>
+          
+            <a href="/tags/tokenization/" rel="tag"># tokenization</a>
+          
+            <a href="/tags/wordcloud/" rel="tag"># wordcloud</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/28/NLP笔记-Word-Embedding-doc2vec/" rel="next" title="NLP笔记 - Word Embedding // doc2vec 之 延禧攻略">
+                <i class="fa fa-chevron-left"></i> NLP笔记 - Word Embedding // doc2vec 之 延禧攻略
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/06/代码走读-百度智能问答开源框架-AnyQ/" rel="prev" title="代码走读 - 百度开源智能问答框架 AnyQ">
+                代码走读 - 百度开源智能问答框架 AnyQ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念解释"><span class="nav-text">概念解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#英文词云图"><span class="nav-text">英文词云图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例子1：10行代码搞定的词云图-alice1-py"><span class="nav-text">例子1：10行代码搞定的词云图 // alice1.py</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例子2：有形状的词云图-alice2-py"><span class="nav-text">例子2：有形状的词云图 // alice2.py</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中文词云图"><span class="nav-text">中文词云图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例子：延禧攻略的白月光-queen-py"><span class="nav-text">例子：延禧攻略的白月光 // queen.py</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写在最后"><span class="nav-text">写在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/09/03/NLP笔记-Word-Tokenization-wordcloud/';
+          this.page.identifier = '2018/09/03/NLP笔记-Word-Tokenization-wordcloud/';
+          this.page.title = 'NLP笔记 - Word Tokenization // wordcloud 词云图教程';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

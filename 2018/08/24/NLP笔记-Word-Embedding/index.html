@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP,embedding,gensim,tf-idf,corpora," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="面向读者：nlp入门学者，python选手 可能还没做过nlp的项目，就对 word embedding（词嵌入）有所耳闻。深度学习为什么那么火，其中之一是不用怎么操心前期数据清洗。在（深度）语义匹配里，进行embedding（嵌入）是进行深度学习的前一步。">
+<meta name="keywords" content="NLP,embedding,gensim,tf-idf,corpora">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP笔记 - Word Embedding &#x2F;&#x2F; bag of words">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/08/24/NLP笔记-Word-Embedding/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="面向读者：nlp入门学者，python选手 可能还没做过nlp的项目，就对 word embedding（词嵌入）有所耳闻。深度学习为什么那么火，其中之一是不用怎么操心前期数据清洗。在（深度）语义匹配里，进行embedding（嵌入）是进行深度学习的前一步。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-02-11T07:33:34.910Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP笔记 - Word Embedding &#x2F;&#x2F; bag of words">
+<meta name="twitter:description" content="面向读者：nlp入门学者，python选手 可能还没做过nlp的项目，就对 word embedding（词嵌入）有所耳闻。深度学习为什么那么火，其中之一是不用怎么操心前期数据清洗。在（深度）语义匹配里，进行embedding（嵌入）是进行深度学习的前一步。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/08/24/NLP笔记-Word-Embedding/"/>
+
+
+
+
+
+  <title>NLP笔记 - Word Embedding // bag of words | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/08/24/NLP笔记-Word-Embedding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NLP笔记 - Word Embedding // bag of words</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-24T17:12:14+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/24/NLP笔记-Word-Embedding/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/24/NLP笔记-Word-Embedding/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>面向读者：</strong>nlp入门学者，python选手</p>
+<p>可能还没做过nlp的项目，就对 word embedding（词嵌入）有所耳闻。深度学习为什么那么火，其中之一是不用怎么操心前期数据清洗。在（深度）语义匹配里，进行embedding（嵌入）是进行深度学习的前一步。</p>
+<a id="more"></a>
+<h3 id="概念解释"><a href="#概念解释" class="headerlink" title="概念解释"></a>概念解释</h3><ul>
+<li><strong>语义匹配（semantic matching）：</strong>根据语义来匹配，看两句话（或者多句话）说的是不是一个意思。比如“我想入门nlp。”和“如何学nlp技术？”可以认为是同一个意思，那么这两句话就匹配成功。传统的方法只是字字匹配（term matching），不会将“入门”和“学习”这两个匹配起来。再加一句“nlp的深度模型有哪些？”，明显和前两句不是一个意思，那么就匹配失败。语义匹配经常用在搜索引擎或像知乎问答上，你提问“如何学nlp技术？”，而“我想入门nlp。”这个已经有人回答过了，存在知识库里，机器需要做的就是把你的问题与已有答案的问题匹配起来，把对应的答案传送给你。</li>
+<li><strong>字典（dictionary）：</strong>像新华字典一样的存在，机器也需要有一个字典来理解文字。一个单词对应一个索引，这个索引index往往是一个序列整数。</li>
+<li><strong>语料库（corpora）：</strong>字典是如何来的，自然是因为有很多很多的文字材料。语料可以是所有莎士比亚写的文章，或者所有维基百科的文章，或者一个特定的人发的推文。</li>
+<li><strong>词/句/文本 嵌入（embedding）：</strong>不要被中文的“嵌入”意思带偏。embedding是一个数学术语，代表的是一个映射关系。比如汉英字典里的中文“钞票”映射到英文就是单词“money”。这项技术把词汇表中的单词或短语映射成由实数构成的向量。在计算机中，一个单词映射到的往往就是它的索引数字。毕竟目前计算机也只能理解数字。</li>
+<li><strong>TF-IDF（term frequency–inverse document frequency）：</strong>TF意思是词频(Term Frequency)，IDF意思是逆文本频率指数(Inverse Document Frequency)。<a href="https://baike.baidu.com/item/tf-idf/8816134" target="_blank" rel="noopener">TF-IDF</a>是一种统计方法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降。</li>
+</ul>
+<h3 id="跑个小例子"><a href="#跑个小例子" class="headerlink" title="跑个小例子"></a>跑个小例子</h3><p>在<a href="http://codewithzhangyi.com/2018/08/24/NLP笔记-Getting-Started/">getting started</a>，提起过gensim这个python包。本文就具体讲一下这个包的使用方法。首先pip install gensim，然后打开python3，其它没下载的包请自己手动下载。（<a href="https://github.com/RaRe-Technologies/gensim/blob/develop/docs/notebooks/Corpora_and_Vector_Spaces.ipynb" target="_blank" rel="noopener">jupyter版本链接</a>）</p>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import logging</span><br><span class="line">logging.basicConfig(format=&apos;%(asctime)s : %(levelname)s : %(message)s&apos;, level=logging.INFO)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">import tempfile</span><br><span class="line">TEMP_FOLDER = tempfile.gettempdir()</span><br><span class="line">print(&apos;Folder &quot;&#123;&#125;&quot; will be used to save temporary dictionary and corpus.&apos;.format(TEMP_FOLDER))</span><br></pre></td></tr></table></figure>
+<p>下面是一个迷你的语料库，由9个字符串文本组成，每个字符串包含一个句子。语料是指一组文档的集合。这个集合是gensim的输入，gensim会从这个语料中推断出它的结构，主题等。从语料中推断出的隐含结构，可以用来对一个新的文档指定一个主题。</p>
+<p>语料库输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from gensim import corpora</span><br><span class="line"></span><br><span class="line">documents = [&quot;Human machine interface for lab abc computer applications&quot;,</span><br><span class="line">             &quot;A survey of user opinion of computer system response time&quot;,</span><br><span class="line">             &quot;The EPS user interface management system&quot;,</span><br><span class="line">             &quot;System and human system engineering testing of EPS&quot;,              </span><br><span class="line">             &quot;Relation of user perceived response time to error measurement&quot;,</span><br><span class="line">             &quot;The generation of random binary unordered trees&quot;,</span><br><span class="line">             &quot;The intersection graph of paths in trees&quot;,</span><br><span class="line">             &quot;Graph minors IV Widths of trees and well quasi ordering&quot;,</span><br><span class="line">             &quot;Graph minors A survey&quot;]</span><br></pre></td></tr></table></figure>
+<p>首先，做些预处理。</p>
+<ul>
+<li>文本进行分词（tokenization）</li>
+<li>删去一些常用词/停用词（像for/ a/ of/ the/…这些词）</li>
+<li>删去只出现一次的词（防止太稀疏）</li>
+</ul>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># remove common words and tokenize</span><br><span class="line">stoplist = set(&apos;for a of the and to in&apos;.split())</span><br><span class="line">texts = [[word for word in document.lower().split() if word not in stoplist]</span><br><span class="line">         for document in documents]</span><br><span class="line"></span><br><span class="line"># remove words that appear only once</span><br><span class="line">from collections import defaultdict</span><br><span class="line">frequency = defaultdict(int)</span><br><span class="line">for text in texts:</span><br><span class="line">    for token in text:</span><br><span class="line">        frequency[token] += 1</span><br><span class="line"></span><br><span class="line">texts = [[token for token in text if frequency[token] &gt; 1] for text in texts]</span><br><span class="line"></span><br><span class="line">from pprint import pprint  # pretty-printer</span><br><span class="line">pprint(texts)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[[&apos;human&apos;, &apos;interface&apos;, &apos;computer&apos;],</span><br><span class="line"> [&apos;survey&apos;, &apos;user&apos;, &apos;computer&apos;, &apos;system&apos;, &apos;response&apos;, &apos;time&apos;],</span><br><span class="line"> [&apos;eps&apos;, &apos;user&apos;, &apos;interface&apos;, &apos;system&apos;],</span><br><span class="line"> [&apos;system&apos;, &apos;human&apos;, &apos;system&apos;, &apos;eps&apos;],</span><br><span class="line"> [&apos;user&apos;, &apos;response&apos;, &apos;time&apos;],</span><br><span class="line"> [&apos;trees&apos;],</span><br><span class="line"> [&apos;graph&apos;, &apos;trees&apos;],</span><br><span class="line"> [&apos;graph&apos;, &apos;minors&apos;, &apos;trees&apos;],</span><br><span class="line"> [&apos;graph&apos;, &apos;minors&apos;, &apos;survey&apos;]]</span><br></pre></td></tr></table></figure>
+<p>预处理的方式可以千变万化，上面只是举个例子。接下来根据上面剩下的单词生成字典，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dictionary = corpora.Dictionary(texts)</span><br><span class="line">dictionary.save(&apos;deerwester.dict&apos;)  # store the dictionary, for future reference</span><br><span class="line">print(dictionary)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dictionary(12 unique tokens: [&apos;human&apos;, &apos;interface&apos;, &apos;computer&apos;, &apos;survey&apos;, &apos;user&apos;]...)</span><br></pre></td></tr></table></figure>
+<p>可以看出语料库生成的字典里有12个不同的单词。意味着语料库的每一个文本，也就是每一句话，都可以被12维的稀疏向量表示。</p>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(dictionary.token2id)</span><br></pre></td></tr></table></figure>
+<p>输出字典mapping，语料中的每一个单词关联一个唯一的id。字典单词与id能一一对应就行，不同的人跑的id数字可能变化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;human&apos;: 0, &apos;interface&apos;: 1, &apos;computer&apos;: 2, &apos;survey&apos;: 3, &apos;user&apos;: 4, &apos;system&apos;: 5, &apos;response&apos;: 6, &apos;time&apos;: 7, &apos;eps&apos;: 8, &apos;trees&apos;: 9, &apos;graph&apos;: 10, &apos;minors&apos;: 11&#125;</span><br></pre></td></tr></table></figure>
+<p>如果要对文档的隐含结构进行推断，就需要一种数学上能处理的文档表示方法。一种方法是把每个文档表达为一个向量。有很多种表示方法，一种常见的方法是<em>bag-of-words</em>模型，也叫做“词袋”。在词袋模型中，每篇文档（在这里是每个字符串句子）被表示成一个向量，代表字典中每个词出现的次数。词袋模型的一个重要特点是，它完全忽略的单词在句子中出现的顺序，这也就是“词袋”这个名字的由来。</p>
+<p>词袋示例，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">new_doc = &quot;Human computer interaction&quot;</span><br><span class="line">new_vec = dictionary.doc2bow(new_doc.lower().split())</span><br><span class="line">print(new_vec)  # the word &quot;interaction&quot; does not appear in the dictionary and is ignored</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(0, 1), (2, 1)]</span><br></pre></td></tr></table></figure>
+<p>新样本是一个新句子（注意到这句话并没有出现在原始的预料中）：”Human computer interaction”</p>
+<p>doc2bow()函数生成的元组中，括号左边代表单词id，括号右边代表单词在样例中的出现次数。生成的是一个像[(word_id, word_count), …]的稀疏向量，也就是词袋。</p>
+<p>“Human”和“computer”是出现在语料库的，因此也存在在字典里，其id分别是0和2，各自在新样本里出现过一次，因此出现频次都是1。因此(0, 1), (2, 1)分别代表“Human”和“computer”。“interaction”不存在字典里，不在稀疏向量里出现。而其他存在在字典里，却在新句子中出现0次的单词，也不显示在稀疏向量里。也就说明每个小括号右边的数字不会小于1。</p>
+<p>因此这个新句子的12维向量最终结果是[(0, 1), (2, 1)]。如果不想出现频次这个特征，可以尝试下doc2idx这个函数，同时按照单词在句子中出现的顺序进行id的显示。</p>
+<p>把语料库的句子都转换成稀疏向量，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">corpus = [dictionary.doc2bow(text) for text in texts]</span><br><span class="line">corpora.MmCorpus.serialize(&apos;deerwester.mm&apos;, corpus)  # store to disk, for later use</span><br><span class="line">print(corpus)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[(0, 1), (1, 1), (2, 1)]</span><br><span class="line">[(2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)]</span><br><span class="line">[(1, 1), (4, 1), (5, 1), (8, 1)]</span><br><span class="line">[(0, 1), (5, 2), (8, 1)]</span><br><span class="line">[(4, 1), (6, 1), (7, 1)]</span><br><span class="line">[(9, 1)]</span><br><span class="line">[(9, 1), (10, 1)]</span><br><span class="line">[(9, 1), (10, 1), (11, 1)]</span><br><span class="line">[(3, 1), (10, 1), (11, 1)]</span><br></pre></td></tr></table></figure>
+<h3 id="跑个大例子"><a href="#跑个大例子" class="headerlink" title="跑个大例子"></a>跑个大例子</h3><p>上个例子的语料库是非常小的文本，但实际情况是，语料库里会有百万上亿条文本，想想新华字典都那么厚。把语料全部存在RAM 不实际。假设文本放在一个文件夹里，一行话一行话的形式存储，gensim就可以实现一次返回一个句子的稀疏向量。</p>
+<p>所以大例子的精华无非是，一次跑一条文本。<a href="https://radimrehurek.com/gensim/mycorpus.txt" target="_blank" rel="noopener">点击这里下载样本’mycorpus.txt’</a></p>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class MyCorpus(object):</span><br><span class="line">    def __iter__(self):</span><br><span class="line">        for line in open(&apos;mycorpus.txt&apos;):</span><br><span class="line">            # assume there&apos;s one document per line, tokens separated by whitespace</span><br><span class="line">            yield dictionary.doc2bow(line.lower().split())</span><br><span class="line">          </span><br><span class="line">corpus_memory_friendly = MyCorpus()  # doesn&apos;t load the corpus into memory!</span><br><span class="line">print(corpus_memory_friendly) </span><br><span class="line"># &lt;__main__.MyCorpus object at 0x10d5690&gt;</span><br></pre></td></tr></table></figure>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for vector in corpus_memory_friendly:  # load one vector into memory at a time</span><br><span class="line">    print(vector)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[(0, 1), (1, 1), (2, 1)]</span><br><span class="line">[(2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)]</span><br><span class="line">[(1, 1), (4, 1), (5, 1), (8, 1)]</span><br><span class="line">[(0, 1), (5, 2), (8, 1)]</span><br><span class="line">[(4, 1), (6, 1), (7, 1)]</span><br><span class="line">[(9, 1)]</span><br><span class="line">[(9, 1), (10, 1)]</span><br><span class="line">[(9, 1), (10, 1), (11, 1)]</span><br><span class="line">[(3, 1), (10, 1), (11, 1)]</span><br></pre></td></tr></table></figure>
+<p>虽然看起来结果跟跑个小例子一样，但是这个跑的过程对内存更友好。现在你可以随意扩充语料库。</p>
+<p>接下来，生成字典，但无需一次性加载所有的文本到内存里，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from six import iteritems</span><br><span class="line">&gt;&gt;&gt; # collect statistics about all tokens</span><br><span class="line">&gt;&gt;&gt; dictionary = corpora.Dictionary(line.lower().split() for line in open(&apos;mycorpus.txt&apos;))</span><br><span class="line">&gt;&gt;&gt; # remove stop words and words that appear only once</span><br><span class="line">&gt;&gt;&gt; stop_ids = [dictionary.token2id[stopword] for stopword in stoplist</span><br><span class="line">&gt;&gt;&gt;             if stopword in dictionary.token2id]</span><br><span class="line">&gt;&gt;&gt; once_ids = [tokenid for tokenid, docfreq in iteritems(dictionary.dfs) if docfreq == 1]</span><br><span class="line">&gt;&gt;&gt; dictionary.filter_tokens(stop_ids + once_ids)  # remove stop words and words that appear only once</span><br><span class="line">&gt;&gt;&gt; dictionary.compactify()  # remove gaps in id sequence after words that were removed</span><br><span class="line">&gt;&gt;&gt; print(dictionary)</span><br><span class="line">Dictionary(12 unique tokens)</span><br></pre></td></tr></table></figure>
+<h3 id="Transformation"><a href="#Transformation" class="headerlink" title="Transformation"></a>Transformation</h3><p>现在已经向量化了语料，接下来可以使用各种向量转换transformation了，指的是把文档转化成另一个。在gensim中，文档用向量来表示，所以模型可以认为是在两个向量空间进行转换。这个转换是从语料训练集中学习出来的。</p>
+<p>比较简单的一个叫<a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf" target="_blank" rel="noopener">TF-IDF</a>。TF-IDF把词袋表达的向量转换到另一个向量空间，这个向量空间中，词频是根据语料中每个词的相对稀有程度（relative rarity）进行加权处理的。</p>
+<p>看一个简单的例子。首先初始化一个tf-idf，在我们的语料中进行训练，然后对“system minors”进行处理。（<a href="https://blog.csdn.net/duinodu/article/details/76618638" target="_blank" rel="noopener">参考</a>）</p>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from gensim import models</span><br><span class="line">tfidf = models.TfidfModel(bow_corpus)</span><br><span class="line">string = &quot;system minors&quot;</span><br><span class="line">string_bow = dictionary.doc2bow(string.lower().split())</span><br><span class="line">string_tfidf = tfidf[string_bow]</span><br><span class="line">print(string_bow)</span><br><span class="line">print(string_tfidf)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[(5, 1), (11, 1)]</span><br><span class="line">[(5, 0.5898341626740045), (11, 0.8075244024440723)]</span><br></pre></td></tr></table></figure>
+<p>TF-IDF返回了一组元组。元组中第一个元素表示id，第二个表示tf-idf权重。注意到，“system”在原语料中出现4次，“minors”出现2次，所以第一个权重比第二个小。</p>
+<p>其它的还有下面几个转换，<a href="https://radimrehurek.com/gensim/tut2.html" target="_blank" rel="noopener">具体转换代码点这里</a>：</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Latent_semantic_indexing" target="_blank" rel="noopener">Latent Semantic Indexing, LSI (or sometimes LSA)</a></li>
+<li><a href="http://www.cis.hut.fi/ella/publications/randproj_kdd.pdf" target="_blank" rel="noopener">Random Projections, RP</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation" target="_blank" rel="noopener">Latent Dirichlet Allocation, LDA</a></li>
+<li><a href="http://jmlr.csail.mit.edu/proceedings/papers/v15/wang11a/wang11a.pdf" target="_blank" rel="noopener">Hierarchical Dirichlet Process, HDP</a></li>
+</ul>
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>Word Embedding相关的有很多技术，pensim里也有更多好用的功能，比如word2vec，doc2vec等，这里只是抛砖引玉，举个小例子。跑一遍后，对这个词嵌入技术有个大概的感受就算目的达成了~😎</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/embedding/" rel="tag"># embedding</a>
+          
+            <a href="/tags/gensim/" rel="tag"># gensim</a>
+          
+            <a href="/tags/tf-idf/" rel="tag"># tf-idf</a>
+          
+            <a href="/tags/corpora/" rel="tag"># corpora</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/24/NLP笔记-Getting-Started/" rel="next" title="NLP笔记 - Getting Started">
+                <i class="fa fa-chevron-left"></i> NLP笔记 - Getting Started
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/28/NLP笔记-Word-Embedding-doc2vec/" rel="prev" title="NLP笔记 - Word Embedding // doc2vec 之 延禧攻略">
+                NLP笔记 - Word Embedding // doc2vec 之 延禧攻略 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念解释"><span class="nav-text">概念解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跑个小例子"><span class="nav-text">跑个小例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跑个大例子"><span class="nav-text">跑个大例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transformation"><span class="nav-text">Transformation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写在最后"><span class="nav-text">写在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/08/24/NLP笔记-Word-Embedding/';
+          this.page.identifier = '2018/08/24/NLP笔记-Word-Embedding/';
+          this.page.title = 'NLP笔记 - Word Embedding // bag of words';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="machine learning,python,xgboost,algorithm,boosting,gradient,R," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景说明：">
+<meta name="keywords" content="machine learning,python,xgboost,algorithm,boosting,gradient,R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Machine Learning笔记 - XGBOOST 教程">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/06/01/XGBOOST使用说明/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="背景说明：">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/002.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/003.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/004.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/006.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/005.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/007.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/008.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/009.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/010.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/011.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/012.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/013.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/014.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/015.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/016.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/017.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/018.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/019.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/020.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/021.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/022.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/023.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/024.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/025.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/031.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/032.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/033.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/imp.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/ppp.png?raw=true">
+<meta property="og:updated_time" content="2019-02-11T07:43:36.490Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Machine Learning笔记 - XGBOOST 教程">
+<meta name="twitter:description" content="背景说明：">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/002.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/06/01/XGBOOST使用说明/"/>
+
+
+
+
+
+  <title>Machine Learning笔记 - XGBOOST 教程 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/06/01/XGBOOST使用说明/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Machine Learning笔记 - XGBOOST 教程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-01T15:01:19+08:00">
+                2018-06-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/01/XGBOOST使用说明/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/01/XGBOOST使用说明/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>背景说明：</strong><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/002.png?raw=true" alt=""><br><a id="more"></a></p>
+<ul>
+<li>XGBOOST，<strong>屠榜神器</strong>！</li>
+<li>全称：eXtreme Gradient Boosting | 简称：XGB</li>
+<li>XGB作者：陈天奇（华盛顿大学），my icon❤</li>
+<li>XGB前身：GBDT(Gradient Boosting Decision Tree)，XGB是目前决策树的顶配。<blockquote>
+<ul>
+<li>注意！上图得出这个结论时间：2016年3月，两年前，算法发布在2014年，现在是2018年6月，它仍是算法届的superstar🌟！</li>
+<li>目前，在所有声名显赫的数据挖掘赛场上（kaggle/天池/…），这个算法无人不知，slay全场。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<hr>
+<p>注：</p>
+<ol>
+<li>适用人群：机器学习（数据挖掘）大赛选手 / (准)人工智能工程师 / 算法效果遇到瓶颈的朋友 / …</li>
+<li>假设：读者理解回归树算法、泰勒公式、梯度下降法和牛顿法，简单说就是GBDT，顺便，Adaboost也可以了解一下。</li>
+<li><strong><em>When learning XGBoost, be calm and be patient.</em></strong></li>
+<li>因为XGB很屌，所以本文很长，可以慢慢看，或者一次看一部分，it’s ok~</li>
+</ol>
+<p>链接🔗：</p>
+<ul>
+<li><a href="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/XGB.pdf" target="_blank" rel="noopener">XGBoost: A Scalable Tree Boosting System</a>【XGB的原著论文】</li>
+<li><a href="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/BoostedTree.pdf" target="_blank" rel="noopener">Introduction to Boosted Trees</a>【天奇大神的ppt】</li>
+</ul>
+<hr>
+<p>正文：</p>
+<h4 id="1-算法原理简述（基于上面陈天奇的PPT）："><a href="#1-算法原理简述（基于上面陈天奇的PPT）：" class="headerlink" title="[1] 算法原理简述（基于上面陈天奇的PPT）："></a>[1] 算法原理简述（基于上面陈天奇的PPT）：</h4><p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/003.png?raw=true" alt=""></p>
+<h5 id="1-Review-of-key-concepts-of-supervised-learning-监督学习的主要元素"><a href="#1-Review-of-key-concepts-of-supervised-learning-监督学习的主要元素" class="headerlink" title="(1) Review of key concepts of supervised learning | 监督学习的主要元素"></a><strong><em>(1) Review of key concepts of supervised learning | 监督学习的主要元素</em></strong></h5><ul>
+<li>Y值（label标签）</li>
+<li>目标函数（Objective Function）= 损失函数（Loss Function）+ 正则化（Regularization）<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/004.png?raw=true" alt=""></li>
+<li>损失函数表示模型对训练数据的拟合程度，loss越小，代表模型预测的越准。</li>
+<li>正则化项衡量模型的复杂度，regularization越小，代表模型模型的复杂度越低。</li>
+<li>目标函数越小，代表模型越好。</li>
+</ul>
+<h5 id="2-Regression-Tree-and-Ensemble-当你谈决策树时你在谈什么"><a href="#2-Regression-Tree-and-Ensemble-当你谈决策树时你在谈什么" class="headerlink" title="(2) Regression Tree and Ensemble | 当你谈决策树时你在谈什么"></a><strong><em>(2) Regression Tree and Ensemble | 当你谈决策树时你在谈什么</em></strong></h5><p><strong>Tree Ensemble methods的好处：</strong></p>
+<ul>
+<li>Very widely used.Almost half of data mining competition are won by using some variants of tree ensemble methods.<br>被大规模的使用，几乎一半的数据挖掘比赛冠军队都在用集合树模型</li>
+<li>Invariant to scaling of inputs, so you do not need to do careful features normalization.<br>与输入数据的取值范围无关，所以无需做很细致的特征归一化 </li>
+<li>Learn higher order interaction between features.<br>能够学习到特征间的高维相关性 </li>
+<li>Can be scalable, and are used in Industry.<br>工业使用，扩展性好 </li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/006.png?raw=true" alt=""></p>
+<ul>
+<li>在这页，模型复杂度（function space）是由所有的回归树决定的。</li>
+<li>学习的是fk（树），而不是权重w——体现gradient的思想。 </li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/005.png?raw=true" alt=""></p>
+<ul>
+<li>信息增益（Information Gain）：决定分裂节点，主要是为了减少损失loss</li>
+<li>树的剪枝：主要为了减少模型复杂度，而复杂度被‘树枝的数量’影响</li>
+<li>最大深度：会影响模型复杂度</li>
+<li>平滑叶子的值：对叶子的权重进行L2正则化，为了减少模型复杂度，提高模型的稳定性</li>
+<li>回归树不止用于做<em>回归</em>，还可以做<em>分类、排序</em>等，主要依赖于目标函数的定义</li>
+</ul>
+<h5 id="3-Gradient-Boosting-How-do-we-Learn"><a href="#3-Gradient-Boosting-How-do-we-Learn" class="headerlink" title="(3) Gradient Boosting (How do we Learn)"></a><strong><em>(3) Gradient Boosting (How do we Learn)</em></strong></h5><ul>
+<li>Bias-variance tradeoff is everywhere<br>偏差与方差的权衡无处不在</li>
+<li>The loss + regularization objective pattern applies for regression tree learning (function learning)<br>损失+正则的模式适用于回归树学习</li>
+<li>We want predictive and simple functions<br>预测模型的出路在哪里，结果如下：</li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/007.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/008.png?raw=true" alt=""><br>使用二阶泰勒展开式来近似Loss：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/009.png?raw=true" alt=""></p>
+<ul>
+<li>箭头所指的就是XGB的目标函数表达式，Obj目标函数  = 损失函数 + 正则项 + 常数项，是个优秀的表达式，后面会解释</li>
+<li>本篇只是提了些基本的概念，其它slice解读请参阅<a href="http://xgboost.readthedocs.io/en/latest/model.html" target="_blank" rel="noopener">官方介绍</a>或者<a href="https://blog.csdn.net/huangdunxian/article/details/70570982" target="_blank" rel="noopener">陈天奇slide学习笔记</a>或者<a href="https://zxth93.github.io/2017/09/29/XGBoost算法原理/index.html" target="_blank" rel="noopener">XGBoost算法原理</a></li>
+</ul>
+<hr>
+<h4 id="2-参数说明："><a href="#2-参数说明：" class="headerlink" title="[2] 参数说明："></a>[2] 参数说明：</h4><p>XGB的参数是目前见过的模型里最多的，面试被问到就瞎了，如果你是第一次看所有的参数，请做好心理准备~<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/010.png?raw=true" alt=""><br>下面只列举部分常用参数，所有参数的官方说明文档，请点击<a href="http://xgboost.readthedocs.io/en/latest/parameter.html" target="_blank" rel="noopener">XGBoost Parameters</a></p>
+<h5 id="1-General-parameters"><a href="#1-General-parameters" class="headerlink" title="(1) General parameters"></a><strong><em>(1) General parameters</em></strong></h5><p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/011.png?raw=true" alt=""></p>
+<h5 id="2-Booster-parameters"><a href="#2-Booster-parameters" class="headerlink" title="(2) Booster parameters"></a><strong><em>(2) Booster parameters</em></strong></h5><ul>
+<li>Parameters for Tree Booster<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/012.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/013.png?raw=true" alt=""></li>
+<li>Additional parameters for Dart Booster<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/014.png?raw=true" alt=""></li>
+<li>Parameters for Linear Booster and Tweedie Regression<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/015.png?raw=true" alt=""><h5 id="3-Learning-Task-parameters"><a href="#3-Learning-Task-parameters" class="headerlink" title="(3) Learning Task parameters"></a><strong><em>(3) Learning Task parameters</em></strong></h5><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/016.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/017.png?raw=true" alt=""><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/018.png?raw=true" alt=""><h5 id="4-Command-line-parameters"><a href="#4-Command-line-parameters" class="headerlink" title="(4) Command line parameters"></a><strong><em>(4) Command line parameters</em></strong></h5><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/019.png?raw=true" alt=""></li>
+</ul>
+<hr>
+<ul>
+<li><a href="http://xgboost.readthedocs.io/en/latest/build.html" target="_blank" rel="noopener">XGB的下载教程</a>，如果不成功，多google</li>
+</ul>
+<h4 id="3-代码实现：R语言版本"><a href="#3-代码实现：R语言版本" class="headerlink" title="[3] 代码实现：R语言版本"></a>[3] 代码实现：R语言版本</h4><h5 id="1-导入数据"><a href="#1-导入数据" class="headerlink" title="(1) 导入数据"></a><strong><em>(1) 导入数据</em></strong></h5><p><a href="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/data0.RData" target="_blank" rel="noopener">data0.RData 下载</a>，仅作XGB流程展示，不做数据清洗<br>如果对数据清洗感兴趣，请点击<a href="http://codewithzhangyi.com/2018/05/25/基于R的数据清洗（1）/">基于R的数据清洗（1）</a><br>样本数据是RData格式的，是R专有的数据存储格式，好用又不占地方~<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 导入包</span><br><span class="line">packages&lt;-c(&quot;data.table&quot;,&quot;xgboost&quot;,&quot;ggplot2&quot;,&quot;dplyr&quot;)</span><br><span class="line">UsePackages&lt;-function(p)&#123;</span><br><span class="line">  if (!is.element(p,installed.packages()[,1]))&#123;</span><br><span class="line">    install.packages(p)&#125;</span><br><span class="line">  require(p,character.only = TRUE)&#125;</span><br><span class="line">for(p in packages)&#123;</span><br><span class="line">  UsePackages(p)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">library(data.table)</span><br><span class="line">library(xgboost)</span><br><span class="line">library(ggplot2)</span><br><span class="line">library(dplyr)</span><br></pre></td></tr></table></figure></p>
+<p>导入数据：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setwd(&quot;D:/Zhang&quot;)       # R文件设置路径</span><br><span class="line">load(&quot;data/data0.RData&quot;)                                             # 导入数据</span><br></pre></td></tr></table></figure></p>
+<p>拆分训练集和测试集，转换数据格式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#----------------------------------------------------------</span><br><span class="line"># train &amp; test  select randomly</span><br><span class="line">#----------------------------------------------------------</span><br><span class="line"></span><br><span class="line">a = round(nrow(data0)*0.8)</span><br><span class="line">b = sample(nrow(data0), a, replace = FALSE, prob = NULL)</span><br><span class="line"></span><br><span class="line">train= data0[b,]      # 训练集80%</span><br><span class="line">test = data0[-b,]     # 测试集20%</span><br><span class="line"></span><br><span class="line"># 将dataframe格式转换成xgb.DMatrix格式</span><br><span class="line"># Y值的列名: &apos;bad&apos;</span><br><span class="line">dtrain &lt;- xgb.DMatrix(data=select(train,-bad)%&gt;%as.matrix,label= train$bad%&gt;%as.matrix)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>注：Y值的特征名是‘bad’</li>
+</ul>
+<h5 id="2-利用-xgb-cv-调参"><a href="#2-利用-xgb-cv-调参" class="headerlink" title="(2) 利用 xgb.cv 调参"></a><strong><em>(2) 利用 xgb.cv 调参</em></strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">best_param = list()</span><br><span class="line">best_seednumber = 1234</span><br><span class="line">best_logloss = Inf</span><br><span class="line">best_logloss_index = 0</span><br><span class="line"></span><br><span class="line"># 自定义调参组合</span><br><span class="line">for (iter in 1:50) &#123;</span><br><span class="line">    param &lt;- list(objective = &quot;binary:logistic&quot;,     # 目标函数：logistic的二分类模型，因为Y值是二元的</span><br><span class="line">          eval_metric = c(&quot;logloss&quot;),                # 评估指标：logloss</span><br><span class="line">          max_depth = sample(6:10, 1),               # 最大深度的调节范围：1个 6-10 区间的数</span><br><span class="line">          eta = runif(1, .01, .3),                   # eta收缩步长调节范围：1个 0.01-0.3区间的数</span><br><span class="line">          gamma = runif(1, 0.0, 0.2),                # gamma最小损失调节范围：1个 0-0.2区间的数</span><br><span class="line">          subsample = runif(1, .6, .9),             </span><br><span class="line">          colsample_bytree = runif(1, .5, .8), </span><br><span class="line">          min_child_weight = sample(1:40, 1),</span><br><span class="line">          max_delta_step = sample(1:10, 1)</span><br><span class="line">          )</span><br><span class="line">    cv.nround = 50                                   # 迭代次数：50</span><br><span class="line">    cv.nfold = 5                                     # 5折交叉验证</span><br><span class="line">    seed.number = sample.int(10000, 1)[[1]]</span><br><span class="line">    set.seed(seed.number)</span><br><span class="line">    mdcv &lt;- xgb.cv(data=dtrain, params = param, nthread=6, metrics=c(&quot;auc&quot;,&quot;rmse&quot;,&quot;error&quot;),</span><br><span class="line">                    nfold=cv.nfold, nrounds=cv.nround, watchlist = list(),</span><br><span class="line">                    verbose = F, early_stop_round=8, maximize=FALSE)</span><br><span class="line"></span><br><span class="line">    min_logloss = min(mdcv$evaluation_log[,test_logloss_mean])</span><br><span class="line">    min_logloss_index = which.min(mdcv$evaluation_log[,test_logloss_mean])</span><br><span class="line"></span><br><span class="line">    if (min_logloss &lt; best_logloss) &#123;</span><br><span class="line">        best_logloss = min_logloss</span><br><span class="line">        best_logloss_index = min_logloss_index</span><br><span class="line">        best_seednumber = seed.number</span><br><span class="line">        best_param = param</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">(nround = best_logloss_index)</span><br><span class="line">set.seed(best_seednumber)</span><br><span class="line">best_seednumber</span><br><span class="line">(best_param)                # 显示最佳参数组合，到后面真正的模型要用</span><br></pre></td></tr></table></figure>
+<p>得到最佳参数组合：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/020.png?raw=true" alt=""></p>
+<h5 id="3-绘制-auc-rmse-error-曲线"><a href="#3-绘制-auc-rmse-error-曲线" class="headerlink" title="(3) 绘制 auc | rmse | error 曲线 "></a><strong><em>(3) 绘制 auc | rmse | error 曲线 </em></strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#mdcv$evaluation_log</span><br><span class="line"></span><br><span class="line">xgb_plot=function(input,output)&#123;</span><br><span class="line">  history=input</span><br><span class="line">  train_history=history[,1:8]%&gt;%mutate(id=row.names(history),class=&quot;train&quot;)</span><br><span class="line">  test_history=history[,9:16]%&gt;%mutate(id=row.names(history),class=&quot;test&quot;)</span><br><span class="line">  colnames(train_history)=c(&quot;logloss.mean&quot;,&quot;logloss.std&quot;,&quot;auc.mean&quot;,&quot;auc.std&quot;,&quot;rmse.mean&quot;,&quot;rmse.std&quot;,&quot;error.mean&quot;,&quot;error.std&quot;,&quot;id&quot;,&quot;class&quot;)</span><br><span class="line">  colnames(test_history)=c(&quot;logloss.mean&quot;,&quot;logloss.std&quot;,&quot;auc.mean&quot;,&quot;auc.std&quot;,&quot;rmse.mean&quot;,&quot;rmse.std&quot;,&quot;error.mean&quot;,&quot;error.std&quot;,&quot;id&quot;,&quot;class&quot;)</span><br><span class="line">  </span><br><span class="line">  his=rbind(train_history,test_history)</span><br><span class="line">  his$id=his$id%&gt;%as.numeric</span><br><span class="line">  his$class=his$class%&gt;%factor</span><br><span class="line">  </span><br><span class="line">  if(output==&quot;auc&quot;)&#123; </span><br><span class="line">    auc=ggplot(data=his,aes(x=id, y=auc.mean,ymin=auc.mean-auc.std,ymax=auc.mean+auc.std,fill=class),linetype=class)+</span><br><span class="line">      geom_line()+</span><br><span class="line">      geom_ribbon(alpha=0.5)+</span><br><span class="line">      labs(x=&quot;nround&quot;,y=NULL,title = &quot;XGB Cross Validation AUC&quot;)+</span><br><span class="line">      theme(title=element_text(size=15))+</span><br><span class="line">      theme_bw()</span><br><span class="line">    return(auc)</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">  </span><br><span class="line">  if(output==&quot;rmse&quot;)&#123;</span><br><span class="line">    rmse=ggplot(data=his,aes(x=id, y=rmse.mean,ymin=rmse.mean-rmse.std,ymax=rmse.mean+rmse.std,fill=class),linetype=class)+</span><br><span class="line">      geom_line()+</span><br><span class="line">      geom_ribbon(alpha=0.5)+</span><br><span class="line">      labs(x=&quot;nround&quot;,y=NULL,title = &quot;XGB Cross Validation RMSE&quot;)+</span><br><span class="line">      theme(title=element_text(size=15))+</span><br><span class="line">      theme_bw()</span><br><span class="line">    return(rmse)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  if(output==&quot;error&quot;)&#123;</span><br><span class="line">    error=ggplot(data=his,aes(x=id,y=error.mean,ymin=error.mean-error.std,ymax=error.mean+error.std,fill=class),linetype=class)+</span><br><span class="line">      geom_line()+</span><br><span class="line">      geom_ribbon(alpha=0.5)+</span><br><span class="line">      labs(x=&quot;nround&quot;,y=NULL,title = &quot;XGB Cross Validation ERROR&quot;)+</span><br><span class="line">      theme(title=element_text(size=15))+</span><br><span class="line">      theme_bw()</span><br><span class="line">    return(error)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>auc<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xgb_plot(mdcv$evaluation_log[,-1]%&gt;%data.frame,&quot;auc&quot;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/021.png?raw=true" alt=""><br>训练集与测试集的表现差距有点大，可能出现过拟合</p>
+<ul>
+<li>rmse<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xgb_plot(mdcv$evaluation_log[,-1]%&gt;%data.frame,&quot;rmse&quot;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/022.png?raw=true" alt=""><br>训练集与测试集的表现较统一，但是这个数值还是偏高</p>
+<ul>
+<li>error<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xgb_plot(mdcv$evaluation_log[,-1]%&gt;%data.frame,&quot;error&quot;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/023.png?raw=true" alt=""><br>测试集的表现非常不稳定，error值偏高</p>
+<p>总的来说模型需要进一步调整，但是作为XGB功能以及流程的展示，本篇不做细致调整，继续下一步！</p>
+<h5 id="4-建立模型"><a href="#4-建立模型" class="headerlink" title="(4) 建立模型"></a><strong><em>(4) 建立模型</em></strong></h5><p>根据转换后的数据格式dtrain，调参结果的最佳参数组合best_param，最佳迭代次数nround来建模<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model &lt;- xgb.train(data=dtrain, params=best_param, nrounds=nround, nthread=6, watchlist = list())</span><br></pre></td></tr></table></figure></p>
+<h5 id="5-绘制Importance排序图"><a href="#5-绘制Importance排序图" class="headerlink" title="(5) 绘制Importance排序图"></a><strong><em>(5) 绘制Importance排序图</em></strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">importanceRaw &lt;- xgb.importance(feature_names=colnames(dtrain), model = model)</span><br><span class="line"></span><br><span class="line">xgb.ggplot.importance(importanceRaw)     # importance 就是 信息增益</span><br><span class="line"></span><br><span class="line"># #--------------------------------------------------------------------------------------</span><br><span class="line"># # feature selection    # 这里可以根据importance设置阈值，进行特征筛选，这是特征筛选的方式之一</span><br><span class="line"># cum_impt=data.frame(names=importanceRaw$Feature,impt=cumsum(importanceRaw$Importance))</span><br><span class="line"># cum_impt=filter(cum_impt,cum_impt$impt&lt;0.9)</span><br><span class="line"># selected_feature&lt;-cum_impt$names</span><br><span class="line"># </span><br><span class="line"># train=select(train,selected_feature)</span><br><span class="line"># dtrain&lt;- xgb.DMatrix(data=select(train,-bad)%&gt;%as.matrix,label= train$bad%&gt;%as.matrix)</span><br><span class="line"># </span><br><span class="line"># model &lt;- xgb.train(data=dtrain, params=best_param, nrounds=nround, nthread=6, watchlist = list())</span><br><span class="line"># #--------------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/024.png?raw=true" alt=""><br>上图代表特征的重要性排序，可以设置重要性阈值，进行特征筛选。</p>
+<h5 id="6-进行预测"><a href="#6-进行预测" class="headerlink" title="(6) 进行预测"></a><strong><em>(6) 进行预测</em></strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dtest=select(test,-bad)    # &apos;bad&apos;是Y值</span><br><span class="line">yhat=predict(model,as.matrix(dtest),missing=NA)</span><br></pre></td></tr></table></figure>
+<h5 id="7-保存模型文件"><a href="#7-保存模型文件" class="headerlink" title="(7) 保存模型文件"></a><strong><em>(7) 保存模型文件</em></strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save(model, file = &quot;model/model_xgb.rda&quot;)</span><br></pre></td></tr></table></figure>
+<p>下次使用时，能直接导入训练好的模型，进行预测。</p>
+<hr>
+<h4 id="4-代码实现：Python版本"><a href="#4-代码实现：Python版本" class="headerlink" title="[4] 代码实现：Python版本"></a>[4] 代码实现：Python版本</h4><p>xgb的更新迭代特别快，目前在Windows上的安装就很烧脑，希望佛系安装一下<br>不提供源数据，感兴趣的朋友可以去找分类的数据试着跑一下</p>
+<h5 id="1-拆分数据集"><a href="#1-拆分数据集" class="headerlink" title="(1) 拆分数据集"></a><strong><em>(1) 拆分数据集</em></strong></h5><p>任何报错no module的包都请自行pip安装下来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># 导入包</span><br><span class="line">import os </span><br><span class="line">os.chdir(&quot;C:/Users/Yi/Desktop/abc&quot;) # 设置文件路径</span><br><span class="line"></span><br><span class="line">import random</span><br><span class="line">import pandas as pd</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import numpy as np</span><br><span class="line">import xgboost as xgb</span><br><span class="line"></span><br><span class="line">from numpy import sort</span><br><span class="line">from xgboost import plot_importance,XGBClassifier</span><br><span class="line">from sklearn.model_selection import train_test_split</span><br><span class="line">from sklearn.feature_selection import SelectFromModel</span><br><span class="line">from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, classification_report, confusion_matrix,mean_squared_error</span><br><span class="line">from ggplot import *</span><br><span class="line">from sklearn.externals import joblib</span><br><span class="line"></span><br><span class="line"># split data into X and Y</span><br><span class="line">X = tmp_df                  # 特征集，数据请自行提供</span><br><span class="line">Y = label_Y                 # 标签集，数据请自行提供</span><br><span class="line"></span><br><span class="line"># split data into train and test sets  # 拆分数据集</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=7)</span><br></pre></td></tr></table></figure></p>
+<h5 id="2-API接口说明"><a href="#2-API接口说明" class="headerlink" title="(2) API接口说明"></a><strong><em>(2) API接口说明</em></strong></h5><p>截至 2018/6 ，xgb model 有两个接口，<a href="http://xgboost.readthedocs.io/en/latest/python/python_api.html" target="_blank" rel="noopener">点击接口文件</a><br>接口文件值得反复阅读熟悉一下，与参数说明一起食用更佳~</p>
+<ul>
+<li>XGB Learning API ( import xgboost )</li>
+<li>Scikit-Learn API ( from xgboost import XGBClassifier )</li>
+</ul>
+<h5 id="3-XGB调参"><a href="#3-XGB调参" class="headerlink" title="(3) XGB调参"></a><strong><em>(3) XGB调参</em></strong></h5><ul>
+<li><p>方法一： 直接调参，调用 xgboost包 的 XGBClassifier()<br>可以对其参数进行手动修改，default参数如下<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/025.png?raw=true" alt=""></p>
+</li>
+<li><p>方法二： 随机调参，使用 xgb.cv</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">best_param = list()</span><br><span class="line">best_seednumber = 123</span><br><span class="line">best_logloss = np.Inf</span><br><span class="line">best_logloss_index = 0</span><br><span class="line"></span><br><span class="line">dtrain = xgb.DMatrix(X_train, y_train, feature_names = list(X_train))</span><br><span class="line"></span><br><span class="line"># 自定义调参组合------------------------------------</span><br><span class="line">for iter in range(50):</span><br><span class="line">    param = &#123;&apos;objective&apos; : &quot;binary:logistic&quot;,            	# 目标函数：logistic的二分类模型，因为Y值是二元的</span><br><span class="line">          	 &apos;max_depth&apos; : np.random.randint(6,11),         # 最大深度的调节范围</span><br><span class="line">          	 &apos;eta&apos; : np.random.uniform(.01, .3),            # eta收缩步长调节范围</span><br><span class="line">          	 &apos;gamma&apos; : np.random.uniform(0.0, 0.2),         # gamma最小损失调节范围</span><br><span class="line">          	 &apos;subsample&apos; : np.random.uniform(.6, .9),             </span><br><span class="line">          	 &apos;colsample_bytree&apos; : np.random.uniform(.5, .8), </span><br><span class="line">          	 &apos;min_child_weight&apos; : np.random.randint(1,41),</span><br><span class="line">          	 &apos;max_delta_step&apos; : np.random.randint(1,11)&#125;</span><br><span class="line"></span><br><span class="line">    cv_nround = 50                                   # 迭代次数：50</span><br><span class="line">    cv_nfold = 5                                     # 5折交叉验证</span><br><span class="line">    seed_number = np.random.randint(0，100)</span><br><span class="line">    random.seed(seed_number)</span><br><span class="line"></span><br><span class="line">    mdcv &lt;- xgb.cv(params = param, dtrain=dtrain, metrics=[&quot;auc&quot;,&quot;rmse&quot;,&quot;error&quot;,&quot;logloss&quot;],</span><br><span class="line">                    nfold=cv_nfold, num_boost_round=cv_nround, verbose_eval = None,</span><br><span class="line">					early_stopping_rounds=8, maximize=False)</span><br><span class="line"></span><br><span class="line">    min_logloss = min(mdcv[&apos;test-logloss-mean&apos;])</span><br><span class="line">    min_logloss_index = mdcv.index[mdcv[test-logloss-mean] == min(mdcv[test-logloss-mean])][0]</span><br><span class="line"></span><br><span class="line">    if min_logloss &lt; best_logloss:</span><br><span class="line">        best_logloss = min_logloss</span><br><span class="line">        best_logloss_index = min_logloss_index</span><br><span class="line">        best_seednumber = seed_number</span><br><span class="line">        best_param = param</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">random.seed(best_seednumber)</span><br><span class="line">nround = best_logloss_index</span><br><span class="line">print(&apos;best_round = %d, best_seednumber = %d&apos; %(nround,best_seednumber))</span><br><span class="line">print(&apos;best_param : ------------------------------&apos;)</span><br><span class="line">print(best_param)                # 显示最佳参数组合，到后面真正的模型要用</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法三：使用 gridsearch 和 cross validation<br>参考 <a href="https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/" target="_blank" rel="noopener">Complete Guide to Parameter Tuning in XGBoost</a></p>
+</li>
+</ul>
+<h5 id="4-绘制-train-test-的-auc-rmse-error"><a href="#4-绘制-train-test-的-auc-rmse-error" class="headerlink" title="(4) 绘制 train/test 的 auc/rmse/error"></a><strong><em>(4) 绘制 train/test 的 auc/rmse/error</em></strong></h5><p>定义函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">def xgb_plot(input,output):</span><br><span class="line">  	history=input</span><br><span class="line">  	train_history=history.iloc[:,8:16].assign(id=[i+1 for i in history.index])</span><br><span class="line">  	train_history[&apos;Class&apos;] = &apos;train&apos;</span><br><span class="line">  	test_history=history.iloc[:,0:8].assign(id=[i+1 for i in history.index])</span><br><span class="line">  	test_history[&apos;Class&apos;] = &apos;test&apos;</span><br><span class="line">  	train_history.columns = [&quot;auc_mean&quot;,&quot;auc_std&quot;,&quot;error_mean&quot;,&quot;error_std&quot;,&quot;logloss_mean&quot;,&quot;logloss_std&quot;,&quot;rmse_mean&quot;,&quot;rmse_std&quot;,&quot;id&quot;,&quot;Class&quot;]</span><br><span class="line">  	test_history.columns = [&quot;auc_mean&quot;,&quot;auc_std&quot;,&quot;error_mean&quot;,&quot;error_std&quot;,&quot;logloss_mean&quot;,&quot;logloss_std&quot;,&quot;rmse_mean&quot;,&quot;rmse_std&quot;,&quot;id&quot;,&quot;Class&quot;]</span><br><span class="line">  </span><br><span class="line">  	his=pd.concat([train_history,test_history])</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  	if output==&quot;auc&quot;:</span><br><span class="line">		his[&apos;y_min_auc&apos;] = his[&apos;auc_mean&apos;]-his[&apos;auc_std&apos;]</span><br><span class="line">		his[&apos;y_man_auc&apos;] = his[&apos;auc_mean&apos;]+his[&apos;auc_std&apos;]</span><br><span class="line"></span><br><span class="line">    	auc=ggplot(his,aes(x=&apos;id&apos;, y=&apos;auc.mean&apos;, ymin=&apos;y_min_auc&apos;, ymax=&apos;y_man_auc&apos;,fill=Class)+\</span><br><span class="line">    	  geom_line()+\</span><br><span class="line">    	  geom_ribbon(alpha=0.5)+\</span><br><span class="line">    	  labs(x=&quot;nround&quot;,y=&apos;&apos;,title = &quot;XGB Cross Validation AUC&quot;)</span><br><span class="line">    	return(auc)</span><br><span class="line">    </span><br><span class="line"> </span><br><span class="line">  </span><br><span class="line">  	if output==&quot;rmse&quot;:</span><br><span class="line">		his[&apos;y_min_rmse&apos;] = his[&apos;rmse_mean&apos;]-his[&apos;rmse_std&apos;]</span><br><span class="line">		his[&apos;y_man_rmse&apos;] = his[&apos;rmse_mean&apos;]+his[&apos;rmse_std&apos;]</span><br><span class="line"></span><br><span class="line">    	rmse=ggplot(his,aes(x=&apos;id&apos;, y=&apos;rmse.mean&apos;,ymin=&apos;y_min_rmse&apos;,ymax=&apos;y_man_rmse&apos;,fill=Class))+\</span><br><span class="line">    	  geom_line()+\</span><br><span class="line">    	  geom_ribbon(alpha=0.5)+\</span><br><span class="line">    	  labs(x=&quot;nround&quot;,y=&apos;&apos;,title = &quot;XGB Cross Validation RMSE&quot;)</span><br><span class="line">    	return(rmse)</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  	if output==&quot;error&quot;:</span><br><span class="line">		his[&apos;y_min_error&apos;] = his[&apos;error_mean&apos;]-his[&apos;error_std&apos;]</span><br><span class="line">		his[&apos;y_man_error&apos;] = his[&apos;error_mean&apos;]+his[&apos;error_std&apos;]</span><br><span class="line"></span><br><span class="line">    	error=ggplot(his,aes(x=&apos;id&apos;,y=&apos;error.mean&apos;,ymin=&apos;y_min_error&apos;,ymax=&apos;y_man_error&apos;,fill=Class))+\</span><br><span class="line">    	  geom_line()+\</span><br><span class="line">    	  geom_ribbon(alpha=0.5)+\</span><br><span class="line">    	  labs(x=&quot;nround&quot;,y=&apos;&apos;,title = &quot;XGB Cross Validation ERROR&quot;)</span><br><span class="line">    	return(error)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>横坐标是迭代次数，可以观察迭代时是否过拟合</li>
+<li>train曲线和test曲线的相差程度，可以侧面反映模型复杂度，检验是否过拟合<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xgb_plot(mdcv,&apos;auc&apos;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/031.jpg?raw=true" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xgb_plot(mdcv,&apos;rmse&apos;)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/032.jpg?raw=true" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xgb_plot(mdcv,&apos;error&apos;)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/033.jpg?raw=true" alt=""></p>
+<h5 id="5-建模，进行预测，打印评估指标"><a href="#5-建模，进行预测，打印评估指标" class="headerlink" title="(5) 建模，进行预测，打印评估指标"></a><strong><em>(5) 建模，进行预测，打印评估指标</em></strong></h5><ul>
+<li><p>方法一： 使用 xgboost.train</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 利用上面调参结果： best_param</span><br><span class="line"></span><br><span class="line">md_1 = xgb.train(best_param, dtrain, num_boost_round=nround)</span><br><span class="line"></span><br><span class="line"># 预测</span><br><span class="line">dtest = xgb.DMatrix(X_test, feature_names=list(X_test))</span><br><span class="line">preds = md_1.predict(dtest)</span><br><span class="line">print(mean_square_error(y_test, preds))</span><br><span class="line"></span><br><span class="line">predictions = [round(value) for value in preds]</span><br><span class="line">accuracy = accuracy_score(y_test, predictions)</span><br><span class="line">f1_score = f1_score(y_test,predictions)</span><br><span class="line">print(&quot;Accuracy: %.2f%%&quot; %(accuracy * 100.0))</span><br><span class="line">print(&quot;F1 Score: %.2f%%&quot; %(f1_score * 100.0))</span><br><span class="line"></span><br><span class="line"># save model</span><br><span class="line">md_1.save_model(&apos;xgb.model&apos;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法二： 使用 XGBClassifier()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 由于 xgb.train 与 XGBClassifier() 有部分参数的名字稍有出入，具体参考API接口文档</span><br><span class="line">best_param[&apos;learning_rate&apos;] = best_param.pop(&apos;eta&apos;)  # 修改参数字典的某个key名字</span><br><span class="line">best_param.update(&#123;&apos;colsample_bytree&apos;: 1&#125;)           # 取消列抽样，修改参数字典的某个value</span><br><span class="line"></span><br><span class="line">md_2 = XGBClassifier(**best_param)                   # 2个*号，允许直接填入字典格式的param</span><br><span class="line">md_2.fit(X_train, y_train)  </span><br><span class="line"></span><br><span class="line">ypred = md_2.predict(X_test)</span><br><span class="line">predictions = [round(value) for value in ypred]</span><br><span class="line"></span><br><span class="line"># 打印评估指标</span><br><span class="line">MSE = mean_squared_error(y_test, predictions)</span><br><span class="line">print(&quot;MSE: %.2f%%&quot; % (MSE * 100.0))  </span><br><span class="line">accuracy = accuracy_score(y_test, predictions)</span><br><span class="line">print(&quot;Accuracy: %.2f%%&quot; % (accuracy * 100.0))</span><br><span class="line">f1_score = f1_score(y_test, predictions)</span><br><span class="line">print(&quot;F1 Score: %.2f%%&quot; % (f1_score * 100.0))</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="6-绘制Importance排序图"><a href="#6-绘制Importance排序图" class="headerlink" title="(6) 绘制Importance排序图"></a><strong><em>(6) 绘制Importance排序图</em></strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ax = xgb.plot_importance(md_2, height=0.5)</span><br><span class="line">fig = ax.figure</span><br><span class="line">fig.set_size_inches(25,20)                  # 可调节图片尺寸和紧密程度</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/imp.png?raw=true" alt=""></p>
+<h5 id="7-根据Importance进行特征筛选"><a href="#7-根据Importance进行特征筛选" class="headerlink" title="(7) 根据Importance进行特征筛选"></a><strong><em>(7) 根据Importance进行特征筛选</em></strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"># sorted(list(selection_model.booster().get_score(importance_type=&apos;weight&apos;).values()),reverse = True)</span><br><span class="line"></span><br><span class="line">importance_plot = pd.DataFrame(&#123;&apos;feature&apos;:list(X_train.columns),&apos;importance&apos;:md_2.feature_importances_&#125;)</span><br><span class="line">importance_plot = importance_plot.sort_values(by=&apos;importance&apos;)</span><br><span class="line">importance_plot = importance_plot.reset.index(drop=True)</span><br><span class="line">thresholds = importance_plot.importance</span><br><span class="line">thresholds_valid = np.unique(thresholds[thresholds != 0])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for thresh in thresholds_valid:</span><br><span class="line"></span><br><span class="line">	# select features using threshold</span><br><span class="line">	selection = SelectFromModel(md_2, threshold=thresh, prefit=True)</span><br><span class="line">	select_X_train = selection.transform(X_train)</span><br><span class="line">	# train model</span><br><span class="line">	selection_model = XGBClassifier(**best_param)</span><br><span class="line">	selection_model.fit(select_X_train, y_train)</span><br><span class="line">	# eval model</span><br><span class="line">	select_X_test = selection.transform(X_test)</span><br><span class="line">	y_pred = selection_model.predict(select_X_test)</span><br><span class="line">	predictions = [round(value) for value in y_pred]</span><br><span class="line">	accuracy = accuracy_score(y_test, predictions)</span><br><span class="line">	print(&quot;Thresh=%.4f, n=%d, Accuracy: %.2f%%&quot; % (thresh, select_X_train.shape[1], accuracy*100.0))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">thresh = 0.034</span><br><span class="line">selected_features = list(importance_plot[importance_plot.importance &gt; thresh][&apos;feature&apos;])</span><br><span class="line">print(&apos;selected features are :\n %s&apos;%selected_features)</span><br><span class="line">select_X_train = X_train[selected_features]                        # 筛选Importance符合阈值的特征集</span><br><span class="line"></span><br><span class="line">n_features = selected_X_train.shape[1]</span><br><span class="line">print(&apos;total: %d features are selected&apos; %n_features)</span><br><span class="line"></span><br><span class="line">selection_model = XGBClassifier(**best_param)                                   </span><br><span class="line">selection_model.fit(select_X_train, y_train)</span><br><span class="line"></span><br><span class="line">select_X_test = X_test[selected_features]</span><br><span class="line">y_pred = selection_model.predict(select_X_test)</span><br><span class="line">predictions = [round(value) for value in y_pred]</span><br><span class="line">accuracy = accuracy_score(y_test, predictions)</span><br><span class="line">f1_score = f1_score(y_test, predictions)</span><br><span class="line">print(&quot;Accuracy: %.2f%%&quot; % (accuracy * 100.0))</span><br><span class="line">print(&quot;F1 Score: %.2f%%&quot; % (f1_score * 100.0))</span><br></pre></td></tr></table></figure>
+<p>至于是先调参，再做变量筛选，还是先筛选后调参，或是反复调参反复筛选，纯凭个人喜号。</p>
+<h5 id="8-绘制决策树"><a href="#8-绘制决策树" class="headerlink" title="(8) 绘制决策树"></a><strong><em>(8) 绘制决策树</em></strong></h5><ul>
+<li>先下载<a href="https://graphviz.gitlab.io/_pages/Download/Download_windows.html" target="_blank" rel="noopener">graphviz 的 graphviz-2.38.zip</a>，我的是windows，其他系统请自由选择</li>
+<li>配置环境变量<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># graphviz文件存在的路径配置</span><br><span class="line">os.environ[&quot;PATH&quot;] += os.pathsep + &apos;C:/Users/Yi/Anaconda3/envs/release/bin/&apos;  # 在引号&apos;&apos;这里替换你的dot.exe路径</span><br><span class="line">xgb.to_graphviz(md_2, num_trees=0, rankdir=&apos;LR&apos;)  # num_trees的值是第几棵树，0为第一棵，rankdir是树的方向，default是从上到下</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/xgboost/ppp.png?raw=true" alt=""></p>
+<h5 id="9-保存模型文件，导入模型文件"><a href="#9-保存模型文件，导入模型文件" class="headerlink" title="(9) 保存模型文件，导入模型文件"></a><strong><em>(9) 保存模型文件，导入模型文件</em></strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># save model</span><br><span class="line">joblib.dump(selection_model,&apos;xgb.model&apos;)</span><br><span class="line"></span><br><span class="line"># load model</span><br><span class="line">loaded_model = joblib.load(&apos;xgb.model&apos;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="5-XGB的优点"><a href="#5-XGB的优点" class="headerlink" title="[5] XGB的优点"></a>[5] XGB的优点</h4><p>敲桌子！重点考点！<br><em>同意义问题：XGB 与 GBDT的区别</em></p>
+<ol>
+<li>损失函数：GBDT是一阶，XGB是二阶泰勒展开</li>
+<li>XGB的损失函数可以自定义，具体参考 objective 这个参数</li>
+<li>XGB的目标函数进行了优化，有正则项，减少过拟合，控制模型复杂度</li>
+<li>预剪枝：预防过拟合<blockquote>
+<ul>
+<li>GBDT：分裂到负损失，分裂停止 </li>
+<li>XGB：一直分裂到指定的最大深度（max_depth），然后回过头剪枝。如某个点之后不再正值，去除这个分裂。优点是，当一个负损失(-2)后存在一个正损失(+10)，(-2+10=8&gt;0)求和为正，保留这个分裂。</li>
+</ul>
+</blockquote>
+</li>
+<li>XGB有列抽样/column sample，借鉴随机森林，减少过拟合</li>
+<li>缺失值处理：XGB内置缺失值处理规则，用户提供一个和其它样本不同的值，作为一个参数传进去，作为缺失值取值。<br>XGB在不同节点遇到缺失值采取不同处理方法，并且学习未来遇到缺失值的情况。</li>
+<li>XGB内置交叉检验（CV），允许每轮boosting迭代中用交叉检验，以便获取最优 Boosting_n_round 迭代次数，可利用网格搜索grid search和交叉检验cross validation进行调参。<br>GBDT使用网格搜索。</li>
+<li>XGB运行速度快：data事先安排好以block形式存储，利于并行计算。在训练前，对数据排序，后面迭代中反复使用block结构。<br>关于并行，不是在tree粒度上的并行，并行在特征粒度上，对特征进行Importance计算排序，也是信息增益计算，找到最佳分割点。</li>
+<li>灵活性：XGB可以深度定制每一个子分类器</li>
+<li>易用性：XGB有各种语言封装</li>
+<li>扩展性：XGB提供了分布式训练，支持Hadoop实现</li>
+<li>共同优点：<blockquote>
+<ul>
+<li>当数据有噪音的时候，树Tree的算法抗噪能力更强</li>
+<li>树容易对缺失值进行处理</li>
+<li>树对分类变量Categorical feature更友好</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<hr>
+<p>XGB实在太强大 实时在更新，目前的总结只是利用目前的资源 未来会发展成什么样，谁也猜不到。</p>
+<p>参考：</p>
+<ul>
+<li><a href="http://xgboost.readthedocs.io/en/latest/" target="_blank" rel="noopener">官方使用手册</a></li>
+<li><a href="https://github.com/dmlc/xgboost/tree/master/demo" target="_blank" rel="noopener">Awesome XGBoost</a></li>
+<li><a href="https://blog.csdn.net/sinat_26917383/article/details/52623754" target="_blank" rel="noopener">R+python︱XGBoost</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/xgboost/" rel="tag"># xgboost</a>
+          
+            <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+          
+            <a href="/tags/boosting/" rel="tag"># boosting</a>
+          
+            <a href="/tags/gradient/" rel="tag"># gradient</a>
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/25/基于R的数据清洗（1）/" rel="next" title="Machine Learning笔记 - 基于R的数据清洗（1）">
+                <i class="fa fa-chevron-left"></i> Machine Learning笔记 - 基于R的数据清洗（1）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/13/赌博小游戏的开发-骰宝-py/" rel="prev" title="赌博小游戏的开发 - 骰宝">
+                赌博小游戏的开发 - 骰宝 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-算法原理简述（基于上面陈天奇的PPT）："><span class="nav-text">[1] 算法原理简述（基于上面陈天奇的PPT）：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Review-of-key-concepts-of-supervised-learning-监督学习的主要元素"><span class="nav-text">(1) Review of key concepts of supervised learning | 监督学习的主要元素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Regression-Tree-and-Ensemble-当你谈决策树时你在谈什么"><span class="nav-text">(2) Regression Tree and Ensemble | 当你谈决策树时你在谈什么</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Gradient-Boosting-How-do-we-Learn"><span class="nav-text">(3) Gradient Boosting (How do we Learn)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-参数说明："><span class="nav-text">[2] 参数说明：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-General-parameters"><span class="nav-text">(1) General parameters</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Booster-parameters"><span class="nav-text">(2) Booster parameters</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Learning-Task-parameters"><span class="nav-text">(3) Learning Task parameters</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-Command-line-parameters"><span class="nav-text">(4) Command line parameters</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-代码实现：R语言版本"><span class="nav-text">[3] 代码实现：R语言版本</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-导入数据"><span class="nav-text">(1) 导入数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-利用-xgb-cv-调参"><span class="nav-text">(2) 利用 xgb.cv 调参</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-绘制-auc-rmse-error-曲线"><span class="nav-text">(3) 绘制 auc | rmse | error 曲线 </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-建立模型"><span class="nav-text">(4) 建立模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-绘制Importance排序图"><span class="nav-text">(5) 绘制Importance排序图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-进行预测"><span class="nav-text">(6) 进行预测</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-保存模型文件"><span class="nav-text">(7) 保存模型文件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-代码实现：Python版本"><span class="nav-text">[4] 代码实现：Python版本</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-拆分数据集"><span class="nav-text">(1) 拆分数据集</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-API接口说明"><span class="nav-text">(2) API接口说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-XGB调参"><span class="nav-text">(3) XGB调参</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-绘制-train-test-的-auc-rmse-error"><span class="nav-text">(4) 绘制 train/test 的 auc/rmse/error</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-建模，进行预测，打印评估指标"><span class="nav-text">(5) 建模，进行预测，打印评估指标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-绘制Importance排序图"><span class="nav-text">(6) 绘制Importance排序图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-根据Importance进行特征筛选"><span class="nav-text">(7) 根据Importance进行特征筛选</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-绘制决策树"><span class="nav-text">(8) 绘制决策树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-保存模型文件，导入模型文件"><span class="nav-text">(9) 保存模型文件，导入模型文件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-XGB的优点"><span class="nav-text">[5] XGB的优点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/06/01/XGBOOST使用说明/';
+          this.page.identifier = '2018/06/01/XGBOOST使用说明/';
+          this.page.title = 'Machine Learning笔记 - XGBOOST 教程';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

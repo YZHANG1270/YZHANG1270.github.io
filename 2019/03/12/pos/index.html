@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="词类，POS(Part Of Speech)，就是所谓的名词、动词、形容词、代词、介词等词性分类。词性标注（POS tagging）就是标记/判断一个词属于什么词性。词类有以下特征：">
+<meta name="keywords" content="NLP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="POS tagging 词性标注 之 武林外传版">
+<meta property="og:url" content="http://codewithzhangyi.com/2019/03/12/pos/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="词类，POS(Part Of Speech)，就是所谓的名词、动词、形容词、代词、介词等词性分类。词性标注（POS tagging）就是标记/判断一个词属于什么词性。词类有以下特征：">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-03-12T15:26:01.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="POS tagging 词性标注 之 武林外传版">
+<meta name="twitter:description" content="词类，POS(Part Of Speech)，就是所谓的名词、动词、形容词、代词、介词等词性分类。词性标注（POS tagging）就是标记/判断一个词属于什么词性。词类有以下特征：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2019/03/12/pos/"/>
+
+
+
+
+
+  <title>POS tagging 词性标注 之 武林外传版 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2019/03/12/pos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">POS tagging 词性标注 之 武林外传版</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-12T21:54:53+08:00">
+                2019-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/12/pos/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/12/pos/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>词类，POS(Part Of Speech)，就是所谓的名词、动词、形容词、代词、介词等词性分类。词性标注（POS tagging）就是标记/判断一个词属于什么词性。词类有以下特征：<br><a id="more"></a></p>
+<ul>
+<li>分布特征(Distributional)<br>单词能够出现在相似的环境中<br>单词有相似的功能</li>
+<li>形态特征(Morphological)<br>单词有相同的前缀后缀(词缀具有相似的功能)<br>在句法结构中有相似的上下文环境</li>
+<li>无关于含义(meaning)，也无关于语法(可以是主语/宾语，等等)</li>
+</ul>
+<p>词的属性可以提供很多信息： <strong>形容词</strong> 后面跟的往往是一个名词；一句话里 <strong>名词</strong> 通常是比较重要的信息，而 <strong>介词</strong> 可能比较不重要。比如 <strong>“同福客栈的掌柜是谁？”</strong>  这句话里，重要的词有</p>
+<ul>
+<li>名词：“客栈”、“掌柜”</li>
+<li>疑问词：“谁”</li>
+</ul>
+<p>词类标注是<strong>歧义消解(disambiguation)</strong> 的一个重要方面。很多次不仅仅有一个词性，当不同词性时代表的意思不同。比如“排山倒海”，原先是一个形容词，用来形容声势浩大。但是如果是出现在郭芙蓉的嘴里，那基本表示一个招式名称，是一个名词。</p>
+<p>中文 POS tagging 体验链接：<a href="https://ai.baidu.com/tech/nlp/lexical" target="_blank" rel="noopener">百度</a> 、<a href="https://ai.qq.com/product/nlpbase.shtml#participle" target="_blank" rel="noopener">腾讯</a> </p>
+<h3 id="Python-Package"><a href="#Python-Package" class="headerlink" title="Python Package"></a>Python Package</h3><h4 id="jieba-🔗"><a href="#jieba-🔗" class="headerlink" title="jieba 🔗"></a>jieba <a href="https://github.com/fxsjy/jieba" target="_blank" rel="noopener">🔗</a></h4><p>jieba是优秀的中文分词工具，同样也有词性标注的功能。首先请确保”pip install jieba”，来个单条query：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba.posseg <span class="keyword">as</span> pseg</span><br><span class="line">words = pseg.cut(<span class="string">"佟掌柜喜欢的人是谁？"</span>)</span><br><span class="line"><span class="keyword">for</span> word, flag <span class="keyword">in</span> words:</span><br><span class="line">    print(word, flag)</span><br></pre></td></tr></table></figure>
+<p>output:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">佟 nr</span><br><span class="line">掌柜 n</span><br><span class="line">喜欢 v</span><br><span class="line">的 uj</span><br><span class="line">人 n</span><br><span class="line">是 v</span><br><span class="line">谁 r</span><br><span class="line">？ w</span><br></pre></td></tr></table></figure>
+<p>可以根据下面的jieba的词性对照表（会有变动）对上面的output进行解读：</p>
+<h5 id="jieba词性对照表"><a href="#jieba词性对照表" class="headerlink" title="jieba词性对照表"></a>jieba词性对照表</h5><div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>编码</strong></th>
+<th><strong>名称</strong></th>
+<th><strong>注解</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ag</td>
+<td>形语素</td>
+<td>形容词性语素。形容词代码为 a，语素代码ｇ前面置以A。</td>
+</tr>
+<tr>
+<td>a</td>
+<td>形容词</td>
+<td>取英语形容词 adjective的第1个字母。</td>
+</tr>
+<tr>
+<td>ad</td>
+<td>副形词</td>
+<td>直接作状语的形容词。形容词代码 a和副词代码d并在一起。</td>
+</tr>
+<tr>
+<td>an</td>
+<td>名形词</td>
+<td>具有名词功能的形容词。形容词代码 a和名词代码n并在一起。</td>
+</tr>
+<tr>
+<td>b</td>
+<td>区别词</td>
+<td>取汉字“别”的声母。</td>
+</tr>
+<tr>
+<td>c</td>
+<td>连词</td>
+<td>取英语连词 conjunction的第1个字母。</td>
+</tr>
+<tr>
+<td>dg</td>
+<td>副语素</td>
+<td>副词性语素。副词代码为 d，语素代码ｇ前面置以D。</td>
+</tr>
+<tr>
+<td>d</td>
+<td>副词</td>
+<td>取 adverb的第2个字母，因其第1个字母已用于形容词。</td>
+</tr>
+<tr>
+<td>e</td>
+<td>叹词</td>
+<td>取英语叹词 exclamation的第1个字母。</td>
+</tr>
+<tr>
+<td>f</td>
+<td>方位词</td>
+<td>取汉字“方”</td>
+</tr>
+<tr>
+<td>g</td>
+<td>语素</td>
+<td>绝大多数语素都能作为合成词的“词根”，取汉字“根”的声母。</td>
+</tr>
+<tr>
+<td>h</td>
+<td>前接成分</td>
+<td>取英语 head的第1个字母。</td>
+</tr>
+<tr>
+<td>i</td>
+<td>成语</td>
+<td>取英语成语 idiom的第1个字母。</td>
+</tr>
+<tr>
+<td>j</td>
+<td>简称略语</td>
+<td>取汉字“简”的声母。</td>
+</tr>
+<tr>
+<td>k</td>
+<td>后接成分</td>
+<td></td>
+</tr>
+<tr>
+<td>l</td>
+<td>习用语</td>
+<td>习用语尚未成为成语，有点“临时性”，取“临”的声母。</td>
+</tr>
+<tr>
+<td>m</td>
+<td>数词</td>
+<td>取英语 numeral的第3个字母，n，u已有他用。</td>
+</tr>
+<tr>
+<td>ng</td>
+<td>名语素</td>
+<td>名词性语素。名词代码为 n，语素代码ｇ前面置以N。</td>
+</tr>
+<tr>
+<td>n</td>
+<td>名词</td>
+<td>取英语名词 noun的第1个字母。</td>
+</tr>
+<tr>
+<td>nr</td>
+<td>人名</td>
+<td>名词代码 n和“人(ren)”的声母并在一起。</td>
+</tr>
+<tr>
+<td>ns</td>
+<td>地名</td>
+<td>名词代码 n和处所词代码s并在一起。</td>
+</tr>
+<tr>
+<td>nt</td>
+<td>机构团体</td>
+<td>“团”的声母为 t，名词代码n和t并在一起。</td>
+</tr>
+<tr>
+<td>nz</td>
+<td>其他专名</td>
+<td>“专”的声母的第 1个字母为z，名词代码n和z并在一起。</td>
+</tr>
+<tr>
+<td>o</td>
+<td>拟声词</td>
+<td>取英语拟声词 onomatopoeia的第1个字母。</td>
+</tr>
+<tr>
+<td>p</td>
+<td>介词</td>
+<td>取英语介词 prepositional的第1个字母。</td>
+</tr>
+<tr>
+<td>q</td>
+<td>量词</td>
+<td>取英语 quantity的第1个字母。</td>
+</tr>
+<tr>
+<td>r</td>
+<td>代词</td>
+<td>取英语代词 pronoun的第2个字母,因p已用于介词。</td>
+</tr>
+<tr>
+<td>s</td>
+<td>处所词</td>
+<td>取英语 space的第1个字母。</td>
+</tr>
+<tr>
+<td>tg</td>
+<td>时语素</td>
+<td>时间词性语素。时间词代码为 t,在语素的代码g前面置以T。</td>
+</tr>
+<tr>
+<td>t</td>
+<td>时间词</td>
+<td>取英语 time的第1个字母。</td>
+</tr>
+<tr>
+<td>u</td>
+<td>助词</td>
+<td>取英语助词 auxiliary</td>
+</tr>
+<tr>
+<td>vg</td>
+<td>动语素</td>
+<td>动词性语素。动词代码为 v。在语素的代码g前面置以V。</td>
+</tr>
+<tr>
+<td>v</td>
+<td>动词</td>
+<td>取英语动词 verb的第一个字母。</td>
+</tr>
+<tr>
+<td>vd</td>
+<td>副动词</td>
+<td>直接作状语的动词。动词和副词的代码并在一起。</td>
+</tr>
+<tr>
+<td>vn</td>
+<td>名动词</td>
+<td>指具有名词功能的动词。动词和名词的代码并在一起。</td>
+</tr>
+<tr>
+<td>w</td>
+<td>标点符号</td>
+<td></td>
+</tr>
+<tr>
+<td>x</td>
+<td>非语素字</td>
+<td>非语素字只是一个符号，字母 x通常用于代表未知数、符号。</td>
+</tr>
+<tr>
+<td>y</td>
+<td>语气词</td>
+<td>取汉字“语”的声母。</td>
+</tr>
+<tr>
+<td>z</td>
+<td>状态词</td>
+<td>取汉字“状”的声母的前一个字母。</td>
+</tr>
+<tr>
+<td>un</td>
+<td>未知词</td>
+<td>不可识别词及用户自定义词组。取英文Unknown首两个字母。(非北大标准，CSW分词中定义)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>再来个多条query的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">query = [<span class="string">'秀才最喜欢说的话是什么'</span>,<span class="string">'老白的外号是什么'</span>,<span class="string">'郭芙蓉的情敌是谁'</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> q <span class="keyword">in</span> query:</span><br><span class="line">    d = &#123;&#125;</span><br><span class="line">    words = pseg.cut(q)</span><br><span class="line">    <span class="keyword">for</span> word, flag <span class="keyword">in</span> words:</span><br><span class="line">        d[word] = flag</span><br><span class="line">    print(d)</span><br></pre></td></tr></table></figure>
+<p>output：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'喜欢'</span>: <span class="string">'v'</span>, <span class="string">'说'</span>: <span class="string">'v'</span>, <span class="string">'是'</span>: <span class="string">'v'</span>, <span class="string">'的话'</span>: <span class="string">'u'</span>, <span class="string">'最'</span>: <span class="string">'d'</span>, <span class="string">'秀才'</span>: <span class="string">'n'</span>, <span class="string">'什么'</span>: <span class="string">'r'</span>&#125;</span><br><span class="line">&#123;<span class="string">'的'</span>: <span class="string">'uj'</span>, <span class="string">'是'</span>: <span class="string">'v'</span>, <span class="string">'老白'</span>: <span class="string">'nr'</span>, <span class="string">'什么'</span>: <span class="string">'r'</span>, <span class="string">'外号'</span>: <span class="string">'n'</span>&#125;</span><br><span class="line">&#123;<span class="string">'是'</span>: <span class="string">'v'</span>, <span class="string">'郭'</span>: <span class="string">'nr'</span>, <span class="string">'芙蓉'</span>: <span class="string">'n'</span>, <span class="string">'的'</span>: <span class="string">'uj'</span>, <span class="string">'情敌'</span>: <span class="string">'n'</span>, <span class="string">'谁'</span>: <span class="string">'r'</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>基本上还是挺准的。</p>
+<h4 id="HanLP-🔗"><a href="#HanLP-🔗" class="headerlink" title="HanLP 🔗"></a>HanLP <a href="https://github.com/hankcs/pyhanlp" target="_blank" rel="noopener">🔗</a></h4><p>HanLP实际上是Java写的，pyhanlp才是python接口，因此下载是”pip install pyhanlp”</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyhanlp <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">print(HanLP.segment(<span class="string">'老白的真实身份是什么'</span>))</span><br><span class="line"><span class="keyword">for</span> term <span class="keyword">in</span> HanLP.segment(<span class="string">'老白的真实身份是什么'</span>):</span><br><span class="line">    print(<span class="string">'&#123;&#125;\t&#123;&#125;'</span>.format(term.word, term.nature)) <span class="comment"># 获取单词与词性</span></span><br></pre></td></tr></table></figure>
+<p>output：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[老白/nz, 的/ude1, 真实/a, 身份/n, 是/vshi, 什么/ry]</span><br><span class="line">老白      nz</span><br><span class="line">的       ude1</span><br><span class="line">真实      a</span><br><span class="line">身份      n</span><br><span class="line">是       vshi</span><br><span class="line">什么      ry</span><br></pre></td></tr></table></figure>
+<h5 id="HanLP的词性对照表"><a href="#HanLP的词性对照表" class="headerlink" title="HanLP的词性对照表"></a>HanLP的词性对照表</h5><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>编码</th>
+<th>名称</th>
+<th>编码</th>
+<th>名称</th>
+<th>编码</th>
+<th>名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P 1</strong></td>
+<td>===========</td>
+<td>===</td>
+<td>==========================</td>
+<td>=====</td>
+<td>==============</td>
+</tr>
+<tr>
+<td>a</td>
+<td>形容词</td>
+<td>gc</td>
+<td>化学相关词汇</td>
+<td>nf</td>
+<td>食品，比如“薯片”</td>
+</tr>
+<tr>
+<td>ad</td>
+<td>副形词</td>
+<td>gg</td>
+<td>地理地质相关词汇</td>
+<td>ng</td>
+<td>名词性语素</td>
+</tr>
+<tr>
+<td>ag</td>
+<td>形容词性语素</td>
+<td>gi</td>
+<td>计算机相关词汇</td>
+<td>nh</td>
+<td>医药疾病等健康相关名词</td>
+</tr>
+<tr>
+<td>al</td>
+<td>形容词性惯用语</td>
+<td>gm</td>
+<td>数学相关词汇</td>
+<td>nhd</td>
+<td>疾病</td>
+</tr>
+<tr>
+<td>an</td>
+<td>名形词</td>
+<td>gp</td>
+<td>物理相关词汇</td>
+<td>nhm</td>
+<td>药品</td>
+</tr>
+<tr>
+<td>b</td>
+<td>区别词</td>
+<td>h</td>
+<td>前缀</td>
+<td>ni</td>
+<td>机构相关（不是独立机构名）</td>
+</tr>
+<tr>
+<td>bg</td>
+<td>区别语素</td>
+<td>i</td>
+<td>成语</td>
+<td>nic</td>
+<td>下属机构</td>
+</tr>
+<tr>
+<td>bl</td>
+<td>区别词性惯用语</td>
+<td>j</td>
+<td>简称略语</td>
+<td>nis</td>
+<td>机构后缀</td>
+</tr>
+<tr>
+<td>c</td>
+<td>连词</td>
+<td>k</td>
+<td>后缀</td>
+<td>nit</td>
+<td>教育相关机构</td>
+</tr>
+<tr>
+<td>cc</td>
+<td>并列连词</td>
+<td>l</td>
+<td>习用语</td>
+<td>nl</td>
+<td>名词性惯用语</td>
+</tr>
+<tr>
+<td>d</td>
+<td>副词</td>
+<td>m</td>
+<td>数词</td>
+<td>nm</td>
+<td>物品名</td>
+</tr>
+<tr>
+<td>dg</td>
+<td>辄,俱,复之类的副词</td>
+<td>mg</td>
+<td>数语素</td>
+<td>nmc</td>
+<td>化学品名</td>
+</tr>
+<tr>
+<td>dl</td>
+<td>连语</td>
+<td>Mg</td>
+<td>甲乙丙丁之类的数词</td>
+<td>nn</td>
+<td>工作相关名词</td>
+</tr>
+<tr>
+<td>e</td>
+<td>叹词</td>
+<td>mq</td>
+<td>数量词</td>
+<td>nnd</td>
+<td>职业</td>
+</tr>
+<tr>
+<td>end</td>
+<td>仅用于终##终</td>
+<td>n</td>
+<td>名词</td>
+<td>nnt</td>
+<td>职务职称</td>
+</tr>
+<tr>
+<td>f</td>
+<td>方位词</td>
+<td>nb</td>
+<td>生物名</td>
+<td>nr</td>
+<td>人名</td>
+</tr>
+<tr>
+<td>g</td>
+<td>学术词汇</td>
+<td>nba</td>
+<td>动物名</td>
+<td>nr1</td>
+<td>复姓</td>
+</tr>
+<tr>
+<td>gb</td>
+<td>生物相关词汇</td>
+<td>nbc</td>
+<td>动物纲目</td>
+<td>nr2</td>
+<td>蒙古姓名</td>
+</tr>
+<tr>
+<td>gbc</td>
+<td>生物类别</td>
+<td>nbp</td>
+<td>植物名</td>
+<td>nrf</td>
+<td>音译人名</td>
+</tr>
+<tr>
+<td><strong>P 2</strong></td>
+<td>===========</td>
+<td>===</td>
+<td>==========================</td>
+<td>=====</td>
+<td>==============</td>
+</tr>
+<tr>
+<td>nrj</td>
+<td>日语人名</td>
+<td>qg</td>
+<td>量词语素</td>
+<td>ud</td>
+<td>助词</td>
+</tr>
+<tr>
+<td>ns</td>
+<td>地名</td>
+<td>qt</td>
+<td>时量词</td>
+<td>ude1</td>
+<td>的 底</td>
+</tr>
+<tr>
+<td>nsf</td>
+<td>音译地名</td>
+<td>qv</td>
+<td>动量词</td>
+<td>ude2</td>
+<td>地</td>
+</tr>
+<tr>
+<td>nt</td>
+<td>机构团体名</td>
+<td>r</td>
+<td>代词</td>
+<td>ude3</td>
+<td>得</td>
+</tr>
+<tr>
+<td>ntc</td>
+<td>公司名</td>
+<td>rg</td>
+<td>代词性语素</td>
+<td>udeng</td>
+<td>等 等等 云云</td>
+</tr>
+<tr>
+<td>ntcb</td>
+<td>银行</td>
+<td>Rg</td>
+<td>古汉语代词性语素</td>
+<td>udh</td>
+<td>的话</td>
+</tr>
+<tr>
+<td>ntcf</td>
+<td>工厂</td>
+<td>rr</td>
+<td>人称代词</td>
+<td>ug</td>
+<td>过</td>
+</tr>
+<tr>
+<td>ntch</td>
+<td>酒店宾馆</td>
+<td>ry</td>
+<td>疑问代词</td>
+<td>uguo</td>
+<td>过</td>
+</tr>
+<tr>
+<td>nth</td>
+<td>医院</td>
+<td>rys</td>
+<td>处所疑问代词</td>
+<td>uj</td>
+<td>助词</td>
+</tr>
+<tr>
+<td>nto</td>
+<td>政府机构</td>
+<td>ryt</td>
+<td>时间疑问代词</td>
+<td>ul</td>
+<td>连词</td>
+</tr>
+<tr>
+<td>nts</td>
+<td>中小学</td>
+<td>ryv</td>
+<td>谓词性疑问代词</td>
+<td>ule</td>
+<td>了 喽</td>
+</tr>
+<tr>
+<td>ntu</td>
+<td>大学</td>
+<td>rz</td>
+<td>指示代词</td>
+<td>ulian</td>
+<td>连 （“连小学生都会”）</td>
+</tr>
+<tr>
+<td>nx</td>
+<td>字母专名</td>
+<td>rzs</td>
+<td>处所指示代词</td>
+<td>uls</td>
+<td>来讲 来说 而言 说来</td>
+</tr>
+<tr>
+<td>nz</td>
+<td>其他专名</td>
+<td>rzt</td>
+<td>时间指示代词</td>
+<td>usuo</td>
+<td>所</td>
+</tr>
+<tr>
+<td>o</td>
+<td>拟声词</td>
+<td>rzv</td>
+<td>谓词性指示代词</td>
+<td>uv</td>
+<td>连词</td>
+</tr>
+<tr>
+<td>p</td>
+<td>介词</td>
+<td>s</td>
+<td>处所词</td>
+<td>uyy</td>
+<td>一样 一般 似的 般</td>
+</tr>
+<tr>
+<td>pba</td>
+<td>介词“把”</td>
+<td>t</td>
+<td>时间词</td>
+<td>uz</td>
+<td>着</td>
+</tr>
+<tr>
+<td>pbei</td>
+<td>介词“被”</td>
+<td>tg</td>
+<td>时间词性语素</td>
+<td>uzhe</td>
+<td>着</td>
+</tr>
+<tr>
+<td>q</td>
+<td>量词</td>
+<td>u</td>
+<td>助词</td>
+<td>uzhi</td>
+<td>之</td>
+</tr>
+<tr>
+<td><strong>P 3</strong></td>
+<td>===========</td>
+<td>===</td>
+<td>==========================</td>
+<td>=====</td>
+<td>==============</td>
+</tr>
+<tr>
+<td>v</td>
+<td>动词</td>
+<td>wb</td>
+<td>百分号千分号，全角：％ ‰ 半角：%</td>
+<td>wt</td>
+<td>叹号，全角：！</td>
+</tr>
+<tr>
+<td>vd</td>
+<td>副动词</td>
+<td>wd</td>
+<td>逗号，全角：， 半角：,</td>
+<td>ww</td>
+<td>问号，全角：？</td>
+</tr>
+<tr>
+<td>vf</td>
+<td>趋向动词</td>
+<td>wf</td>
+<td>分号，全角：； 半角： ;</td>
+<td>wyy</td>
+<td>右引号，全角：” ’ 』</td>
+</tr>
+<tr>
+<td>vg</td>
+<td>动词性语素</td>
+<td>wh</td>
+<td>单位符号，全角：￥ ＄ ￡ ° ℃ 半角：$</td>
+<td>wyz</td>
+<td>左引号，全角：“ ‘ 『</td>
+</tr>
+<tr>
+<td>vi</td>
+<td>不及物动词（内动词）</td>
+<td>wj</td>
+<td>句号，全角：。</td>
+<td>x</td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>vl</td>
+<td>动词性惯用语</td>
+<td>wky</td>
+<td>右括号，全角：） 〕 ］ ｝ 》 】 〗 〉 半角： ) ] { &gt;</td>
+<td>xu</td>
+<td>网址URL</td>
+</tr>
+<tr>
+<td>vn</td>
+<td>名动词</td>
+<td>wkz</td>
+<td>左括号，全角：（ 〔 ［ ｛ 《 【 〖 〈 半角：( [ { &lt;</td>
+<td>xx</td>
+<td>非语素字</td>
+</tr>
+<tr>
+<td>vshi</td>
+<td>动词“是”</td>
+<td>wm</td>
+<td>冒号，全角：： 半角： :</td>
+<td>y</td>
+<td>语气词(delete yg)</td>
+</tr>
+<tr>
+<td>vx</td>
+<td>形式动词</td>
+<td>wn</td>
+<td>顿号，全角：、</td>
+<td>yg</td>
+<td>语气语素</td>
+</tr>
+<tr>
+<td>vyou</td>
+<td>动词“有”</td>
+<td>wp</td>
+<td>破折号，全角：—— －－ ——－ 半角：— —-</td>
+<td>z</td>
+<td>状态词</td>
+</tr>
+<tr>
+<td>w</td>
+<td>标点符号</td>
+<td>ws</td>
+<td>省略号，全角：…… …</td>
+<td>zg</td>
+<td>状态词</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>再来个多query例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">testCases = [<span class="string">'老白的真实身份是什么'</span>,<span class="string">'盗圣是谁'</span>]</span><br><span class="line"><span class="keyword">for</span> sentence <span class="keyword">in</span> testCases: print(HanLP.segment(sentence))</span><br><span class="line">    </span><br><span class="line"><span class="comment"># [老白/nz, 的/ude1, 真实/a, 身份/n, 是/vshi, 什么/ry]</span></span><br><span class="line"><span class="comment"># [盗/vg, 圣/ag, 是/vshi, 谁/ry]</span></span><br></pre></td></tr></table></figure>
+<p>这里的“盗圣”被分开了，分成“盗”和“圣”，一个动词一个形容词，没有被识别成专有名词，是因为训练的时候没有这个样本，的确盗圣这个也很少在其他场景/小说/电视剧等地方出现。</p>
+<p>顺便再来看看HanLP的其他功能：</p>
+<ul>
+<li><p>关键词提取</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">document = <span class="string">'老白的真实身份是什么'</span></span><br><span class="line">print(HanLP.extractKeyword(document, <span class="number">2</span>))</span><br><span class="line"><span class="comment"># output:[老白, 真实]</span></span><br><span class="line"></span><br><span class="line">print(HanLP.extractKeyword(document, <span class="number">3</span>))</span><br><span class="line"><span class="comment"># output:[老白, 身份, 真实]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自动摘要</p>
+<p>这里的自动摘要也是比较重要的功能，因为比写论文更头疼的是还要写摘要，如果自动摘要技术成熟后，论文的摘要就可以自动生成了。包括读长文章就可以先看摘要再决定要不要深入看下去。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(HanLP.extractSummary(<span class="string">'一个月黑风高的杀人夜，传说中的雌雄双煞从天而降，打乱了同福客栈的安稳日子。家世显赫、从小娇生惯养的郭芙蓉，父亲是一代大侠，始终把她笼罩在阴影之下。从小争胜好胜的她，毅然选择了一条离家出走独闯江湖的路，却在第一站，被扣在了同福客栈，从此开始了艰苦卓绝的杂役生涯……'</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># output</span></span><br><span class="line"><span class="comment"># [被扣在了同福客栈]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>依存句法分析</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">HanLP.parseDependency(<span class="string">"老白的真实身份是什么"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># output</span></span><br><span class="line"><span class="comment"># 1       老白      老白      nh      nr      _       4       定中关系    _       _</span></span><br><span class="line"><span class="comment"># 2       的       的       u       u       _       1       右附加关系   _       _</span></span><br><span class="line"><span class="comment"># 3       真实      真实      a       a       _       4       定中关系    _       _</span></span><br><span class="line"><span class="comment"># 4       身份      身份      n       n       _       5       主谓关系    _       _</span></span><br><span class="line"><span class="comment"># 5       是       是       v       v       _       0       核心关系    _       _</span></span><br><span class="line"><span class="comment"># 6       什么      什么      r       r       _       5       动宾关系    _       _</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>词性标注的一个应用方向是在知识图谱里，当你确定词性时，更加能方便把可能的答案揪出来。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/11/sentiment-analysis/" rel="next" title="sentiment analysis">
+                <i class="fa fa-chevron-left"></i> sentiment analysis
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/12/kaggle-movie-reviews/" rel="prev" title="Kaggle - Bag of Words Meets Bags of Popcorn">
+                Kaggle - Bag of Words Meets Bags of Popcorn <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-Package"><span class="nav-text">Python Package</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#jieba-🔗"><span class="nav-text">jieba 🔗</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#jieba词性对照表"><span class="nav-text">jieba词性对照表</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HanLP-🔗"><span class="nav-text">HanLP 🔗</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HanLP的词性对照表"><span class="nav-text">HanLP的词性对照表</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2019/03/12/pos/';
+          this.page.identifier = '2019/03/12/pos/';
+          this.page.title = 'POS tagging 词性标注 之 武林外传版';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

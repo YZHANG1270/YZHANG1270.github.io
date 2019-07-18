@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="machine learning,R,data cleaning," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="当算法逐渐框架化，变成调参的把戏，数据清洗 就成为了所谓的数据挖掘的精髓，是你与别人的模型拉开差距的地方，也是你建模功力的最佳展示。如何洗数据？当然不是立白洗衣液，雕牌洗衣皂之类的。">
+<meta name="keywords" content="machine learning,R,data cleaning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Machine Learning笔记 - 基于R的数据清洗（1）">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/05/25/基于R的数据清洗（1）/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="当算法逐渐框架化，变成调参的把戏，数据清洗 就成为了所谓的数据挖掘的精髓，是你与别人的模型拉开差距的地方，也是你建模功力的最佳展示。如何洗数据？当然不是立白洗衣液，雕牌洗衣皂之类的。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/004.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/003.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/005.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/006.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/007.png?raw=true">
+<meta property="og:updated_time" content="2019-02-11T07:43:19.774Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Machine Learning笔记 - 基于R的数据清洗（1）">
+<meta name="twitter:description" content="当算法逐渐框架化，变成调参的把戏，数据清洗 就成为了所谓的数据挖掘的精髓，是你与别人的模型拉开差距的地方，也是你建模功力的最佳展示。如何洗数据？当然不是立白洗衣液，雕牌洗衣皂之类的。">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/004.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/05/25/基于R的数据清洗（1）/"/>
+
+
+
+
+
+  <title>Machine Learning笔记 - 基于R的数据清洗（1） | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/05/25/基于R的数据清洗（1）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Machine Learning笔记 - 基于R的数据清洗（1）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-25T14:23:43+08:00">
+                2018-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/25/基于R的数据清洗（1）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/25/基于R的数据清洗（1）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>当算法逐渐框架化，变成调参的把戏，<strong>数据清洗</strong> 就成为了所谓的数据挖掘的精髓，是你与别人的模型拉开差距的地方，也是你建模功力的最佳展示。<br>如何洗数据？当然不是立白洗衣液，雕牌洗衣皂之类的。<br><a id="more"></a></p>
+<p>数据清洗是一个漫长、耗时、经验积累的过程，本文包括：</p>
+<ul>
+<li>导入数据</li>
+<li>理解特征、数据类型</li>
+<li>缺失值处理</li>
+<li>数据类型的统一性处理</li>
+<li>分类变量的处理(unary | binary | nomial | categorical | ordinal)</li>
+<li>连续变量的处理(interval)</li>
+</ul>
+<p>排序不分先后，有些步骤会重复出现<br>比如观察缺失值，缺失值填充等</p>
+<hr>
+<h4 id="1-导入数据"><a href="#1-导入数据" class="headerlink" title="1. 导入数据"></a>1. 导入数据</h4><p><a href="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/train.csv" target="_blank" rel="noopener">train.csv</a>  <a href="https://www.kaggle.com/c/titanic/data" target="_blank" rel="noopener">下载</a><br>本文的样本数据为kaggle入门赛Titanic的数据，地球人都懂的……吧？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 导入包</span><br><span class="line">packages&lt;-c(&quot;ggplot2&quot;,&quot;dplyr&quot;,&quot;varhandle&quot;)</span><br><span class="line">UsePackages&lt;-function(p)&#123;</span><br><span class="line">  if (!is.element(p,installed.packages()[,1]))&#123;</span><br><span class="line">    install.packages(p)&#125;</span><br><span class="line">  require(p,character.only = TRUE)&#125;</span><br><span class="line">for(p in packages)&#123;</span><br><span class="line">  UsePackages(p)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">library(ggplot2)</span><br><span class="line">library(dplyr)</span><br><span class="line">library(varhandle)</span><br></pre></td></tr></table></figure>
+<p>以下的数据清洗方法、思路包含却不仅限于这个数据样本，按照整体分析框架会拓展到其他常用的特征<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 我将下载的数据放在&quot;D:/1_kaggle/titanic/data&quot;的路径下</span><br><span class="line"></span><br><span class="line">setwd(&quot;D:/1_kaggle/titanic&quot;)       # 设置路径</span><br><span class="line">train = read.csv(&apos;data/train.csv&apos;) # 导入csv格式的数据</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/004.png?raw=true" alt=""></p>
+<h4 id="2-理解特征、数据类型"><a href="#2-理解特征、数据类型" class="headerlink" title="2. 理解特征、数据类型"></a>2. 理解特征、数据类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">ncol(train)      # 字段数量 列数</span><br><span class="line"># 12</span><br><span class="line"></span><br><span class="line">nrow(train)      # 样本数量 行数</span><br><span class="line"># 891</span><br><span class="line"></span><br><span class="line">colnames(train)  # 字段名   列名</span><br><span class="line"># &quot;PassengerId&quot;  &quot;Survived&quot;   &quot;Pclass&quot;   &quot;Name&quot;</span><br><span class="line"># &quot;Sex&quot;          &quot;Age&quot;        &quot;SibSp&quot;    &quot;Parch&quot;    </span><br><span class="line"># &quot;Ticket&quot;       &quot;Fare&quot;       &quot;Cabin&quot;    &quot;Embarked&quot; </span><br><span class="line"></span><br><span class="line">cbind(apply(train,2,function(x)length(unique(x))),sapply(train,class))  # 获取每列的数据种类数，和 数据类型</span><br><span class="line"># PassengerId     &quot;891&quot;  &quot;integer&quot;</span><br><span class="line"># Survived        &quot;2&quot;    &quot;integer&quot;</span><br><span class="line"># Pclass     	  &quot;3&quot;    &quot;integer&quot;</span><br><span class="line"># Name       	  &quot;891&quot;  &quot;factor&quot; </span><br><span class="line"># Sex       	  &quot;2&quot;    &quot;factor&quot; </span><br><span class="line"># Age       	  &quot;89&quot;   &quot;numeric&quot;</span><br><span class="line"># SibSp     	  &quot;7&quot;    &quot;integer&quot;</span><br><span class="line"># Parch     	  &quot;7&quot;    &quot;integer&quot;</span><br><span class="line"># Ticket    	  &quot;681&quot;  &quot;factor&quot; </span><br><span class="line"># Fare      	  &quot;248&quot;  &quot;numeric&quot;</span><br><span class="line"># Cabin     	  &quot;148&quot;  &quot;factor&quot; </span><br><span class="line"># Embarked  	  &quot;4&quot;    &quot;factor&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>训练集中乘客的特征有：PassengerId、Pclass、Name、Sex、Age、SibSp、Parch、Ticket、Fare、Cabin、Embarked</li>
+<li>12个字段/特征，12列，891行</li>
+<li>integer | numeric 为连续变量/数值型特征</li>
+<li>factor 为分类变量/离散型的特征，一般需要额外处理才能训练</li>
+</ul>
+<h4 id="3-缺失值处理"><a href="#3-缺失值处理" class="headerlink" title="3. 缺失值处理"></a>3. 缺失值处理</h4><p>（1）观察缺失值比例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># 建立观察缺失值比例的函数 na.plot</span><br><span class="line">na.plot=function(data)&#123;</span><br><span class="line">  missing1=sapply(data,function(x)sum(x == &apos;&apos;)/nrow(data))</span><br><span class="line">  missing2=sapply(data,function(x)sum(sum(is.null(x)), sum(is.na(x)))/nrow(data))</span><br><span class="line">  if(sum(is.na(missing1))&gt;0)&#123;</span><br><span class="line">    missing1[is.na(missing1)] = 0</span><br><span class="line">  &#125;</span><br><span class="line">  missing = missing1 + missing2</span><br><span class="line">  print(missing)</span><br><span class="line"></span><br><span class="line">  missing=missing[order(missing,decreasing = T)]</span><br><span class="line">  nadata=missing[missing&gt;0]</span><br><span class="line">  na_df=data.frame(var=names(nadata),na=nadata,row.names = NULL)</span><br><span class="line">  ggplot(na_df)+</span><br><span class="line">    geom_bar(aes(x=reorder(var,na),y=na),stat=&apos;identity&apos;, fill=&apos;red&apos;)+</span><br><span class="line">    labs(y=&apos;% Missing&apos;,x=NULL,title=&apos;Percent of Missing Data by Feature&apos;) +</span><br><span class="line">    coord_flip(ylim = c(0,1))  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 调用函数</span><br><span class="line">na.plot(train)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/003.png?raw=true" alt=""></p>
+<ul>
+<li>字段 Cabin/ Age/ Embarked 有缺失值</li>
+<li>缺失值缺少越好，没有缺失值最好</li>
+</ul>
+<p>缺失值存在于DataFrame的形式：</p>
+<ul>
+<li>NA</li>
+<li>NULL</li>
+<li>‘’</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 以Cabin为例</span><br><span class="line"></span><br><span class="line">train$Cabin[is.na(train$Cabin)]     # 筛选出Cabin为NA的缺失值Cabin</span><br><span class="line"># train$Cabin[!is.na(train$Cabin)]  # 反逻辑</span><br><span class="line"></span><br><span class="line">train$Cabin[is.null(train$Cabin)]   # 筛选出Cabin为NULL的缺失值Cabin </span><br><span class="line"># train$Cabin[!is.null(train$Cabin)]# 反逻辑</span><br><span class="line"></span><br><span class="line">train$Cabin[train$Cabin == &apos;&apos;]      # 筛选出Cabin为&apos;&apos;的缺失值Cabin</span><br><span class="line"># train$Cabin[train$Cabin != &apos;&apos;]    # 反逻辑</span><br><span class="line"></span><br><span class="line">filter(train,!is.na(Cabin)&amp;!is.null(Cabin)&amp;(Cabin != &apos;&apos;))$Cabin  # 筛选出非缺失值的Cabin值</span><br></pre></td></tr></table></figure>
+<p>这样做数据清洗不免有些繁琐，如果逻辑合理，可以把NULL值和’’值都处理成NA值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 三种缺失值的区别在于length长度</span><br><span class="line">length(NA) == 1</span><br><span class="line"></span><br><span class="line">length(NULL) == 0</span><br><span class="line"></span><br><span class="line">length(&apos;&apos;) == 1</span><br></pre></td></tr></table></figure></p>
+<p>（2）当高缺失值占比出现时（例：missing proportion &gt; 95%），一般考虑删除该特征<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># 建立删除缺失值占比高于某比例的特征的函数</span><br><span class="line"># 下面的函数设置的阈值是 0.75</span><br><span class="line"></span><br><span class="line">na.drop=function(data)&#123;</span><br><span class="line">  missing1=sapply(data,function(x)sum(x == &apos;&apos;)/nrow(data))</span><br><span class="line">  missing2=sapply(data,function(x)sum(sum(is.null(x)), sum(is.na(x)))/nrow(data))</span><br><span class="line">  if(sum(is.na(missing1))&gt;0)&#123;</span><br><span class="line">    missing1[is.na(missing1)] = 0</span><br><span class="line">  &#125;</span><br><span class="line">  missing = missing1 + missing2</span><br><span class="line">  missing=cbind(colnames(data),as.numeric(missing)[!is.na(as.numeric(missing))])%&gt;%as.matrix()</span><br><span class="line">  print(missing)</span><br><span class="line">  valid=missing%&gt;%as.data.frame%&gt;%filter(missing[,2]&lt;0.75)    # 缺失值占比阈值设置</span><br><span class="line"></span><br><span class="line">  valid$V1&lt;-unfactor(valid$V1)</span><br><span class="line">  data=data%&gt;%select(valid$V1)%&gt;%as.data.frame()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">train=na.drop(train)    # 实施删除高缺失值特征</span><br><span class="line">na.plot(train)          # 观察是否被删除</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>Cabin缺失77%，将被删除</li>
+</ul>
+<p>（3）重要特征 &amp; 高缺失值占比：将该特征转换成binary特征，有数值为1，缺失值为0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">train = read.csv(&apos;data/train.csv&apos;) #恢复原df</span><br><span class="line"></span><br><span class="line"># 建立函数：筛选出高缺失值占比的特征</span><br><span class="line">na.toBinary=function(data)&#123;</span><br><span class="line">  missing1=sapply(data,function(x)sum(x == &apos;&apos;)/nrow(data))</span><br><span class="line">  missing2=sapply(data,function(x)sum(sum(is.null(x)), sum(is.na(x)))/nrow(data))</span><br><span class="line">  if(sum(is.na(missing1))&gt;0)&#123;</span><br><span class="line">    missing1[is.na(missing1)] = 0</span><br><span class="line">  &#125;</span><br><span class="line">  missing = missing1 + missing2</span><br><span class="line">  missing=cbind(colnames(data),as.numeric(missing)[!is.na(as.numeric(missing))])%&gt;%as.matrix()</span><br><span class="line">  print(missing)</span><br><span class="line">  </span><br><span class="line">  toBinary=missing%&gt;%as.data.frame()%&gt;%filter(missing[,2]&gt;0.75 &amp; missing[,2]&lt;1)      # 缺失值占比阈值设置,这里是选取缺失值比例大于0.75，小于1的字段，仅仅作为筛选出Cabin字段</span><br><span class="line"></span><br><span class="line">  toBinary$V1&lt;-unfactor(toBinary$V1)</span><br><span class="line">  print(toBinary$V1)</span><br><span class="line">&#125;</span><br><span class="line">na.toBinary(train)</span><br><span class="line"># &quot;Cabin&quot;</span><br><span class="line"></span><br><span class="line"># 假设Cabin为重要信息，对缺失值进行二值化</span><br><span class="line">train$Cabin = as.numeric(!is.na(train$Cabin)&amp;!is.null(train$Cabin)&amp;(train$Cabin != &apos;&apos;))</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>这里只是拿Cabin做个例子，实际上并不会把这个信息二值化</li>
+<li>当出现重要特征 &amp; 高缺失值占比时，才进行这个处理</li>
+</ul>
+<p>（4）缺失值填充</p>
+<p>缺失值填充有很多方法：</p>
+<ul>
+<li>数值型特征：可以用 均值/最大值/最小值/众数 填充</li>
+<li>时间序列特征：例如苹果今天的价格缺失，可以用昨日的价格填充</li>
+<li>将缺失值归为一类：可以用不曾出现也不会出现的值，比如：缺失年龄用 999 填充，缺失体重用 -1 填充</li>
+<li>缺失比例小的连续变量：可用有数值的数据进行对缺失值的回归预测填充，例：班上某同学的身高</li>
+<li>重要特征 &amp; 高缺失值占比：将缺失值二值化，在上面已经举例说明</li>
+<li>其他：可以用任何合理的逻辑进行填充</li>
+</ul>
+<p>（数值型特征）均值/最大值/最小值/众数的获取<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># 以 Age 为例</span><br><span class="line"></span><br><span class="line">tmp_Age = filter(train,!is.na(Age)&amp;!is.null(Age)&amp;(Age != &apos;&apos;))$Age   # 筛选出非空年龄值</span><br><span class="line"></span><br><span class="line">mean(tmp_Age)</span><br><span class="line"># 29.69912</span><br><span class="line">max(tmp_Age)</span><br><span class="line"># 80</span><br><span class="line">min(tmp_Age)</span><br><span class="line"># 0.42</span><br><span class="line"></span><br><span class="line"># 众数没有直接可以调用的function，需要自己写</span><br><span class="line"># create getmode function</span><br><span class="line">getmode&lt;-function(v)&#123;</span><br><span class="line">  uniqv&lt;-unique(v)</span><br><span class="line">  uniqv[which.max(tabulate(match(v,uniqv)))]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">getmode(tmp_Age)</span><br><span class="line"># 24</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 将Age的缺失值以众数填充</span><br><span class="line">train$Age[is.na(train$Age)] = getmode(tmp_Age)</span><br></pre></td></tr></table></figure></p>
+<h4 id="4-数据类型的统一性处理"><a href="#4-数据类型的统一性处理" class="headerlink" title="4. 数据类型的统一性处理"></a>4. 数据类型的统一性处理</h4><p>数据类型有两种属性：</p>
+<ul>
+<li>在数据里展示的类型</li>
+<li>在实际意义中的类型</li>
+</ul>
+<p>当两种类型不统一时，需要将其统一，或者做相应标识</p>
+<blockquote>
+<p>例：</p>
+<ul>
+<li>Pclass，舱位等级这个特征在数据集中以 1/2/3 的整数展示，显示类型为”integer”，为连续变量，但按字面解释这个特征实际上属于categorical分类变量，等级1/等级2/等级3，意义上类型应该是”factor”，两种属性不统一。</li>
+<li>SibSp特征描述乘客的兄弟姐妹或者配偶数量，显示类型为”integer”，字面类型也是数值型，连续变量，两种类型统一。</li>
+</ul>
+</blockquote>
+<p>数据类型应该统一如下：</p>
+<ul>
+<li>连续变量：Age、SibSp、Parch、Fare（已经全部为数值型变量）</li>
+<li>分类变量：PassengerId、Pclass、Name、Sex、Ticket、Cabin、Embarked（有数值型有离散型）</li>
+</ul>
+<h4 id="5-分类变量的处理"><a href="#5-分类变量的处理" class="headerlink" title="5. 分类变量的处理"></a>5. 分类变量的处理</h4><p><strong>分类变量会出现多种情况：</strong><br>（1）情况：分类信息需要提取<br>在Name中，有Mr/Mrs/Miss等称呼信息可以判别乘客的性别，虽然在这里Sex性别的信息未缺失，但是在结果出来前所有的信息都不能轻易丢弃<br>而且，按照Miss/Mrs可以大概预测缺失的年龄，对于名字中有Mrs的乘客的缺失年龄填充就不会出现10岁之类的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">train = read.csv(&apos;data/train.csv&apos;)</span><br><span class="line"></span><br><span class="line">which(grepl(&apos;Mrs.&apos;, train$Name))                    # 筛选出Mrs乘客的Index</span><br><span class="line">train$Name[which(grepl(&apos;Mrs.&apos;, train$Name))]        # 筛选出Mrs乘客的名字，这部分人的性别可以标识为 女性，在这里暂不做改动</span><br><span class="line">which(grepl(&apos;Mrs.&apos;, train$Name[is.na(train$Age)]))  # 筛选出年龄为缺失值的Mrs乘客的Index</span><br><span class="line"></span><br><span class="line"># 筛选出年龄为缺失值的Mrs乘客的年龄，下一步进行赋值</span><br><span class="line">train$Age[is.na(train$Age)][which(grepl(&apos;Mrs.&apos;, train$Name[is.na(train$Age)]))]   </span><br><span class="line"></span><br><span class="line"># 用无缺失值的Mrs群体的年龄的均值 来填充 Mrs群体的缺失年龄</span><br><span class="line"># 这样比直接用全体样本的年龄均值来填充缺失的样本年龄要合理一些</span><br><span class="line">train$Age[is.na(train$Age)][which(grepl(&apos;Mrs.&apos;, train$Name[is.na(train$Age)]))] = mean(train$Age[!is.na(train$Age)][which(grepl(&apos;Mrs.&apos;, train$Name[!is.na(train$Age)]))])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 同理可以对 Miss群体和 Mr群体进行年龄填充</span><br><span class="line">train$Age[is.na(train$Age)][which(grepl(&apos;Miss.&apos;, train$Name[is.na(train$Age)]))] = mean(train$Age[!is.na(train$Age)][which(grepl(&apos;Miss.&apos;, train$Name[!is.na(train$Age)]))])</span><br><span class="line">train$Age[is.na(train$Age)][which(grepl(&apos;Mr.&apos;, train$Name[is.na(train$Age)]))] = mean(train$Age[!is.na(train$Age)])</span><br><span class="line">train$Age[is.na(train$Age)] = mean(train$Age[!is.na(train$Age)])</span><br><span class="line"></span><br><span class="line"># 将年龄整数化</span><br><span class="line">train$Age = as.integer(train$Age)</span><br></pre></td></tr></table></figure></p>
+<p>（2）情况：分类的类数level太多</p>
+<p>ID类型：</p>
+<ul>
+<li>PassengerId：一个样本为一类，每个样本的ID不一样，无效信息直接删除</li>
+<li>身份证ID：与单纯的Index字段不一样，不能直接删除，能从里面提取出生年月日，年龄，性别，户籍省份等，信息提取完毕后可以删除</li>
+<li>userID：有些用户ID里也包含用户的注册信息，比如注册年月日等，需要对数据敏感</li>
+</ul>
+<p>多类别少样本 类型：</p>
+<ul>
+<li>合并类别：<br>双十一购物者的省份信息，在江浙沪有爆炸性的收件数量，而在西藏、新疆近10个区域等地的收件数量很少，可以把这10个地区合并为一类：偏远地区</li>
+</ul>
+<p>（3）情况：分类的类数level太少</p>
+<ul>
+<li>单类别：所有样本都属于一个类别，无效类别信息，删除特征</li>
+</ul>
+<p>（4）情况：连续变量离散化/分箱</p>
+<ul>
+<li>比如Age：可以把连续的年龄数值划分为：少年/青年/中年/老年，在决策树中这种操作会比较常见</li>
+</ul>
+<p><strong>处理方法：</strong><br>（1）onehot 独热编码处理<br>one-hot encoding就是用h个变量来代表这h个level，比如3个level的变量就表示成100，010，001</p>
+<p>这里以Cabin、Embarked为例，进行onehot处理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">train = read.csv(&apos;data/train.csv&apos;)</span><br><span class="line"></span><br><span class="line"># Cabin本身是由字母与数字组成的</span><br><span class="line"># 字母更能代表舱位的一定信息，因此对Cabin做如下处理</span><br><span class="line"># 对于有值的Cabin：仅保留字母信息</span><br><span class="line"># 对于缺失值的Cabin：用 NA 作为一类填充</span><br><span class="line"></span><br><span class="line">train$Cabin = ifelse(train$Cabin != &quot;&quot;,substr(gsub(&apos;[0-9]&apos;, &apos;&apos;, train$Cabin), 1, 1), &apos;NA&apos;)</span><br><span class="line">unique(train$Cabin)   # 处理后Cabin的数值种类</span><br><span class="line"># NA C  E  G  D  A  B  F  T </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 保留Embark的字母信息，缺失值用NA填充</span><br><span class="line">train$Embarked = ifelse(train$Embarked != &quot;&quot;, substr(train$Embarked, 1, 1), &apos;NA&apos;)</span><br><span class="line">unique(train$Embarked)   # 处理后Embark的数值种类</span><br><span class="line"># S  C  Q  NA</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 只有class类型为factor的特征才能做model.matrix处理，需要提前把character类型转换为factor类型</span><br><span class="line">features = c(&apos;Cabin&apos;,&apos;Embarked&apos;)    #需要做转换的特征名称</span><br><span class="line">for (f in features)&#123;</span><br><span class="line">  if( (class(train[[f]]) == &quot;character&quot;) || (class(train[[f]]) == &quot;factor&quot;))</span><br><span class="line">  &#123;</span><br><span class="line">    levels = unique(train[[f]])</span><br><span class="line">    train[[f]] = factor(train[[f]], level = levels)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># onehot处理</span><br><span class="line">trainMatrix &lt;- model.matrix(~ Cabin + Embarked, data=train, </span><br><span class="line">             contrasts.arg = lapply(train[,c(&apos;Cabin&apos;,&apos;Embarked&apos;)], contrasts, contrasts=FALSE))</span><br><span class="line"></span><br><span class="line">trainMatrix &lt;- trainMatrix[,-1]</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/005.png?raw=true" alt=""></p>
+<ul>
+<li>Cabin变成length(unique(train$Cabin)) =  9 个onehot特征</li>
+<li>Embark变成length(unique(train$Embarked)) =  4 个onehot特征</li>
+</ul>
+<p>（2）dummy 虚拟变量编码处理<br>dummy encoding就是把一个有h个level的变量变成h-1个变量，比如3个level的变量就表示成成10，01，或00</p>
+<h4 id="6-连续变量的处理"><a href="#6-连续变量的处理" class="headerlink" title="6. 连续变量的处理"></a>6. 连续变量的处理</h4><p>当分类变量都变成 0/1 的数字，而连续变量（比如年龄，是0~100的分布）的值域远远大于0~1，难免显得不公平。这个说法是有科学依据的，有兴趣可以手动推导一下。<br>因此一般会对连续变量进行 归一化(Regularization) | 标准化(Standardization) | 去中心化 | …(基本上是同一类思想，暂且都称为标准化)</p>
+<p>标准化有以下几种处理方式：<br>emmm….暂时懒得再打一遍，直接上图，希望能看的清楚<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/006.jpg?raw=true" alt=""></p>
+<p>这里以Fare为例，进行第二种：最大-最小化 | max-min 处理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train$Fare = (train$Fare-min(train$Fare))/(max(train$Fare)-min(train$Fare))</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/DataCleaning/007.png?raw=true" alt=""><br>这样票价Fare的值域就处于0~1之间了</p>
+<hr>
+<ul>
+<li>清洗这个dataframe不是目的<br>本文的目的是，当遇到类似的脏数据时，知道怎么去清洗</li>
+<li>本文只是展示了数据清洗的一个大概框架，具体的清洗方法会根据不同的脏数据做不同的处理<br>比如，如何从身份证ID获取生日/性别等信息</li>
+<li>在【基于R的数据清洗（2）】中，将会涉及一些有代表性的特征的处理，为特征工程模块做铺垫</li>
+</ul>
+<p>作业：<br>RMarkdown的安装与使用</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/data-cleaning/" rel="tag"># data cleaning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/02/CNN学习笔记-LeNet5结构详解/" rel="next" title="CNN笔记 - LeNet5结构详解">
+                <i class="fa fa-chevron-left"></i> CNN笔记 - LeNet5结构详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/01/XGBOOST使用说明/" rel="prev" title="Machine Learning笔记 - XGBOOST 教程">
+                Machine Learning笔记 - XGBOOST 教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-导入数据"><span class="nav-text">1. 导入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-理解特征、数据类型"><span class="nav-text">2. 理解特征、数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-缺失值处理"><span class="nav-text">3. 缺失值处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-数据类型的统一性处理"><span class="nav-text">4. 数据类型的统一性处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-分类变量的处理"><span class="nav-text">5. 分类变量的处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-连续变量的处理"><span class="nav-text">6. 连续变量的处理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/05/25/基于R的数据清洗（1）/';
+          this.page.identifier = '2018/05/25/基于R的数据清洗（1）/';
+          this.page.title = 'Machine Learning笔记 - 基于R的数据清洗（1）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

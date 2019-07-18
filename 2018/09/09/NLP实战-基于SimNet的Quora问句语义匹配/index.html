@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="machine learning,kaggle,quora,Semantic Matching,NLP,AnyQ," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Quora Question Pairs是kaggle里的问句语义匹配比赛。这场比赛对于nlp选手应该不陌生了，数据集也是大家入门nlp必备。本文在深度语义匹配使用的是百度开源的语义匹配框架AnyQ里的SimNet。">
+<meta name="keywords" content="machine learning,kaggle,quora,Semantic Matching,NLP,AnyQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP实战 - 基于SimNet的Quora问句语义匹配">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/09/09/NLP实战-基于SimNet的Quora问句语义匹配/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="Quora Question Pairs是kaggle里的问句语义匹配比赛。这场比赛对于nlp选手应该不陌生了，数据集也是大家入门nlp必备。本文在深度语义匹配使用的是百度开源的语义匹配框架AnyQ里的SimNet。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/001.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/002.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/022.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/020.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/003.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/010.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/004.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/011.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/005.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/012.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/006.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/013.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/007.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/014.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/008.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/015.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/009.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/016.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/018.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/021.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/019.png?raw=true">
+<meta property="og:updated_time" content="2019-02-11T07:44:24.513Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP实战 - 基于SimNet的Quora问句语义匹配">
+<meta name="twitter:description" content="Quora Question Pairs是kaggle里的问句语义匹配比赛。这场比赛对于nlp选手应该不陌生了，数据集也是大家入门nlp必备。本文在深度语义匹配使用的是百度开源的语义匹配框架AnyQ里的SimNet。">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/001.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/09/09/NLP实战-基于SimNet的Quora问句语义匹配/"/>
+
+
+
+
+
+  <title>NLP实战 - 基于SimNet的Quora问句语义匹配 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/09/09/NLP实战-基于SimNet的Quora问句语义匹配/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NLP实战 - 基于SimNet的Quora问句语义匹配</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-09T11:30:20+08:00">
+                2018-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/09/NLP实战-基于SimNet的Quora问句语义匹配/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/09/NLP实战-基于SimNet的Quora问句语义匹配/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://www.kaggle.com/c/quora-question-pairs" target="_blank" rel="noopener">Quora Question Pairs</a>是kaggle里的问句语义匹配比赛。这场比赛对于nlp选手应该不陌生了，数据集也是大家入门nlp必备。本文在深度语义匹配使用的是百度开源的语义匹配框架<a href="https://github.com/baidu/AnyQ" target="_blank" rel="noopener">AnyQ</a>里的<a href="https://github.com/baidu/AnyQ/tree/master/tools/simnet/train/tf" target="_blank" rel="noopener">SimNet</a>。<br><a id="more"></a></p>
+<h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h2><ul>
+<li>Linux</li>
+<li>python 2.7</li>
+<li>TensorFlow 1.7.0</li>
+<li>CPU</li>
+<li>Jupyter Notebook</li>
+</ul>
+<h2 id="下载AnyQ"><a href="#下载AnyQ" class="headerlink" title="下载AnyQ"></a>下载AnyQ</h2><p>首先需要有git，如果没有可以点<a href="https://git-scm.com/downloads" target="_blank" rel="noopener">这里</a>下载。在Linux环境选定路径下敲入<code>git clone https://github.com/baidu/AnyQ</code>进行AnyQ的下载。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/001.png?raw=true" alt=""></p>
+<p>下载完，查看SimNet的路径是<code>AnyQ/tools/simnet/train/tf/</code></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/002.png?raw=true" alt=""></p>
+<p><a href="https://github.com/baidu/AnyQ/tree/master/tools/simnet/train/tf" target="_blank" rel="noopener">SimNet 的结构如下</a>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">simnet</span><br><span class="line">    |-tf</span><br><span class="line">        |- date //示例数据</span><br><span class="line">        |- examples //示例配置文件</span><br><span class="line">        |- layers //网络中使用操作层的实现</span><br><span class="line">        |- losses //损失函数实现</span><br><span class="line">        |- nets //网络结构实现</span><br><span class="line">        |- tools //数据转化及评价工具</span><br><span class="line">        |- util //工具类</span><br></pre></td></tr></table></figure>
+<p>❤另外已经专门写了一篇关于SimNet的代码走读，强烈推荐打开那篇文章放在旁边与这篇一起看，<a href="http://codewithzhangyi.com/2018/09/06/代码走读-百度智能问答开源框架-AnyQ/">点这里查看</a>。</p>
+<p>另外，在Linux查看/修改代码，推荐<code>jupyter notebook</code>。</p>
+<p><strong>其它说明：</strong></p>
+<ul>
+<li><p>保存模型文件的路径需要自己手动添加，在目录上新建model和pointwise文件夹：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">simnet</span><br><span class="line">    |-tf</span><br><span class="line">        |- date</span><br><span class="line">        |- examples</span><br><span class="line">        |- layers</span><br><span class="line">        |- losses</span><br><span class="line">        |- nets</span><br><span class="line">        |- tools</span><br><span class="line">        |- util</span><br><span class="line">        </span><br><span class="line">        # 新建下面的文件夹</span><br><span class="line">        |- model</span><br><span class="line">        	|- pointwise</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="下载数据集"><a href="#下载数据集" class="headerlink" title="下载数据集"></a>下载数据集</h2><p><a href="https://www.kaggle.com/c/quora-question-pairs/data" target="_blank" rel="noopener">请点击 Quora 进行数据集下载</a>。本文只用到训练数据集，所以下载<code>train.csv</code>即可。train.csv还不能直接作为SimNet的输入数据，需要做词嵌入等数据预处理。</p>
+<h2 id="词嵌入处理"><a href="#词嵌入处理" class="headerlink" title="词嵌入处理"></a>词嵌入处理</h2><p>SimNet的训练数据是有格式要求的。具体请查看<a href="https://github.com/baidu/AnyQ/blob/master/tools/simnet/train/tf/README.md" target="_blank" rel="noopener">SimNet的README.md</a>。这一步数据处理也可以在win环境下操作。由于Quora训练集是两个问句列加一个label列，适合SimNet的pointwise数据格式。</p>
+<ul>
+<li><em>pointwise数据格式</em>：数据包含三列，依次为Query1的ID序列（ID间使用空格分割），Query2的ID序列（ID间使用空格分割），Label，每列间使用TAB分割，例如；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 1 1 1 1   2 2 2 2 2   0</span><br><span class="line">1 1 1 1 1   1 1 1 1 1   1</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>pointwise需要问句都以id的形式，所以word embedding选择<a href="http://codewithzhangyi.com/2018/08/24/NLP笔记-Word-Embedding/">词袋法(BOW)</a>。</p>
+<p>新建一个<code>quora.py</code>文件来做词嵌入处理，先处理了空(null)问题，再预览10个问题对（question pairs）。</p>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">Created on Wed Aug 29 16:50:59 2018</span><br><span class="line"></span><br><span class="line">@author: Yi</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">import os</span><br><span class="line">os.chdir(&quot;C:/Users/Yi/Desktop/nlp/quora&quot;) # quora.py的路径</span><br><span class="line"></span><br><span class="line">import pandas as pd</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">import nltk</span><br><span class="line">from nltk.corpus import stopwords</span><br><span class="line">from nltk.stem import SnowballStemmer</span><br><span class="line">import re</span><br><span class="line">from string import punctuation</span><br><span class="line"></span><br><span class="line">train = pd.read_csv(&quot;data/train.csv&quot;)  # 共404290个问句对</span><br><span class="line">#test = pd.read_csv(&quot;data/test.csv&quot;)</span><br><span class="line"></span><br><span class="line"># Check for any null values</span><br><span class="line">print(train.isnull().sum())</span><br><span class="line">#print(test.isnull().sum())</span><br><span class="line"></span><br><span class="line"># Add the string &apos;empty&apos; to empty strings</span><br><span class="line">train = train.fillna(&apos;empty&apos;)</span><br><span class="line">#test = test.fillna(&apos;empty&apos;)</span><br><span class="line"></span><br><span class="line"># Preview some of the pairs of questions</span><br><span class="line">a = 0 </span><br><span class="line">for i in range(a,a+10):</span><br><span class="line">    print(train.question1[i])</span><br><span class="line">    print(train.question2[i])</span><br><span class="line">    print()</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">What is the step by step guide to invest in share market in india?</span><br><span class="line">What is the step by step guide to invest in share market?</span><br><span class="line"></span><br><span class="line">What is the story of Kohinoor (Koh-i-Noor) Diamond?</span><br><span class="line">What would happen if the Indian government stole the Kohinoor (Koh-i-Noor) diamond back?</span><br><span class="line"></span><br><span class="line">How can I increase the speed of my internet connection while using a VPN?</span><br><span class="line">How can Internet speed be increased by hacking through DNS?</span><br><span class="line"></span><br><span class="line">Why am I mentally very lonely? How can I solve it?</span><br><span class="line">Find the remainder when [math]23^&#123;24&#125;[/math] is divided by 24,23?</span><br><span class="line"></span><br><span class="line">Which one dissolve in water quikly sugar, salt, methane and carbon di oxide?</span><br><span class="line">Which fish would survive in salt water?</span><br><span class="line"></span><br><span class="line">Astrology: I am a Capricorn Sun Cap moon and cap rising...what does that say about me?</span><br><span class="line">I&apos;m a triple Capricorn (Sun, Moon and ascendant in Capricorn) What does this say about me?</span><br><span class="line"></span><br><span class="line">Should I buy tiago?</span><br><span class="line">What keeps childern active and far from phone and video games?</span><br><span class="line"></span><br><span class="line">How can I be a good geologist?</span><br><span class="line">What should I do to be a great geologist?</span><br><span class="line"></span><br><span class="line">When do you use シ instead of し?</span><br><span class="line">When do you use &quot;&amp;&quot; instead of &quot;and&quot;?</span><br><span class="line"></span><br><span class="line">Motorola (company): Can I hack my Charter Motorolla DCX3400?</span><br><span class="line">How do I hack Motorola DCX3400 for free internet?</span><br></pre></td></tr></table></figure>
+<p>继续做同义词替换、停用词处理、删除介词等数据清洗，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">stop_words = [&apos;the&apos;,&apos;a&apos;,&apos;an&apos;,&apos;and&apos;,&apos;but&apos;,&apos;if&apos;,&apos;or&apos;,&apos;because&apos;,&apos;as&apos;,&apos;what&apos;,&apos;which&apos;,&apos;this&apos;,&apos;that&apos;,&apos;these&apos;,&apos;those&apos;,&apos;then&apos;,</span><br><span class="line">              &apos;just&apos;,&apos;so&apos;,&apos;than&apos;,&apos;such&apos;,&apos;both&apos;,&apos;through&apos;,&apos;about&apos;,&apos;for&apos;,&apos;is&apos;,&apos;of&apos;,&apos;while&apos;,&apos;during&apos;,&apos;to&apos;,&apos;What&apos;,&apos;Which&apos;,</span><br><span class="line">              &apos;Is&apos;,&apos;If&apos;,&apos;While&apos;,&apos;This&apos;]</span><br><span class="line"></span><br><span class="line">def text_to_wordlist(text, remove_stop_words=True, stem_words=False):</span><br><span class="line">    # Clean the text, with the option to remove stop_words and to stem words.</span><br><span class="line"></span><br><span class="line">    # Clean the text</span><br><span class="line">    text = re.sub(r&quot;[^A-Za-z0-9]&quot;, &quot; &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;what&apos;s&quot;, &quot;&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;What&apos;s&quot;, &quot;&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;\&apos;s&quot;, &quot; &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;\&apos;ve&quot;, &quot; have &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;can&apos;t&quot;, &quot;cannot &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;n&apos;t&quot;, &quot; not &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;I&apos;m&quot;, &quot;I am&quot;, text)</span><br><span class="line">    text = re.sub(r&quot; m &quot;, &quot; am &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;\&apos;re&quot;, &quot; are &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;\&apos;d&quot;, &quot; would &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;\&apos;ll&quot;, &quot; will &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;60k&quot;, &quot; 60000 &quot;, text)</span><br><span class="line">    text = re.sub(r&quot; e g &quot;, &quot; eg &quot;, text)</span><br><span class="line">    text = re.sub(r&quot; b g &quot;, &quot; bg &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;\0s&quot;, &quot;0&quot;, text)</span><br><span class="line">    text = re.sub(r&quot; 9 11 &quot;, &quot;911&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;e-mail&quot;, &quot;email&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;\s&#123;2,&#125;&quot;, &quot; &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;quikly&quot;, &quot;quickly&quot;, text)</span><br><span class="line">    text = re.sub(r&quot; usa &quot;, &quot; America &quot;, text)</span><br><span class="line">    text = re.sub(r&quot; USA &quot;, &quot; America &quot;, text)</span><br><span class="line">    text = re.sub(r&quot; u s &quot;, &quot; America &quot;, text)</span><br><span class="line">    text = re.sub(r&quot; uk &quot;, &quot; England &quot;, text)</span><br><span class="line">    text = re.sub(r&quot; UK &quot;, &quot; England &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;india&quot;, &quot;India&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;switzerland&quot;, &quot;Switzerland&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;china&quot;, &quot;China&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;chinese&quot;, &quot;Chinese&quot;, text) </span><br><span class="line">    text = re.sub(r&quot;imrovement&quot;, &quot;improvement&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;intially&quot;, &quot;initially&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;quora&quot;, &quot;Quora&quot;, text)</span><br><span class="line">    text = re.sub(r&quot; dms &quot;, &quot;direct messages &quot;, text)  </span><br><span class="line">    text = re.sub(r&quot;demonitization&quot;, &quot;demonetization&quot;, text) </span><br><span class="line">    text = re.sub(r&quot;actived&quot;, &quot;active&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;kms&quot;, &quot; kilometers &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;KMs&quot;, &quot; kilometers &quot;, text)</span><br><span class="line">    text = re.sub(r&quot; cs &quot;, &quot; computer science &quot;, text) </span><br><span class="line">    text = re.sub(r&quot; upvotes &quot;, &quot; up votes &quot;, text)</span><br><span class="line">    text = re.sub(r&quot; iPhone &quot;, &quot; phone &quot;, text)</span><br><span class="line">    text = re.sub(r&quot;\0rs &quot;, &quot; rs &quot;, text) </span><br><span class="line">    text = re.sub(r&quot;calender&quot;, &quot;calendar&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;ios&quot;, &quot;operating system&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;gps&quot;, &quot;GPS&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;gst&quot;, &quot;GST&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;programing&quot;, &quot;programming&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;bestfriend&quot;, &quot;best friend&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;dna&quot;, &quot;DNA&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;III&quot;, &quot;3&quot;, text) </span><br><span class="line">    text = re.sub(r&quot;the US&quot;, &quot;America&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;Astrology&quot;, &quot;astrology&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;Method&quot;, &quot;method&quot;, text)</span><br><span class="line">    text = re.sub(r&quot;Find&quot;, &quot;find&quot;, text) </span><br><span class="line">    text = re.sub(r&quot;banglore&quot;, &quot;Banglore&quot;, text)</span><br><span class="line">    text = re.sub(r&quot; J K &quot;, &quot; JK &quot;, text)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    # Remove punctuation from text</span><br><span class="line">    text = &apos;&apos;.join([c for c in text if c not in punctuation])</span><br><span class="line">    </span><br><span class="line">    # Optionally, remove stop words</span><br><span class="line">    if remove_stop_words:</span><br><span class="line">        text = text.split()</span><br><span class="line">        text = [w for w in text if not w in stop_words]</span><br><span class="line">        text = &quot; &quot;.join(text)</span><br><span class="line">    </span><br><span class="line">    # Optionally, shorten words to their stems</span><br><span class="line">    if stem_words:</span><br><span class="line">        text = text.split()</span><br><span class="line">        stemmer = SnowballStemmer(&apos;english&apos;)</span><br><span class="line">        stemmed_words = [stemmer.stem(word) for word in text]</span><br><span class="line">        text = &quot; &quot;.join(stemmed_words)</span><br><span class="line">    </span><br><span class="line">    # Return a list of words</span><br><span class="line">    return(text)</span><br><span class="line"></span><br><span class="line">def process_questions(question_list, questions, question_list_name, dataframe):</span><br><span class="line">    &apos;&apos;&apos;transform questions and display progress&apos;&apos;&apos;</span><br><span class="line">    for question in questions:</span><br><span class="line">        question_list.append(text_to_wordlist(question))</span><br><span class="line">        if len(question_list) % 100000 == 0:</span><br><span class="line">            progress = len(question_list)/len(dataframe) * 100</span><br><span class="line">            print(&quot;&#123;&#125; is &#123;&#125;% complete.&quot;.format(question_list_name, round(progress, 1)))</span><br><span class="line">            </span><br><span class="line">train_question1 = []</span><br><span class="line">process_questions(train_question1, train.question1, &apos;train_question1&apos;, train)</span><br><span class="line"></span><br><span class="line">train_question2 = []</span><br><span class="line">process_questions(train_question2, train.question2, &apos;train_question2&apos;, train)</span><br><span class="line"></span><br><span class="line">#test_question1 = []</span><br><span class="line">#process_questions(test_question1, test.question1, &apos;test_question1&apos;, test)</span><br><span class="line">#</span><br><span class="line">#test_question2 = []</span><br><span class="line">#process_questions(test_question2, test.question2, &apos;test_question2&apos;, test)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Preview some transformed pairs of questions</span><br><span class="line">a = 0 </span><br><span class="line">for i in range(a,a+10):</span><br><span class="line">    print(train_question1[i])</span><br><span class="line">    print(train_question2[i])</span><br><span class="line">    print()</span><br></pre></td></tr></table></figure>
+<p>输出处理之后的10个问题对：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">step by step guide invest in share market in India</span><br><span class="line">step by step guide invest in share market</span><br><span class="line"></span><br><span class="line">story Kohinoor Koh i Noor Diamond</span><br><span class="line">would happen Indian government stole Kohinoor Koh i Noor diamond back</span><br><span class="line"></span><br><span class="line">How can I increase speed my internet connection using VPN</span><br><span class="line">How can Internet speed be increased by hacking DNS</span><br><span class="line"></span><br><span class="line">Why am I mentally very lonely How can I solve it</span><br><span class="line">find remainder when math 23 24 math divided by 24 23</span><br><span class="line"></span><br><span class="line">one dissolve in water quickly sugar salt methane carbon di oxide</span><br><span class="line">fish would survive in salt water</span><br><span class="line"></span><br><span class="line">astrology I am Capricorn Sun Cap moon cap rising does say me</span><br><span class="line">I am triple Capricorn Sun Moon ascendant in Capricorn does say me</span><br><span class="line"></span><br><span class="line">Should I buy tiago</span><br><span class="line">keeps childern active far from phone video games</span><br><span class="line"></span><br><span class="line">How can I be good geologist</span><br><span class="line">should I do be great geologist</span><br><span class="line"></span><br><span class="line">When do you use instead</span><br><span class="line">When do you use instead</span><br><span class="line"></span><br><span class="line">Motorola company Can I hack my Charter Motorolla DCX3400</span><br><span class="line">How do I hack Motorola DCX3400 free internet</span><br></pre></td></tr></table></figure>
+<p>继续删除自定义停用词，删除只出现过一次的词，将<strong>问题1和问题2合并成一个大语料库</strong>，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import itertools</span><br><span class="line">raw_corpus = list(itertools.chain.from_iterable([train_question1,train_question2]))</span><br><span class="line">#[train_question1,train_question2]</span><br><span class="line"></span><br><span class="line">stoplist = stop_words</span><br><span class="line">texts = [[word for word in document.lower().split() if word not in stoplist]</span><br><span class="line">          for document in raw_corpus]</span><br><span class="line"></span><br><span class="line">from collections import defaultdict</span><br><span class="line">frequency = defaultdict(int)</span><br><span class="line">for text in texts:</span><br><span class="line">    for token in text:</span><br><span class="line">        frequency[token] += 1</span><br><span class="line">        </span><br><span class="line">precessed_corpus = [[token for token in text if frequency[token] &gt; 1] for text in texts]</span><br></pre></td></tr></table></figure>
+<p>形成字典，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from gensim import corpora</span><br><span class="line">dictionary = corpora.Dictionary(precessed_corpus)</span><br><span class="line">print(dictionary)</span><br><span class="line"></span><br><span class="line">print(dictionary.token2id)</span><br></pre></td></tr></table></figure>
+<p>输出字典：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dictionary(52069 unique tokens: [&apos;vicodin&apos;, &apos;mermaid&apos;, &apos;kgb&apos;, &apos;dusk&apos;, &apos;glonass&apos;]...)</span><br></pre></td></tr></table></figure>
+<p>输入一个新文本，试一下这个字典，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">new_doc = &quot;would happen Indian government stole Kohinoor Koh i Noor diamond back&quot;</span><br><span class="line">new_vec = dictionary.doc2bow(new_doc.lower().split())</span><br><span class="line">#dictionary.doc2idx(new_doc.lower().split())</span><br><span class="line">print(new_vec)  </span><br><span class="line">#列表中每个元组中，第一个元素表示字典中单词的ID，第二个表示在这个句子中这个单词出现的次数。</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[(8, 1),</span><br><span class="line"> (9, 1),</span><br><span class="line"> (10, 1),</span><br><span class="line"> (11, 1),</span><br><span class="line"> (12, 1),</span><br><span class="line"> (107, 1),</span><br><span class="line"> (186, 1),</span><br><span class="line"> (226, 1),</span><br><span class="line"> (416, 1),</span><br><span class="line"> (828, 1),</span><br><span class="line"> (4496, 1)]</span><br></pre></td></tr></table></figure>
+<p>感觉还可以，那么将quora的所有问题对的语料都用字典里的id代替，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bow_corpus = [dictionary.doc2idx(text) for text in precessed_corpus]</span><br><span class="line"></span><br><span class="line">bow_corpus_plus_1 = [[i+1 for i in bow_corpu] for bow_corpu in bow_corpus]</span><br><span class="line">bow_corpus_str = [[str(i) for i in bow_corpu_plus] for bow_corpu_plus in bow_corpus_plus_1]</span><br><span class="line">bow_corpus_join = [&apos; &apos;.join(bow_corpus_) for bow_corpus_ in bow_corpus_str]</span><br></pre></td></tr></table></figure>
+<p>由于语料库是问题1和问题2按顺序组成，那么用id代替后的语料库前一半的是词袋处理后问题1，后一半是词袋处理后问题2，最终恢复到pointwise格式的数据，输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 生成文件</span><br><span class="line">pointwise_train = pd.DataFrame(bow_corpus_join[:404290], columns = [&apos;question1&apos;])</span><br><span class="line">pointwise_train[&apos;question2&apos;] = bow_corpus_join[404290:]</span><br><span class="line">pointwise_train[&apos;is_duplicate&apos;] = train[&apos;is_duplicate&apos;]</span><br><span class="line"></span><br><span class="line"># 防止空(null)问题</span><br><span class="line">pointwise_train = pointwise_train[[len(i)&gt;0 for i in pointwise_train[&apos;question1&apos;]]]</span><br><span class="line">pointwise_train = pointwise_train[[len(i)&gt;0 for i in pointwise_train[&apos;question2&apos;]]]</span><br><span class="line"></span><br><span class="line"># 拆分训练集和测试集</span><br><span class="line">size = round(len(pointwise_train)*0.8) # 比例为8:2</span><br><span class="line"></span><br><span class="line"># tsv格式的数据文件</span><br><span class="line">pointwise_train[:size].to_csv(&apos;data/train_0829.tsv&apos;,sep = &apos;\t&apos;, index=False, header=False)</span><br><span class="line">pointwise_train[size:].to_csv(&apos;data/test_0829.tsv&apos;,sep = &apos;\t&apos;, index=False, header=False)</span><br></pre></td></tr></table></figure>
+<p>得到tsv格式的<code>train_0829.tsv</code>，<code>test_0829.tsv</code>，可以随便命名。</p>
+<h2 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h2><p>切换到Linux，将嵌入完的 tsv 数据集放入<code>AnyQ/tools/simnet/train/tf/data</code>路径下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">simnet</span><br><span class="line">    |-tf</span><br><span class="line">        |- date //示例数据，tsv格式，没有表头</span><br><span class="line">        	|- train_0829.tsv //训练集数据</span><br><span class="line">        	|- test_0829.tsv //测试集数据</span><br></pre></td></tr></table></figure>
+<p>按照下图路径<code>AnyQ/tools/simnet/train/tf/</code>，新建 <strong>run_convert_data.sh</strong> 脚本文件，</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/022.png?raw=true" alt=""></p>
+<p>其实就是把原来的<strong>run_train.sh</strong>里转换数据的命令拿出来。因为之后需要多模型跑一样的数据，数据转换做一次就够了，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">set -e # set -o errexit</span><br><span class="line">set -u # set -o nounset</span><br><span class="line">set -o pipefail </span><br><span class="line"></span><br><span class="line">echo &quot;convert train data&quot;</span><br><span class="line">python ./tools/tf_record_writer.py pointwise ./data/待转换的训练数据文件名train_0829.tsv ./data/已转换的训练数据文件名convert_train_0829 0 32</span><br><span class="line">echo &quot;convert test data&quot;</span><br><span class="line">python ./tools/tf_record_writer.py pointwise ./data/待转换的测试数据文件名test_0829.tsv ./data/已转换的测试数据文件名convert_test_0829 0 32</span><br><span class="line">echo &quot;convert data finish&quot;</span><br></pre></td></tr></table></figure>
+<p>在Linux黑命令框里敲入命令<code>./run_convert_data.sh</code>，如果有permission denied情况，先使用<code>chmod 777 文件名</code>，在这里是<code>chmod 777 run_convert_data.sh</code>。如果成功将打印出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">convert train data</span><br><span class="line">convert test data</span><br><span class="line">convert data finish</span><br></pre></td></tr></table></figure>
+<p>在data文件夹目录下，新增两个转换后的数据文件，convert_train_0829 和 convert_test_0829。</p>
+<h2 id="修改代码"><a href="#修改代码" class="headerlink" title="修改代码"></a>修改代码</h2><h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>用 jupyter notebook 打开 examples 文件夹下的所有形如 xxx-pointwise.json的配置文件，修改以下几个参数数值：</p>
+<ul>
+<li>data_size = 323273 , 因为train_0829.tsv有 323273 条样本</li>
+<li>vocabulary_size = 1000000</li>
+<li>batch_size = 800</li>
+<li>num_epochs = 1</li>
+<li>print_iter = 10</li>
+<li>train_file =  data/convert_train_0829</li>
+<li>test_file = data/convert_test_0829</li>
+</ul>
+<p>以上，只是修改模型训练的配置参数，还得另外修改模型检验的配置参数，打开<code>AnyQ/tools/simnet/train/tf/</code>目录下的 tf_simnet.py，找到<code>def predict(conf_dict)</code>，找到如下代码（应该在第90行）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conf_dict.update(&#123;&quot;num_epochs&quot;: &quot;1&quot;, &quot;batch_size&quot;: &quot;1&quot;,</span><br><span class="line">                  &quot;shuffle&quot;: &quot;0&quot;, &quot;train_file&quot;: conf_dict[&quot;test_file&quot;]&#125;)</span><br></pre></td></tr></table></figure>
+<p>将其修改成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conf_dict.update(&#123;&quot;num_epochs&quot;: &quot;1&quot;, &quot;batch_size&quot;: &quot;400&quot;,</span><br><span class="line">                  &quot;shuffle&quot;: &quot;0&quot;, &quot;train_file&quot;: conf_dict[&quot;test_file&quot;]&#125;)</span><br></pre></td></tr></table></figure>
+<p>保存，关闭文件。</p>
+<h3 id="修改保存模型文件规则"><a href="#修改保存模型文件规则" class="headerlink" title="修改保存模型文件规则"></a>修改保存模型文件规则</h3><p>default的代码将在每个epoch迭代时保存一个模型，且最终跑完还会保存一个模型。由于模型文件过大，所以将把代码修改成只保存最后跑完的模型，如果不需要可不做此修改。打开utils文件夹下的controler.py，将100-104行隐去：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#                if step % epoch_iter == 0:</span><br><span class="line">#                    print(&quot;save model epoch%d&quot; % (epoch_num))</span><br><span class="line">#                    save_path = saver.save(sess, </span><br><span class="line">#                            &quot;%s/%s.epoch%d&quot; % (model_path, model_file, epoch_num))</span><br><span class="line">#                    epoch_num += 1</span><br></pre></td></tr></table></figure>
+<h3 id="修改打印命令"><a href="#修改打印命令" class="headerlink" title="修改打印命令"></a>修改打印命令</h3><p>default的代码在模型训练过程中，每一个print_iter会打印出一个loss值，在模型检验过程中，最后会打印出一个accuracy值。但是为了观察跑迭代的速度和精度，还需要在每次报loss的时候，打印出每个print_iter花了几秒钟（如不需要此功能可不做修改）。打开utils文件夹下的controler.py，将90-99行代码修改成如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">epoch_num = 1</span><br><span class="line">last_timestamp = datetime.datetime.now()	# 增加的代码</span><br><span class="line">while not coord.should_stop():</span><br><span class="line">    try:</span><br><span class="line">        step += 1</span><br><span class="line">        c, _= sess.run([loss, optimizer])</span><br><span class="line">        avg_cost += c</span><br><span class="line"></span><br><span class="line">        if step % print_iter == 0:</span><br><span class="line">        	now_timestamp = datetime.datetime.now()		# 增加的代码</span><br><span class="line">            print(&quot;step: %d, loss: %4.4f (%4.2f sec/print_iter)&quot; % (step,(avg_cost / print_iter),(now_timestamp-last_timestamp).seconds))	# 修改的代码</span><br><span class="line">            avg_cost = 0.0</span><br><span class="line">            last_timestamp = now_timestamp		# 增加的代码</span><br></pre></td></tr></table></figure>
+<p>保存，关闭文件。</p>
+<h2 id="比对模型效果"><a href="#比对模型效果" class="headerlink" title="比对模型效果"></a>比对模型效果</h2><p>在<code>AnyQ/tools/simnet/train/tf/</code>路径增加 .sh 文件。因为SimNet目前有7个可选择的网络，分别是bow, cnn, knrm, lstm, mmdnn, mvlstm, pyramid，分别与nets文件夹里的文件一一对应，所以每种任务都有7个 .sh 脚本。任务类型分别是 train/predict/freeze，对应模型训练，模型检验，模型结果示意。</p>
+<h3 id="增加模型训练任务的-sh文件"><a href="#增加模型训练任务的-sh文件" class="headerlink" title="增加模型训练任务的 .sh文件"></a>增加模型训练任务的 .sh文件</h3><p>以cnn为例，新建run_train_cnn.sh，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">set -e # set -o errexit</span><br><span class="line">set -u # set -o nounset</span><br><span class="line">set -o pipefail </span><br><span class="line"></span><br><span class="line">in_task_type=&apos;train&apos;</span><br><span class="line">in_task_conf=&apos;./examples/cnn-pointwise.json&apos;</span><br><span class="line">python tf_simnet.py \</span><br><span class="line">		   --task $in_task_type \</span><br><span class="line">		   --task_conf $in_task_conf</span><br></pre></td></tr></table></figure>
+<h3 id="增加模型验证任务的-sh文件"><a href="#增加模型验证任务的-sh文件" class="headerlink" title="增加模型验证任务的 .sh文件"></a>增加模型验证任务的 .sh文件</h3><p>以cnn为例，新建run_predict_cnn.sh，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">set -e # set -o errexit</span><br><span class="line">set -u # set -o nounset</span><br><span class="line">set -o pipefail </span><br><span class="line"></span><br><span class="line">in_task_type=&apos;predict&apos;</span><br><span class="line">in_task_conf=&apos;./examples/cnn-pointwise.json&apos;</span><br><span class="line">python tf_simnet.py \</span><br><span class="line">		   --task $in_task_type \</span><br><span class="line">		   --task_conf $in_task_conf</span><br></pre></td></tr></table></figure>
+<h3 id="增加模型结果示意任务的-sh文件"><a href="#增加模型结果示意任务的-sh文件" class="headerlink" title="增加模型结果示意任务的 .sh文件"></a>增加模型结果示意任务的 .sh文件</h3><p>以cnn为例，新建run_freeze_cnn.sh，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">set -e # set -o errexit</span><br><span class="line">set -u # set -o nounset</span><br><span class="line">set -o pipefail </span><br><span class="line"></span><br><span class="line">in_task_type=&apos;freeze&apos;</span><br><span class="line">in_task_conf=&apos;./examples/cnn-pointwise.json&apos;</span><br><span class="line">python tf_simnet.py \</span><br><span class="line">		   --task $in_task_type \</span><br><span class="line">		   --task_conf $in_task_conf</span><br></pre></td></tr></table></figure>
+<p>最终，生成7个 run_train_xxx.sh 文件，7个 run_predict_xxx.sh文件，7个 run_freeze_xxx.sh文件，或者选择性生成几个，示意如下图：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/020.png?raw=true" alt=""></p>
+<p>切换回Linux命令界面，开始运行各种命令，结果如配图。</p>
+<h3 id="bow"><a href="#bow" class="headerlink" title="bow"></a>bow</h3><ul>
+<li><p>./run_train_bow.sh</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/003.png?raw=true" alt=""></p>
+</li>
+<li><p>./run_predict_bow.sh</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/010.png?raw=true" alt=""></p>
+</li>
+</ul>
+<h3 id="cnn"><a href="#cnn" class="headerlink" title="cnn"></a>cnn</h3><ul>
+<li><p>./run_train_cnn.sh<img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/004.png?raw=true" alt=""></p>
+</li>
+<li><p>./run_predict_cnn.sh</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/011.png?raw=true" alt=""></p>
+</li>
+</ul>
+<h3 id="knrm"><a href="#knrm" class="headerlink" title="knrm"></a>knrm</h3><ul>
+<li><p>./run_train_knrm.sh<img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/005.png?raw=true" alt=""></p>
+</li>
+<li><p>./run_predict_knrm.sh</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/012.png?raw=true" alt=""></p>
+</li>
+</ul>
+<h3 id="lstm"><a href="#lstm" class="headerlink" title="lstm"></a>lstm</h3><ul>
+<li><p>./run_train_lstm.sh<img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/006.png?raw=true" alt=""></p>
+</li>
+<li><p>./run_predict_lstm.sh</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/013.png?raw=true" alt=""></p>
+</li>
+</ul>
+<h3 id="mmdnn"><a href="#mmdnn" class="headerlink" title="mmdnn"></a>mmdnn</h3><ul>
+<li><p>./run_train_mmdnn.sh<img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/007.png?raw=true" alt=""></p>
+</li>
+<li><p>./run_predict_mmdnn.sh</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/014.png?raw=true" alt=""></p>
+</li>
+</ul>
+<h3 id="mvlstm"><a href="#mvlstm" class="headerlink" title="mvlstm"></a>mvlstm</h3><ul>
+<li><p>./run_train_mvlstm.sh<img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/008.png?raw=true" alt=""></p>
+</li>
+<li><p>./run_predict_mvlstm.sh</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/015.png?raw=true" alt=""></p>
+</li>
+</ul>
+<h3 id="pyramid"><a href="#pyramid" class="headerlink" title="pyramid"></a>pyramid</h3><ul>
+<li>./run_train_pyramid.sh<img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/009.png?raw=true" alt=""></li>
+<li>./run_predict_pyramid.sh<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/016.png?raw=true" alt=""></li>
+</ul>
+<p>可自行尝试./run_freeze_xxx.sh命令系列。当跑完上面所有命令时，原文件夹中就自动形成了预测文件，如下：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/018.png?raw=true" alt=""></p>
+<p>随便打开其中一个看一下：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/021.png?raw=true" alt=""></p>
+<p>如下是自动保存的模型文件：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/09/AnyQ/019.png?raw=true" alt=""></p>
+<p>也会自动生成log文件夹，运行freeze任务后会自动生成graph文件夹，把任务结果保存在文件夹里。</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>缺点：</p>
+<ol>
+<li>由于SimNet的数据格式有要求，将文本都以ID格式代替，因此词嵌入使用的是词袋bow处理。</li>
+<li>在前期文本清洗的规则可以再完善些。</li>
+<li>呃。。。。百度（摊手🤷‍♀️</li>
+</ol>
+<p>优点：</p>
+<ol>
+<li>SimNet是一个集成体，有很多深度模型可以选择。</li>
+</ol>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><ul>
+<li>跑了个SimNet流程，仅作效果比对，没有追求精度的提升。后来我有尝试把batch_size调成30，那么将有10000多步，精度有几个百分点的提升，但还远远不够。所以任重道远呀，还有很多需要学习的。</li>
+<li>在本文没有用到测试集，如果要参加比赛，在词嵌入做字典时，是否应该把test测试集的单词也加入到字典里来？这个还没有真的尝试一下，毕竟测试集test.cvs大的吓人！</li>
+<li>如有疑问，欢迎留言或者<a href="http://codewithzhangyi.com/about/">点这里找到我</a>。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+          
+            <a href="/tags/kaggle/" rel="tag"># kaggle</a>
+          
+            <a href="/tags/quora/" rel="tag"># quora</a>
+          
+            <a href="/tags/Semantic-Matching/" rel="tag"># Semantic Matching</a>
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/AnyQ/" rel="tag"># AnyQ</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/06/代码走读-百度智能问答开源框架-AnyQ/" rel="next" title="代码走读 - 百度开源智能问答框架 AnyQ">
+                <i class="fa fa-chevron-left"></i> 代码走读 - 百度开源智能问答框架 AnyQ
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/31/NLP笔记-RNN/" rel="prev" title="NLP笔记 - RNN 结构详解">
+                NLP笔记 - RNN 结构详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境说明"><span class="nav-text">环境说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载AnyQ"><span class="nav-text">下载AnyQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载数据集"><span class="nav-text">下载数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#词嵌入处理"><span class="nav-text">词嵌入处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据准备"><span class="nav-text">数据准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改代码"><span class="nav-text">修改代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置文件"><span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改保存模型文件规则"><span class="nav-text">修改保存模型文件规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改打印命令"><span class="nav-text">修改打印命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比对模型效果"><span class="nav-text">比对模型效果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#增加模型训练任务的-sh文件"><span class="nav-text">增加模型训练任务的 .sh文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加模型验证任务的-sh文件"><span class="nav-text">增加模型验证任务的 .sh文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加模型结果示意任务的-sh文件"><span class="nav-text">增加模型结果示意任务的 .sh文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bow"><span class="nav-text">bow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cnn"><span class="nav-text">cnn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#knrm"><span class="nav-text">knrm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lstm"><span class="nav-text">lstm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mmdnn"><span class="nav-text">mmdnn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mvlstm"><span class="nav-text">mvlstm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pyramid"><span class="nav-text">pyramid</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优缺点"><span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写在最后"><span class="nav-text">写在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/09/09/NLP实战-基于SimNet的Quora问句语义匹配/';
+          this.page.identifier = '2018/09/09/NLP实战-基于SimNet的Quora问句语义匹配/';
+          this.page.title = 'NLP实战 - 基于SimNet的Quora问句语义匹配';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

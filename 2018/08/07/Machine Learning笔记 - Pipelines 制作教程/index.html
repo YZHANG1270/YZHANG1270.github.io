@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="pipeline,sklearn," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="面向读者：  机器学习背景对 AutoML 感兴趣，熟悉并喜欢 sklearn 发现自己在相似分析中做着重复的步骤 kaggle 进阶者">
+<meta name="keywords" content="pipeline,sklearn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Auto Machine Learning笔记 - Pipelines 制作教程">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/08/07/Machine Learning笔记 - Pipelines 制作教程/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="面向读者：  机器学习背景对 AutoML 感兴趣，熟悉并喜欢 sklearn 发现自己在相似分析中做着重复的步骤 kaggle 进阶者">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/001.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/002.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/003.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/004.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/005.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/006.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/007.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/008.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/009.png?raw=true">
+<meta property="og:updated_time" content="2019-02-04T07:31:53.319Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Auto Machine Learning笔记 - Pipelines 制作教程">
+<meta name="twitter:description" content="面向读者：  机器学习背景对 AutoML 感兴趣，熟悉并喜欢 sklearn 发现自己在相似分析中做着重复的步骤 kaggle 进阶者">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/001.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/08/07/Machine Learning笔记 - Pipelines 制作教程/"/>
+
+
+
+
+
+  <title>Auto Machine Learning笔记 - Pipelines 制作教程 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/08/07/Machine Learning笔记 - Pipelines 制作教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Auto Machine Learning笔记 - Pipelines 制作教程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-07T15:35:25+08:00">
+                2018-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/07/Machine Learning笔记 - Pipelines 制作教程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/07/Machine Learning笔记 - Pipelines 制作教程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>面向读者：</p>
+<ul>
+<li>机器学习背景对 AutoML 感兴趣，熟悉并喜欢 sklearn</li>
+<li>发现自己在相似分析中做着重复的步骤</li>
+<li><p>kaggle 进阶者</p>
+<a id="more"></a>
+<p>背景：</p>
+</li>
+<li><p>本文是以一个文本数据处理的例子来展示pipeline如何把小功能串在一起，实现流水线操作。</p>
+</li>
+</ul>
+<blockquote>
+<p>Once you’ve gotten your feet wet in basic sklearn modeling, you might find yourself doing the same few steps over and over again in the same analysis. To get to the next level, pipelines are your friend!</p>
+</blockquote>
+<p>有些东西你不知道，以为它不存在；一旦你知道后，发现满世界都是它。pipeline就是这样的。</p>
+<h4 id="概念解释"><a href="#概念解释" class="headerlink" title="概念解释"></a>概念解释</h4><p>pipeline(管道)</p>
+<ul>
+<li>顾名思义就是把标准的/固有的建模过程流水线化。</li>
+<li>假如你有一套通用的数据清洗流程，就可以写成一个pipeline，这样就不用根据不同的数据一遍遍的重复写这个清洗流程了。</li>
+<li>pipeline是一块块的小逻辑的集成函数，尤其当模型十分复杂时，便于回头检查模型逻辑。</li>
+<li>pipeline是一个类，一般继承sklearn的 BaseEstimator，TransformerMixin。</li>
+<li>拥有 fit/transform/predict 等功能和属性。</li>
+</ul>
+<h4 id="下载数据集"><a href="#下载数据集" class="headerlink" title="下载数据集"></a>下载数据集</h4><p><a href="https://www.kaggle.com/c/spooky-author-identification/data" target="_blank" rel="noopener">✔数据集下载链接</a></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/001.png?raw=true" alt=""></p>
+<p>点击图片右上角的 ‘Download All ’，并解压数据集。</p>
+<p>构建本地文件结构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">|-pipelines //文件名</span><br><span class="line">    |- pipeline.py //新建python文件</span><br><span class="line">    |- data //刚才下载且解压的数据集</span><br><span class="line">        |- train.csv //训练集</span><br><span class="line">        |- test.csv //测试集</span><br><span class="line">        |- sample_submission.csv //比赛结果提交样本，本文中用不到</span><br></pre></td></tr></table></figure>
+<p>打开pipeline.py，输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np <span class="comment"># linear algebra</span></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd <span class="comment"># data processing, CSV file I/O (e.g. pd.read_csv)</span></span><br><span class="line"></span><br><span class="line">df = pd.read_csv(<span class="string">'data/train.csv'</span>)</span><br><span class="line"></span><br><span class="line">df.dropna(axis=<span class="number">0</span>)</span><br><span class="line">df.set_index(<span class="string">'id'</span>, inplace = <span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>text</th>
+<th>author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id26305</td>
+<td>This process, however, afforded me no means of…</td>
+<td>EAP</td>
+</tr>
+<tr>
+<td>id17569</td>
+<td>It never once occurred to me that the fumbling…</td>
+<td>HPL</td>
+</tr>
+<tr>
+<td>id11008</td>
+<td>In his left hand was a gold snuff box, from wh…</td>
+<td>EAP</td>
+</tr>
+<tr>
+<td>id27763</td>
+<td>How lovely is spring As we looked from Windsor…</td>
+<td>MWS</td>
+</tr>
+<tr>
+<td>id12958</td>
+<td>Finding nothing else, not even gold, the Super…</td>
+<td>HPL</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>可以看到数据集是文本信息，3列，包含id，text文本，和作者。这个比赛的原意是给出一段文字，预测是出自哪个作家之手，模型用来学习作家的文风。</p>
+<h4 id="文本特征预处理"><a href="#文本特征预处理" class="headerlink" title="文本特征预处理"></a>文本特征预处理</h4><p>以下为适用于所有文本的数据清洗操作：</p>
+<ul>
+<li>将文本信息去标点符号，且全部用小写字母</li>
+<li>计算文本长度</li>
+<li>计算文本字数</li>
+<li>计算 非停用词 字数</li>
+<li>计算 非停用词单词的 平均长度</li>
+<li>计算逗号数</li>
+</ul>
+<p>先用传统的统计方式来进行数据清洗，输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> nltk.corpus <span class="keyword">import</span> stopwords</span><br><span class="line"></span><br><span class="line">stopWords = set(stopwords.words(<span class="string">'english'</span>)) <span class="comment"># 可能需要手动下载 stopwords</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#creating a function to encapsulate preprocessing, to mkae it easy to replicate on  submission data</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">processing</span><span class="params">(df)</span>:</span></span><br><span class="line">    <span class="comment">#lowering and removing punctuation</span></span><br><span class="line">    df[<span class="string">'processed'</span>] = df[<span class="string">'text'</span>].apply(<span class="keyword">lambda</span> x: re.sub(<span class="string">r'[^\w\s]'</span>,<span class="string">''</span>, x.lower()))</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#numerical feature engineering</span></span><br><span class="line">    <span class="comment">#total length of sentence</span></span><br><span class="line">    df[<span class="string">'length'</span>] = df[<span class="string">'processed'</span>].apply(<span class="keyword">lambda</span> x: len(x))</span><br><span class="line">    <span class="comment">#get number of words</span></span><br><span class="line">    df[<span class="string">'words'</span>] = df[<span class="string">'processed'</span>].apply(<span class="keyword">lambda</span> x: len(x.split(<span class="string">' '</span>)))</span><br><span class="line">    df[<span class="string">'words_not_stopword'</span>] = df[<span class="string">'processed'</span>].apply(<span class="keyword">lambda</span> x: len([t <span class="keyword">for</span> t <span class="keyword">in</span> x.split(<span class="string">' '</span>) <span class="keyword">if</span> t <span class="keyword">not</span> <span class="keyword">in</span> stopWords]))</span><br><span class="line">    <span class="comment">#get the average word length</span></span><br><span class="line">    df[<span class="string">'avg_word_length'</span>] = df[<span class="string">'processed'</span>].apply(<span class="keyword">lambda</span> x: np.mean([len(t) <span class="keyword">for</span> t <span class="keyword">in</span> x.split(<span class="string">' '</span>) <span class="keyword">if</span> t <span class="keyword">not</span> <span class="keyword">in</span> stopWords]) <span class="keyword">if</span> len([len(t) <span class="keyword">for</span> t <span class="keyword">in</span> x.split(<span class="string">' '</span>) <span class="keyword">if</span> t <span class="keyword">not</span> <span class="keyword">in</span> stopWords]) &gt; <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">    <span class="comment">#get the average word length</span></span><br><span class="line">    df[<span class="string">'commas'</span>] = df[<span class="string">'text'</span>].apply(<span class="keyword">lambda</span> x: x.count(<span class="string">','</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>(df)</span><br><span class="line"></span><br><span class="line">df = processing(df)</span><br><span class="line"></span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/002.png?raw=true" alt=""></p>
+<h4 id="创建-Pipeline"><a href="#创建-Pipeline" class="headerlink" title="创建 Pipeline"></a>创建 Pipeline</h4><p>拆分训练集和测试集，输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">features= [c <span class="keyword">for</span> c <span class="keyword">in</span> df.columns.values <span class="keyword">if</span> c  <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">'id'</span>,<span class="string">'text'</span>,<span class="string">'author'</span>]]</span><br><span class="line">numeric_features= [c <span class="keyword">for</span> c <span class="keyword">in</span> df.columns.values <span class="keyword">if</span> c  <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">'id'</span>,<span class="string">'text'</span>,<span class="string">'author'</span>,<span class="string">'processed'</span>]]</span><br><span class="line">target = <span class="string">'author'</span></span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(df[features], df[target], test_size=<span class="number">0.33</span>, random_state=<span class="number">42</span>)</span><br><span class="line">X_train.head()</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>processed</th>
+<th>length</th>
+<th>words</th>
+<th>words_not_stopword</th>
+<th>avg_word_length</th>
+<th>commas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id19417</td>
+<td>this panorama is indeed glorious and …</td>
+<td>91</td>
+<td>18</td>
+<td>6</td>
+<td>6.666667</td>
+<td>1</td>
+</tr>
+<tr>
+<td>id09522</td>
+<td>there was a simple natural earnestness …</td>
+<td>240</td>
+<td>44</td>
+<td>18</td>
+<td>6.277778</td>
+<td>4</td>
+</tr>
+<tr>
+<td>id22732</td>
+<td>who are you pray that i duc de lomelette …</td>
+<td>387</td>
+<td>74</td>
+<td>38</td>
+<td>5.552632</td>
+<td>9</td>
+</tr>
+<tr>
+<td>id10351</td>
+<td>he had gone in the carriage to the nearest …</td>
+<td>118</td>
+<td>24</td>
+<td>11</td>
+<td>5.363636</td>
+<td>0</td>
+</tr>
+<tr>
+<td>id24580</td>
+<td>there is no method in their proceedings …</td>
+<td>71</td>
+<td>13</td>
+<td>5</td>
+<td>7.000000</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>接下来是关键步骤。</p>
+<ul>
+<li><p>根据特征是否为数值型，创建 两个<strong>selector transformers</strong>: TextSelector，NumberSelector</p>
+</li>
+<li><p>selector的作用：输入一个column，根据这个selector transformer，输出得到一个新column</p>
+</li>
+<li>简单说就是，做 data transformation，收集想要的信息，比如 text length</li>
+</ul>
+<p>输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.base <span class="keyword">import</span> BaseEstimator, TransformerMixin</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TextSelector</span><span class="params">(BaseEstimator, TransformerMixin)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Transformer to select a single column from the data frame to perform additional transformations on</span></span><br><span class="line"><span class="string">    Use on text columns in the data</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        self.key = key</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, y=None)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">transform</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> X[self.key]</span><br><span class="line">    </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NumberSelector</span><span class="params">(BaseEstimator, TransformerMixin)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Transformer to select a single column from the data frame to perform additional transformations on</span></span><br><span class="line"><span class="string">    Use on numeric columns in the data</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        self.key = key</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, y=None)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">transform</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> X[[self.key]]</span><br></pre></td></tr></table></figure>
+<p>先来试一下 TextSelector 好不好用。由小变大，先创建一个mini pipeline，作用是先从数据集中抓取一列数据，再做tf-idf处理并返回结果。</p>
+<p>创建过程只需传递一个格式如（名称，对象）的元组。括号左边是动作的名称，右边就是选取的列名。所以这个mini pipeline就是两个动作，selecting（选择一列）和tfidf-ing（对这列进行tf-idf处理）。</p>
+<p>执行pipeline的命令，可以调用 text.fit() 来适应训练集，text.transform() 来应用于训练集，或者text.fit_transform() 来执行两者。</p>
+<p>由于它是一个文本，它将返回一个稀疏矩阵，输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> TfidfVectorizer</span><br><span class="line"></span><br><span class="line">text = Pipeline([</span><br><span class="line">                (<span class="string">'selector'</span>, TextSelector(key=<span class="string">'processed'</span>)),</span><br><span class="line">                (<span class="string">'tfidf'</span>, TfidfVectorizer( stop_words=<span class="string">'english'</span>))</span><br><span class="line">            ])</span><br><span class="line"></span><br><span class="line">text.fit_transform(X_train)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/003.png?raw=true" alt=""></p>
+<p>接下来试一下 NumberSelector 对于数值型的特征处理好不好用，同样也先建立一个mini pipeline来观察效果。</p>
+<p>这个pipeline操作就定为简单的scaler，一列列的进行数值的StandardScaler。先以 length列为例，仍然是两个步骤，先选列，即length列，再做数值StandardScaler。（StandardScaler是数据预处理的一个常见的数值缩放操作。）</p>
+<p>输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line">length =  Pipeline([</span><br><span class="line">                (<span class="string">'selector'</span>, NumberSelector(key=<span class="string">'length'</span>)),</span><br><span class="line">                (<span class="string">'standard'</span>, StandardScaler())</span><br><span class="line">            ])</span><br><span class="line"></span><br><span class="line">length.fit_transform(X_train)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/004.png?raw=true" alt=""></p>
+<p>根据输出结果可以看出，pipeline返回一个我们想要的数值缩放矩阵。然后把剩下的数值特征列都进行缩放scaler操作。当然这个数据处理操作你可以随意更改成其他可用的。</p>
+<p>输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">words =  Pipeline([</span><br><span class="line">                (<span class="string">'selector'</span>, NumberSelector(key=<span class="string">'words'</span>)),</span><br><span class="line">                (<span class="string">'standard'</span>, StandardScaler())</span><br><span class="line">            ])</span><br><span class="line">words_not_stopword =  Pipeline([</span><br><span class="line">                (<span class="string">'selector'</span>, NumberSelector(key=<span class="string">'words_not_stopword'</span>)),</span><br><span class="line">                (<span class="string">'standard'</span>, StandardScaler())</span><br><span class="line">            ])</span><br><span class="line">avg_word_length =  Pipeline([</span><br><span class="line">                (<span class="string">'selector'</span>, NumberSelector(key=<span class="string">'avg_word_length'</span>)),</span><br><span class="line">                (<span class="string">'standard'</span>, StandardScaler())</span><br><span class="line">            ])</span><br><span class="line">commas =  Pipeline([</span><br><span class="line">                (<span class="string">'selector'</span>, NumberSelector(key=<span class="string">'commas'</span>)),</span><br><span class="line">                (<span class="string">'standard'</span>, StandardScaler()),</span><br><span class="line">            ])</span><br></pre></td></tr></table></figure>
+<h4 id="创建-FeatureUnion"><a href="#创建-FeatureUnion" class="headerlink" title="创建 FeatureUnion"></a>创建 FeatureUnion</h4><p>pipeline管道可大可小，又大又长又粗的pipeline也是由一个个mini pipelines组成的嘛。</p>
+<p>接下来使用FeatureUnion来连接上面做好的pipelines，形成一个类似大的pipeline。</p>
+<p>语法操作还是格式如（名称，对象）的元组。FeatureUnion本身不是pipeline，它只是一个组合，所以需要多写一行代码，将其变为一个大pipeline。然后的事情，你懂的，还是fit，transform，或者fit_transform操作。</p>
+<p>输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> FeatureUnion</span><br><span class="line"></span><br><span class="line">feats = FeatureUnion([(<span class="string">'text'</span>, text), </span><br><span class="line">                      (<span class="string">'length'</span>, length),</span><br><span class="line">                      (<span class="string">'words'</span>, words),</span><br><span class="line">                      (<span class="string">'words_not_stopword'</span>, words_not_stopword),</span><br><span class="line">                      (<span class="string">'avg_word_length'</span>, avg_word_length),</span><br><span class="line">                      (<span class="string">'commas'</span>, commas)])</span><br><span class="line"></span><br><span class="line">feature_processing = Pipeline([(<span class="string">'feats'</span>, feats)])</span><br><span class="line">feature_processing.fit_transform(X_train)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/005.png?raw=true" alt=""></p>
+<p>甚至可以在刚刚的大pipeline尾巴上再添加一个分类器，即不仅仅是数据转化，而是增加建模/预测功能。还是原来的套路，写元组，再pipeline一下。</p>
+<p>可以得到粗糙的 63.8%的分类精度。小试牛刀，不要太在意这些细节~</p>
+<p>输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"></span><br><span class="line">pipeline = Pipeline([</span><br><span class="line">    (<span class="string">'features'</span>,feats),</span><br><span class="line">    (<span class="string">'classifier'</span>, RandomForestClassifier(random_state = <span class="number">42</span>)),</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">pipeline.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">preds = pipeline.predict(X_test)</span><br><span class="line">np.mean(preds == y_test)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.638347260909935</span><br></pre></td></tr></table></figure>
+<h4 id="再看-Pipeline"><a href="#再看-Pipeline" class="headerlink" title="再看 Pipeline"></a>再看 Pipeline</h4><p>现在可以得出的结论就是，pipeline不仅能做数据预处理的流水线，更是能把整个建模套路做成流水线，只需在pipeline的结尾加上一个分类器。接下来将创建一个pipeline，完成上面所有的处理，最后用随机森林分类器。</p>
+<h4 id="优化-Pipeline"><a href="#优化-Pipeline" class="headerlink" title="优化 Pipeline"></a>优化 Pipeline</h4><p>利用 Cross Validation 寻找更优的pipeline，就要先观察pipeline的属性，再进行超参数调参。</p>
+<p>输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pipeline.get_params().keys()</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/006.png?raw=true" alt=""></p>
+<p>这些都是pipeline相关的属性，即超参数，这些超参数的组合变化，超参数的数值变化都会影响一个pipeline好不好用。在此只为展示操作，因此随心情挑选四个超参数进行调优。优化方式为GridSearchCV，即 网格搜索交叉验证法，适用于少量的超参数个数和少量的数值候选调优。</p>
+<p>输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line"></span><br><span class="line">hyperparameters = &#123; <span class="string">'features__text__tfidf__max_df'</span>: [<span class="number">0.9</span>, <span class="number">0.95</span>],</span><br><span class="line">                    <span class="string">'features__text__tfidf__ngram_range'</span>: [(<span class="number">1</span>,<span class="number">1</span>), (<span class="number">1</span>,<span class="number">2</span>)],</span><br><span class="line">                   <span class="string">'classifier__max_depth'</span>: [<span class="number">50</span>, <span class="number">70</span>],</span><br><span class="line">                    <span class="string">'classifier__min_samples_leaf'</span>: [<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line">                  &#125;</span><br><span class="line">clf = GridSearchCV(pipeline, hyperparameters, cv=<span class="number">5</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Fit and tune model</span></span><br><span class="line">clf.fit(X_train, y_train)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/007.png?raw=true" alt=""></p>
+<p>观察调优结果，即超参数最终选择的数值为多少，输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clf.best_params_</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/008.png?raw=true" alt=""></p>
+<p>隐藏菜单操作为调用 refit，可自动使用使用pipeline来fit所有的训练数据。并将其应用于测试集。</p>
+<p>输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#refitting on entire training data using best settings</span></span><br><span class="line">clf.refit</span><br><span class="line"></span><br><span class="line">preds = clf.predict(X_test)</span><br><span class="line">probs = clf.predict_proba(X_test)</span><br><span class="line"></span><br><span class="line">np.mean(preds == y_test)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.6425255338904364</span><br></pre></td></tr></table></figure>
+<p>还是有一点精度的提高的。</p>
+<h4 id="进行预测"><a href="#进行预测" class="headerlink" title="进行预测"></a>进行预测</h4><p>做模型总要有结果的，最后对数据集进行predict，看看未知文本到底是哪位作者写出来的概率更大。</p>
+<p>输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">submission = pd.read_csv(<span class="string">'data/test.csv'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#preprocessing</span></span><br><span class="line">submission = processing(submission)</span><br><span class="line">predictions = clf.predict_proba(submission)</span><br><span class="line"></span><br><span class="line">preds = pd.DataFrame(data=predictions, columns = clf.best_estimator_.named_steps[<span class="string">'classifier'</span>].classes_)</span><br><span class="line"></span><br><span class="line"><span class="comment">#generating a submission file</span></span><br><span class="line">result = pd.concat([submission[[<span class="string">'id'</span>]], preds], axis=<span class="number">1</span>)</span><br><span class="line">result.set_index(<span class="string">'id'</span>, inplace = <span class="keyword">True</span>)</span><br><span class="line">result.head()</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/pipelines/009.png?raw=true" alt=""></p>
+<h4 id="Pipeline-总结"><a href="#Pipeline-总结" class="headerlink" title="Pipeline 总结"></a>Pipeline 总结</h4><ul>
+<li><p>sklean提供的pipeline来将多个学习器组成流水线，通常流水线的形式为：</p>
+<p>将数据标准化的学习器—-特征提取的学习器—-执行预测的学习器/分类器</p>
+</li>
+<li><p>除了最后一个学习器之外，前面的所有学习器必须提供transform方法，该方法用于数据转</p>
+<p>（例如： 归一化，正则化，以及特征提取）</p>
+</li>
+</ul>
+<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><ul>
+<li><a href="https://www.kaggle.com/baghern/a-deep-dive-into-sklearn-pipelines" target="_blank" rel="noopener">A Deep Dive Into Sklearn Pipelines</a></li>
+<li><a href="https://www.kaggle.com/metadist/work-like-a-pro-with-pipelines-and-feature-unions" target="_blank" rel="noopener">Work like a Pro with Pipelines and Feature Unions</a></li>
+<li><a href="https://www.kaggle.com/evanmiller/pipelines-gridsearch-awesome-ml-pipelines" target="_blank" rel="noopener">Pipelines + GridSearch = Awesome ML pipelines</a></li>
+<li><a href="http://zacstewart.com/2014/08/05/pipelines-of-featureunions-of-pipelines.html" target="_blank" rel="noopener">Using scikit-learn Pipelines and FeatureUnions</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/26973440" target="_blank" rel="noopener">优秀的Transformers与Pipeline</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/pipeline/" rel="tag"># pipeline</a>
+          
+            <a href="/tags/sklearn/" rel="tag"># sklearn</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/31/Auto Hyperparameter Tuning - Bayesian Optimization/" rel="next" title="Auto Machine Learning笔记 - Bayesian Optimization">
+                <i class="fa fa-chevron-left"></i> Auto Machine Learning笔记 - Bayesian Optimization
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/24/NLP笔记-Getting-Started/" rel="prev" title="NLP笔记 - Getting Started">
+                NLP笔记 - Getting Started <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念解释"><span class="nav-text">概念解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下载数据集"><span class="nav-text">下载数据集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本特征预处理"><span class="nav-text">文本特征预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-Pipeline"><span class="nav-text">创建 Pipeline</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-FeatureUnion"><span class="nav-text">创建 FeatureUnion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#再看-Pipeline"><span class="nav-text">再看 Pipeline</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化-Pipeline"><span class="nav-text">优化 Pipeline</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进行预测"><span class="nav-text">进行预测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pipeline-总结"><span class="nav-text">Pipeline 总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考链接"><span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/08/07/Machine Learning笔记 - Pipelines 制作教程/';
+          this.page.identifier = '2018/08/07/Machine Learning笔记 - Pipelines 制作教程/';
+          this.page.title = 'Auto Machine Learning笔记 - Pipelines 制作教程';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

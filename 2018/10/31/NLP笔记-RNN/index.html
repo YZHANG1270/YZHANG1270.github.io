@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP,RNN," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="面向读者：深度学习 / NLP入门选手 NLP里最常用最传统的深度学习模型就是循环神经网络 RNN（Recurrent Neural Network）。这个模型的命名已经说明了数据处理方法，是按顺序按步骤读取的。与人类理解文字的道理差不多，看书都是一个字一个字，一句话一句话去理解的。 本文将介绍RNN及其一些重要的RNN变种模型：  RNN Encoder-Decoder（ =  Seq-to-S">
+<meta name="keywords" content="NLP,RNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP笔记 - RNN 结构详解">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/10/31/NLP笔记-RNN/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="面向读者：深度学习 / NLP入门选手 NLP里最常用最传统的深度学习模型就是循环神经网络 RNN（Recurrent Neural Network）。这个模型的命名已经说明了数据处理方法，是按顺序按步骤读取的。与人类理解文字的道理差不多，看书都是一个字一个字，一句话一句话去理解的。 本文将介绍RNN及其一些重要的RNN变种模型：  RNN Encoder-Decoder（ =  Seq-to-S">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/001.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/001.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/009.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/010.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/011.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/002.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/003.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/004.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/005.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/006.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/007.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/008.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/012.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/013.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/014.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/015.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/016.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/017.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/018.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/019.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/002.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/003.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/004.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/005.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/006.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/007.png?raw=true">
+<meta property="og:updated_time" content="2019-04-23T10:11:07.496Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP笔记 - RNN 结构详解">
+<meta name="twitter:description" content="面向读者：深度学习 / NLP入门选手 NLP里最常用最传统的深度学习模型就是循环神经网络 RNN（Recurrent Neural Network）。这个模型的命名已经说明了数据处理方法，是按顺序按步骤读取的。与人类理解文字的道理差不多，看书都是一个字一个字，一句话一句话去理解的。 本文将介绍RNN及其一些重要的RNN变种模型：  RNN Encoder-Decoder（ =  Seq-to-S">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/001.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/10/31/NLP笔记-RNN/"/>
+
+
+
+
+
+  <title>NLP笔记 - RNN 结构详解 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/10/31/NLP笔记-RNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NLP笔记 - RNN 结构详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-31T18:37:51+08:00">
+                2018-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/31/NLP笔记-RNN/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/10/31/NLP笔记-RNN/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>面向读者：深度学习 / NLP入门选手</p>
+<p>NLP里最常用最传统的深度学习模型就是<strong>循环神经网络 RNN</strong>（Recurrent Neural Network）。这个模型的命名已经说明了数据处理方法，是按顺序按步骤读取的。与人类理解文字的道理差不多，看书都是一个字一个字，一句话一句话去理解的。</p>
+<p>本文将介绍RNN及其一些重要的RNN变种模型：</p>
+<ul>
+<li>RNN</li>
+<li>Encoder-Decoder（ =  Seq-to-Seq ）</li>
+<li>Attention Mechanism</li>
+</ul>
+<a id="more"></a>
+<h2 id="RNN-多结构详解"><a href="#RNN-多结构详解" class="headerlink" title="RNN 多结构详解"></a>RNN 多结构详解</h2><p><strong>CNN vs RNN</strong></p>
+<ol>
+<li>CNN 需要固定长度的输入、输出，RNN 的输入和输出可以是不定长且不等长的</li>
+<li>CNN 只有 one-to-one 一种结构，而 RNN 有多种结构，如下图：</li>
+</ol>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/001.png?raw=true" alt=""></p>
+<h3 id="1-one-to-one"><a href="#1-one-to-one" class="headerlink" title="1. one-to-one"></a>1. one-to-one</h3><p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/001.jpg?raw=true" alt=""></p>
+<p>最基本的单层网络，输入是x，经过变换Wx+b和激活函数f得到输出y。</p>
+<h3 id="2-one-to-n"><a href="#2-one-to-n" class="headerlink" title="2. one-to-n"></a>2. one-to-n</h3><p>输入不是序列而输出为序列的情况，只在序列开始进行输入计算：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/009.jpg?raw=true" alt=""></p>
+<p>图示中记号的含义是：</p>
+<ul>
+<li><strong>圆圈或方块表示的是向量。</strong></li>
+<li><strong>一个箭头就表示对该向量做一次变换。如上图中<script type="math/tex">h_{0}</script>和x分别有一个箭头连接，就表示对<script type="math/tex">h_{0}</script>和x各做了一次变换。</strong></li>
+</ul>
+<p>还有一种结构是把输入信息X作为每个阶段的输入：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/010.jpg?raw=true" alt=""></p>
+<p>下图省略了一些X的圆圈，是一个等价表示：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/011.jpg?raw=true" alt=""></p>
+<p>这种 one-to-n 的结构可以处理的问题有：</p>
+<ul>
+<li>从图像生成文字（image caption），此时输入的X就是图像的特征，而输出的y序列就是一段句子，就像看图说话等</li>
+<li>从类别生成语音或音乐等</li>
+</ul>
+<h3 id="3-n-to-n"><a href="#3-n-to-n" class="headerlink" title="3. n-to-n"></a>3. n-to-n</h3><p>最经典的RNN结构，输入、输出都是等长的序列数据。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/002.jpg?raw=true" alt=""></p>
+<p>假设输入为<script type="math/tex">X=(x_{1}, x_{2}, x_{3}, x_{4})</script>，每个x是一个单词的词向量。</p>
+<p>为了建模序列问题，RNN引入了隐状态h（hidden state）的概念，h可以对序列形的数据提取特征，接着再转换为输出。先从<script type="math/tex">h_{1}</script>的计算开始看：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/003.jpg?raw=true" alt=""></p>
+<p><script type="math/tex">h_{2}</script>的计算和<script type="math/tex">h_{1}</script>类似。要注意的是，在计算时，<strong>每一步使用的参数U、W、b都是一样的，也就是说每个步骤的参数都是共享的，这是RNN的重要特点，一定要牢记。</strong></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/004.jpg?raw=true" alt=""></p>
+<p>依次计算剩下来的（使用相同的参数U、W、b）：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/005.jpg?raw=true" alt=""></p>
+<p>这里为了方便起见，只画出序列长度为4的情况，实际上，这个计算过程可以无限地持续下去。得到输出值的方法就是直接通过h进行计算：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/006.jpg?raw=true" alt=""></p>
+<p>正如之前所说，<strong>一个箭头就表示对对应的向量做一次类似于f(Wx+b)的变换，这里的这个箭头就表示对<script type="math/tex">h_{1}</script>进行一次变换，得到输出<script type="math/tex">y_{1}</script>。</strong></p>
+<p>剩下的输出类似进行（使用和<script type="math/tex">y_{1}</script>同样的参数V和c）：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/007.jpg?raw=true" alt=""></p>
+<p>这就是最经典的RNN结构，它的输入是<script type="math/tex">x_{1}, x_{2}, .....x_{n}</script>，输出为<script type="math/tex">y_{1}, y_{2}, ...y_{n}</script>，也就是说，<strong>输入和输出序列必须要是等长的</strong>。由于这个限制的存在，经典RNN的适用范围比较小，但也有一些问题适合用经典的RNN结构建模，如：</p>
+<ul>
+<li>计算视频中每一帧的分类标签。因为要对每一帧进行计算，因此输入和输出序列等长。</li>
+<li>输入为字符，输出为下一个字符的概率。这就是著名的Char RNN（详细介绍请参考：<a href="https://link.zhihu.com/?target=http%3A//karpathy.github.io/2015/05/21/rnn-effectiveness/" target="_blank" rel="noopener">The Unreasonable Effectiveness of Recurrent Neural Networks</a>，Char RNN可以用来生成文章，诗歌，甚至是代码，非常有意思）。</li>
+</ul>
+<h3 id="4-n-to-one"><a href="#4-n-to-one" class="headerlink" title="4. n-to-one"></a>4. n-to-one</h3><p>要处理的问题输入是一个序列，输出是一个单独的值而不是序列，应该怎样建模呢？实际上，我们只在最后一个h上进行输出变换就可以了：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/008.jpg?raw=true" alt=""></p>
+<p>这种结构通常用来处理序列分类问题。如输入一段文字判别它所属的类别，输入一个句子判断其情感倾向，输入一段视频并判断它的类别等等。</p>
+<h2 id="Encoder-Decoder"><a href="#Encoder-Decoder" class="headerlink" title="Encoder-Decoder"></a>Encoder-Decoder</h2><h3 id="n-to-m"><a href="#n-to-m" class="headerlink" title="n-to-m"></a><strong>n-to-m</strong></h3><p>还有一种是 <strong>n-to-m</strong>，输入、输出为不等长的序列。</p>
+<p>这种结构是<strong>Encoder-Decoder</strong>，也叫Seq2Seq，是RNN的一个重要变种。原始的n-to-n的RNN要求序列等长，然而我们遇到的大部分问题序列都是不等长的，如机器翻译中，源语言和目标语言的句子往往并没有相同的长度。<strong>为此，Encoder-Decoder结构先将输入数据编码成一个上下文语义向量c：</strong></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/012.jpg?raw=true" alt=""></p>
+<p><strong>语义向量c</strong>可以有多种表达方式，最简单的方法就是把Encoder的最后一个隐状态赋值给c，还可以对最后的隐状态做一个变换得到c，也可以对所有的隐状态做变换。</p>
+<p><strong>拿到c之后，就用另一个RNN网络对其进行解码</strong>，这部分RNN网络被称为Decoder。Decoder的RNN可以与Encoder的一样，也可以不一样。具体做法就是将c当做之前的初始状态<script type="math/tex">h_{0}</script>输入到Decoder中：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/013.jpg?raw=true" alt=""></p>
+<p>还有一种做法是将c当做每一步的输入：<img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/014.jpg?raw=true" alt=""></p>
+<h3 id="Encoder-Decoder-应用"><a href="#Encoder-Decoder-应用" class="headerlink" title="Encoder-Decoder 应用"></a>Encoder-Decoder 应用</h3><p>由于这种Encoder-Decoder结构不限制输入和输出的序列长度，因此应用的范围非常广泛，比如：</p>
+<ul>
+<li>机器翻译：Encoder-Decoder的最经典应用，事实上这结构就是在机器翻译领域最先提出的。</li>
+<li>文本摘要：输入是一段文本序列，输出是这段文本序列的摘要序列。</li>
+<li>阅读理解：将输入的文章和问题分别编码，再对其进行解码得到问题的答案。</li>
+<li>语音识别：输入是语音信号序列，输出是文字序列。</li>
+</ul>
+<h3 id="Encoder-Decoder-框架"><a href="#Encoder-Decoder-框架" class="headerlink" title="Encoder-Decoder 框架"></a>Encoder-Decoder 框架</h3><p>Encoder-Decoder 不是一个具体的模型，是一种框架。</p>
+<ul>
+<li>Encoder：将 input序列 →转成→ 固定长度的向量</li>
+<li>Decoder：将 固定长度的向量 →转成→ output序列</li>
+<li>Encoder 与 Decoder 可以彼此独立使用，实际上经常一起使用</li>
+</ul>
+<p>因为最早出现的机器翻译领域，最早广泛使用的转码模型是RNN。其实模型可以是 CNN /RNN /BiRNN /LSTM /GRU /…</p>
+<h3 id="Encoder-Decoder-缺点"><a href="#Encoder-Decoder-缺点" class="headerlink" title="Encoder-Decoder 缺点"></a>Encoder-Decoder 缺点</h3><ul>
+<li>最大的局限性：编码和解码之间的唯一联系是固定长度的语义向量<strong>c</strong></li>
+<li>编码要把整个序列的信息压缩进一个固定长度的语义向量<strong>c</strong></li>
+<li>语义向量c无法完全表达整个序列的信息</li>
+<li>先输入的内容携带的信息，会被后输入的信息稀释掉，或者被覆盖掉</li>
+<li>输入序列越长，这样的现象越严重，这样使得在Decoder解码时一开始就没有获得足够的输入序列信息，解码效果会打折扣</li>
+</ul>
+<p>因此，为了弥补基础的 Encoder-Decoder 的局限性，提出了attention机制。</p>
+<h2 id="Attention-Mechanism"><a href="#Attention-Mechanism" class="headerlink" title="Attention Mechanism"></a>Attention Mechanism</h2><p>注意力机制（attention mechanism）是对基础Encoder-Decoder的改良。Attention机制通过在每个时间输入不同的c来解决问题，下图是带有Attention机制的Decoder：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/015.jpg?raw=true" alt=""></p>
+<p><strong>每一个c会自动去选取与当前所要输出的y最合适的上下文信息。具体来说，我们用<script type="math/tex">a_{ij}</script>衡量Encoder中第j阶段的<script type="math/tex">h_{j}</script>和解码时第i阶段的相关性，最终Decoder中第i阶段的输入的上下文信息 <script type="math/tex">c_{i}</script>就来自于所有<script type="math/tex">h_{j}</script>对 <script type="math/tex">a_{ij}</script> 的加权和。</strong></p>
+<p>以机器翻译为例（将中文翻译成英文）：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/016.jpg?raw=true" alt=""></p>
+<p>输入的序列是“我爱中国”，因此，Encoder中的<script type="math/tex">h_{1}、h_{2}、h_{3}、h_{4}</script>就可以分别看做是“我”、“爱”、“中”、“国”所代表的信息。在翻译成英语时，第一个上下文<script type="math/tex">c_{1}</script>应该和 “我” 这个字最相关，因此对应的 <script type="math/tex">a_{11}</script> 就比较大，而相应的 <script type="math/tex">a_{12}、a_{13}、a_{14}</script> 就比较小。<script type="math/tex">c_{2}</script>应该和“爱”最相关，因此对应的 <script type="math/tex">a_{22}</script>就比较大。最后的<script type="math/tex">c_{3}</script>和<script type="math/tex">h_{3}、h_{4}</script>最相关，因此<script type="math/tex">a_{33}、a_{34}</script>的值就比较大。</p>
+<p>至此，关于Attention模型，只剩最后一个问题了，那就是：<strong>这些权重 <script type="math/tex">a_{ij}</script> 是怎么来的？</strong></p>
+<p>事实上，<script type="math/tex">a_{ij}</script>同样是从模型中学出的，它实际和Decoder的第i-1阶段的隐状态、Encoder第j个阶段的隐状态有关。</p>
+<p>同样还是拿上面的机器翻译举例，<script type="math/tex">a_{1j}</script>的计算（此时箭头就表示对h’和 <script type="math/tex">h_{j}</script>同时做变换）：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/017.jpg?raw=true" alt=""></p>
+<p><script type="math/tex">a_{2j}</script> 的计算：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/018.jpg?raw=true" alt=""></p>
+<p><script type="math/tex">a_{3j}</script> 的计算：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/019.jpg?raw=true" alt=""></p>
+<p>以上就是带有Attention的Encoder-Decoder模型计算的全过程。</p>
+<h3 id="Attention-的优点："><a href="#Attention-的优点：" class="headerlink" title="Attention 的优点："></a><strong>Attention 的优点：</strong></h3><ul>
+<li>在机器翻译时，让生词不只是关注全局的语义向量c，增加了“注意力范围”。表示接下来输出的词要重点关注输入序列种的哪些部分。根据关注的区域来产生下一个输出。</li>
+<li>不要求编码器将所有信息全输入在一个固定长度的向量中。</li>
+<li>将输入编码成一个向量的序列，解码时，每一步选择性的从序列中挑一个子集进行处理。</li>
+<li>在每一个输出时，能够充分利用输入携带的信息，每个语义向量<script type="math/tex">c_{i}</script>不一样，注意力焦点不一样。</li>
+</ul>
+<h3 id="Attention-的缺点"><a href="#Attention-的缺点" class="headerlink" title="Attention 的缺点"></a><strong>Attention 的缺点</strong></h3><ul>
+<li>需要为每个输入输出组合分别计算attention。50个单词的输出输出序列需要计算2500个attention。</li>
+<li>attention在决定专注于某个方面之前需要遍历一遍记忆再决定下一个输出是以什么。</li>
+</ul>
+<p>Attention的另一种替代方法是强化学习，来预测关注点的大概位置。但强化学习不能用反向传播算法端到端的训练。</p>
+<h3 id="Attention可视化"><a href="#Attention可视化" class="headerlink" title="Attention可视化"></a><strong>Attention可视化</strong></h3><p>Attention的可视化是一件非常cool的事！😝下面推荐一些优秀的attention相关论文。</p>
+<h4 id="paper-Attention-Is-All-You-Need"><a href="#paper-Attention-Is-All-You-Need" class="headerlink" title="paper:   Attention Is All You Need"></a>paper:  <a href="https://arxiv.org/pdf/1706.03762.pdf" target="_blank" rel="noopener"> Attention Is All You Need</a></h4><p>下图是句子的单词之间的attention联系，颜色深浅表示大小。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/002.png?raw=true" alt=""></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/003.png?raw=true" alt=""></p>
+<h4 id="paper-Show-Attend-and-Tell"><a href="#paper-Show-Attend-and-Tell" class="headerlink" title="paper: Show, Attend and Tell"></a>paper: <a href="https://arxiv.org/pdf/1502.03044v1.pdf" target="_blank" rel="noopener">Show, Attend and Tell</a></h4><p>注意每个句子的不同单词在图片中的attention标注：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/004.png?raw=true" alt=""></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/005.png?raw=true" alt=""></p>
+<h4 id="paper-Convolutional-Sequence-to-Sequence-Learning"><a href="#paper-Convolutional-Sequence-to-Sequence-Learning" class="headerlink" title="paper: Convolutional Sequence to Sequence Learning"></a>paper: <a href="https://arxiv.org/pdf/1705.03122.pdf" target="_blank" rel="noopener">Convolutional Sequence to Sequence Learning</a></h4><p>机器翻译中attention数值的可视化，一般是随着顺序强相关的。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/006.png?raw=true" alt=""></p>
+<p>其它paper：</p>
+<p>[Grammar as a Foreign Language] </p>
+<p>[Teaching Machines to Read and Comprehend]</p>
+<p>下面这张Attention热力图表达出了，当人在阅读的时候，注意力大多数放在了文字标题或者段落第一句话，还是蛮符合现实情况的。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/11/RNN_01/007.png?raw=true" alt=""></p>
+<p>Attention Mechanism是很早的概念了，但随着2017年谷歌的一篇《Attention Is All You Need》被完全引爆。随后会写这篇论文的详细走读和过程推导😎，敬请期待~</p>
+<p><strong>参考</strong></p>
+<p><a href="https://zhuanlan.zhihu.com/p/28054589" target="_blank" rel="noopener">完全图解RNN、RNN变体、Seq2Seq、Attention机制</a><br><a href="https://zhuanlan.zhihu.com/p/28687529" target="_blank" rel="noopener">RNN梯度消失和爆炸的原因</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/RNN/" rel="tag"># RNN</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/09/NLP实战-基于SimNet的Quora问句语义匹配/" rel="next" title="NLP实战 - 基于SimNet的Quora问句语义匹配">
+                <i class="fa fa-chevron-left"></i> NLP实战 - 基于SimNet的Quora问句语义匹配
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/01/NLP笔记-LSTM/" rel="prev" title="NLP笔记 - LSTM 结构详解">
+                NLP笔记 - LSTM 结构详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RNN-多结构详解"><span class="nav-text">RNN 多结构详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-one-to-one"><span class="nav-text">1. one-to-one</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-one-to-n"><span class="nav-text">2. one-to-n</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-n-to-n"><span class="nav-text">3. n-to-n</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-n-to-one"><span class="nav-text">4. n-to-one</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoder-Decoder"><span class="nav-text">Encoder-Decoder</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#n-to-m"><span class="nav-text">n-to-m</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Encoder-Decoder-应用"><span class="nav-text">Encoder-Decoder 应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Encoder-Decoder-框架"><span class="nav-text">Encoder-Decoder 框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Encoder-Decoder-缺点"><span class="nav-text">Encoder-Decoder 缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Attention-Mechanism"><span class="nav-text">Attention Mechanism</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Attention-的优点："><span class="nav-text">Attention 的优点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Attention-的缺点"><span class="nav-text">Attention 的缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Attention可视化"><span class="nav-text">Attention可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#paper-Attention-Is-All-You-Need"><span class="nav-text">paper:   Attention Is All You Need</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#paper-Show-Attend-and-Tell"><span class="nav-text">paper: Show, Attend and Tell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#paper-Convolutional-Sequence-to-Sequence-Learning"><span class="nav-text">paper: Convolutional Sequence to Sequence Learning</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/10/31/NLP笔记-RNN/';
+          this.page.identifier = '2018/10/31/NLP笔记-RNN/';
+          this.page.title = 'NLP笔记 - RNN 结构详解';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

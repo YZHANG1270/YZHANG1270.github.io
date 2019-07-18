@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Semantic Matching,NLP,code review,QA,语义匹配," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="面向对象：想搭建智能问答系统、深度语义匹配的nlp选手。在自己亲手搭建一个之前，学习和走读优秀的框架代码是个不会错的选择。 AnyQ(ANswer Your Questions) ：百度QA开源项目，主要包含面向FAQ集合的问答系统框架、文本语义匹配工具SimNet。">
+<meta name="keywords" content="Semantic Matching,NLP,code review,QA,语义匹配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码走读 - 百度开源智能问答框架 AnyQ">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/09/06/代码走读-百度智能问答开源框架-AnyQ/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="面向对象：想搭建智能问答系统、深度语义匹配的nlp选手。在自己亲手搭建一个之前，学习和走读优秀的框架代码是个不会错的选择。 AnyQ(ANswer Your Questions) ：百度QA开源项目，主要包含面向FAQ集合的问答系统框架、文本语义匹配工具SimNet。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/011.png?raw=true">
+<meta property="og:updated_time" content="2019-02-11T07:45:05.937Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="代码走读 - 百度开源智能问答框架 AnyQ">
+<meta name="twitter:description" content="面向对象：想搭建智能问答系统、深度语义匹配的nlp选手。在自己亲手搭建一个之前，学习和走读优秀的框架代码是个不会错的选择。 AnyQ(ANswer Your Questions) ：百度QA开源项目，主要包含面向FAQ集合的问答系统框架、文本语义匹配工具SimNet。">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/011.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/09/06/代码走读-百度智能问答开源框架-AnyQ/"/>
+
+
+
+
+
+  <title>代码走读 - 百度开源智能问答框架 AnyQ | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/09/06/代码走读-百度智能问答开源框架-AnyQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">代码走读 - 百度开源智能问答框架 AnyQ</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-06T19:42:10+08:00">
+                2018-09-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/06/代码走读-百度智能问答开源框架-AnyQ/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/06/代码走读-百度智能问答开源框架-AnyQ/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>面向对象：想搭建智能问答系统、深度语义匹配的nlp选手。在自己亲手搭建一个之前，学习和走读优秀的框架代码是个不会错的选择。</p>
+<p><a href="https://github.com/baidu/AnyQ" target="_blank" rel="noopener"><strong>AnyQ(ANswer Your Questions)</strong> </a>：百度QA开源项目，主要包含面向FAQ集合的问答系统框架、文本语义匹配工具SimNet。<br><a id="more"></a></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/011.png?raw=true" alt=""></p>
+<h2 id="框架目录"><a href="#框架目录" class="headerlink" title="框架目录"></a>框架目录</h2><p>本文重点走读SimNet框架的代码。开源代码地址，<a href="https://github.com/baidu/AnyQ/tree/master/tools/simnet/train/tf" target="_blank" rel="noopener">点这里</a>。TensorFlow版SimNet的结构如下：（自动屏蔽名字带 ‘pairwise’ 的文件，稍后解释）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">simnet</span><br><span class="line">    |-tf</span><br><span class="line">        |- date //示例数据，tsv格式，没有表头</span><br><span class="line">        	|- train_pointwise_data //训练集数据</span><br><span class="line">        	|- test_pointwise_data //测试集数据</span><br><span class="line">        	</span><br><span class="line">        |- examples //示例配置文件，以模型种类命名，里面的参数需熟知</span><br><span class="line">        	|- bow-pointwise.json</span><br><span class="line">        	|- cnn-pointwise.json</span><br><span class="line">        	|- knrm-pointwise.json</span><br><span class="line">        	|- lstm-pointwise.json</span><br><span class="line">        	|- mmdnn-pointwise.json</span><br><span class="line">        	|- mvlstm-pointwise.json</span><br><span class="line">        	|- pyramid-pointwise.json</span><br><span class="line">        </span><br><span class="line">        |- layers //网络中使用操作层的实现</span><br><span class="line">        	|- tf_layers.py</span><br><span class="line">        	</span><br><span class="line">        |- losses //损失函数实现，可放置各种损失函数class</span><br><span class="line">        	|- simnet_loss.py</span><br><span class="line">        	</span><br><span class="line">        |- nets //网络结构实现，由tf_layers.py不同组合实现</span><br><span class="line">        	|- bow.py</span><br><span class="line">        	|- knrm.py</span><br><span class="line">        	|- lstm.py</span><br><span class="line">        	|- matchpyramid.py</span><br><span class="line">        	|- mlpcnn.py</span><br><span class="line">        	|- mm_dnn.py</span><br><span class="line">        	|- mvlstm.py</span><br><span class="line">        	</span><br><span class="line">        |- tools //数据转化及评价工具</span><br><span class="line">        	|- evaluate.py</span><br><span class="line">        	|- tf_record_reader.py</span><br><span class="line">        	|- tf_record_writer.py</span><br><span class="line">        	</span><br><span class="line">        |- util //工具类</span><br><span class="line">        	|- controler.py</span><br><span class="line">        	|- converter.py  # 数据转换</span><br><span class="line">        	|- datafeeds.py  # 读取数据</span><br><span class="line">        	|- utility.py</span><br><span class="line">        </span><br><span class="line">        |- README.md //请仔细反复读，</span><br><span class="line">        </span><br><span class="line">        |- run_infer.sh //运行predict任务</span><br><span class="line">        |- run_train.sh //运行train任务</span><br><span class="line">        </span><br><span class="line">        |- tf_simnet.py //主运行文件</span><br></pre></td></tr></table></figure>
+<p>读框架代码的工具，相较于jupyter，spyder，推荐<a href="http://www.jetbrains.com/pycharm/" target="_blank" rel="noopener">Pycharm</a>。</p>
+<h2 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h2><ul>
+<li>linux，其它系统推荐docker</li>
+<li>python 2.7</li>
+<li>tensorflow 1.7.0</li>
+</ul>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p><strong>解释为何屏蔽名字带 ‘pairwise’ 的文件：</strong></p>
+<p>语义匹配网络<strong>SimNet</strong>可以使用Pointwise与Pairwise两种类型的数据进行训练。</p>
+<p><strong>Pointwise训练及测试数据格式</strong></p>
+<ul>
+<li><em>训练数据格式</em>：训练数据包含三列，依次为Query1的ID序列（ID间使用空格分割），Query2的ID序列（ID间使用空格分割），Label，每列间使用TAB分割，例如；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 1 1 1 1   2 2 2 2 2   0</span><br><span class="line">1 1 1 1 1   1 1 1 1 1   1</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<ul>
+<li><em>测试数据格式</em>：Pointwise测试数据格式与训练数据格式相同。</li>
+</ul>
+<p><strong>Pairwise训练及测试数据格式</strong></p>
+<ul>
+<li><em>训练数据格式</em>：训练数据包含三列，依次为Query1的ID序列（ID间使用空格分割），Positive Query2的ID序列（ID间使用空格分割），Negative Query3的ID序列（ID间使用空格分割），每列间使用TAB分割，例如；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 1 1 1 1   1 1 1 1 1   2 2 2 2 2   </span><br><span class="line">1 1 1 1 1   1 1 1 1 1   3 3 3 3 3</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<ul>
+<li><em>测试数据格式</em>：测试数据格式包含三列，依次为Query1的ID序列（ID间使用空格分割），Query2的ID序列（ID间使用空格分割），Label，每列间使用TAB分割，例如；</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 1 1 1 1   1 1 1 1 1   1</span><br><span class="line">1 1 1 1 1   2 2 2 2 2   0</span><br><span class="line">3 3 3 3 3   3 3 3 3 3   1</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>由于使用的数据集是<a href="https://www.kaggle.com/c/quora-question-pairs/data" target="_blank" rel="noopener">Quora数据集</a>，为 [问句1，问句2，label] 的Pointwise格式数据集，因此名字带 ‘pairwise’ 的文件暂时都用不上。若是数据集为pairwise，就能用的上了。</p>
+<h2 id="json-配置文件走读"><a href="#json-配置文件走读" class="headerlink" title=".json 配置文件走读"></a>.json 配置文件走读</h2><p>准备完数据文件之后，观察配置文件，以cnn-pointwise.json为例。 通过配置文件可以灵活的选择网络类型，数据类型，损失函数以及其他超参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;train_data&quot;:&#123;</span><br><span class="line">        &quot;train_file&quot;: &quot;data/convert_train_pointwise_data&quot;, //训练文件路径</span><br><span class="line">        &quot;data_size&quot;: 400, //训练集大小，根据不同的训练数据文件需做改动</span><br><span class="line">        &quot;left_slots&quot; : [[&quot;left&quot;,32]], //left slot的名字及最大长度</span><br><span class="line">        &quot;right_slots&quot; : [[&quot;right&quot;,32]] //right slot的名字及最大长度</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &quot;model&quot;:&#123;</span><br><span class="line">        &quot;net_py&quot;: &quot;./nets/mlpcnn&quot;, //网络对应模块路径</span><br><span class="line">        &quot;net_class&quot;: &quot;MLPCnn&quot;, //网络对应类名</span><br><span class="line">        &quot;vocabulary_size&quot;: 3, //词典大小，根据词嵌入得出的字典大小需做改动</span><br><span class="line">        </span><br><span class="line">        # 不同的网络net有不同的参数，这些是cnn的参数</span><br><span class="line">        &quot;embedding_dim&quot;: 128, // Embedding嵌入层维度</span><br><span class="line">        &quot;num_filters&quot;: 256, //卷机核数量</span><br><span class="line">        &quot;hidden_size&quot;: 128, //隐藏层大小</span><br><span class="line">        &quot;window_size&quot;: 3, //卷机核大小</span><br><span class="line">        </span><br><span class="line">        # 损失函数参数</span><br><span class="line">        &quot;loss_py&quot;: &quot;./losses/simnet_loss&quot;, //损失对应模块路径，内有各种损失函数</span><br><span class="line">        &quot;loss_class&quot;: &quot;SoftmaxWithLoss&quot; //损失对应类名，可选择其它损失函数</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &quot;global&quot;:&#123;</span><br><span class="line">        &quot;training_mode&quot;: &quot;pointwise&quot;, //训练模式，也是数据格式</span><br><span class="line">        &quot;n_class&quot;: 2, //类别数目，2为二分类</span><br><span class="line">        &quot;max_len_left&quot;: 32, //Left slot的最大长度</span><br><span class="line">        &quot;max_len_right&quot;: 32 //Right slot的最大长度</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &quot;setting&quot;:&#123;</span><br><span class="line">        &quot;batch_size&quot;: 64, // Batch Size，每一步跑的样本数</span><br><span class="line">        &quot;num_epochs&quot;: 1, // Number of Epochs，重复全体样本的倍数</span><br><span class="line">        &quot;thread_num&quot;: 6, //线程数</span><br><span class="line">        &quot;print_iter&quot;: 100, //显示间隔，每100步显示一个loss</span><br><span class="line">        &quot;model_path&quot;: &quot;model/pointwise&quot;, //模型保存路径，在框架目录里没有，需要自己新建</span><br><span class="line">        &quot;model_prefix&quot;: &quot;cnn&quot;, //模型保存名前缀</span><br><span class="line">        &quot;learning_rate&quot;: 0.001, //学习率</span><br><span class="line">        &quot;shuffle&quot;: 1 //是否打乱数据</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &quot;test_data&quot;:&#123;</span><br><span class="line">        &quot;test_file&quot;: &quot;data/convert_test_pointwise_data&quot;, //测试数据路径</span><br><span class="line">        &quot;test_model_file&quot;:  &quot;model/pointwise/cnn.epoch1&quot;, //测试使用模型，要先跑train任务后才有模型文件保存下来，才能做预测</span><br><span class="line">        &quot;test_result&quot;: &quot;result_cnn_pointwise&quot; //测试结果文件</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    &quot;graph&quot;:&#123;</span><br><span class="line">        &quot;graph_path&quot;: &quot;graph&quot;, //freeze任务文件保存路径</span><br><span class="line">        &quot;graph_name&quot;: &quot;model_cnn_pairwise.protxt&quot; //freeze任务结果文件</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>参数说明：</strong></p>
+<ul>
+<li><p>假设训练集的 data_size = 1000时，运行模型训练train任务时，设置了num_epochs = 5，batch_size = 50，shuffle = 1，print_iter = 10，那么训练集最终的样本量 = data_size  <em> num_epochs =5000，重复了5倍原有样本量，shuffle = 1表示打乱样本数据，而每步step跑 batch_size 条样本，一共能跑 data_size  </em> num_epochs / batch_size  = 5000/50 = 100 步，而每print_iter步报一次loss，那么一共报 100/print_iter  = 10次loss。</p>
+<p>在代码中还有个参数为 epoch_iter，为保存模型而设置，意为每epoch_iter步时，保存一次模型文件。epoch_iter = data_size / batch_size = 1000/50 = 20，共100步，即跑完train后共保存 100/epoch_iter =100/20 =5个模型文件。若shuffle = 0，epoch_iter 意为跑完一次原data_size 需要的步数，若shuffle = 1，epoch_iter 意为跑完一次与原data_size一样大的数据集需要的步数，这样的话，最终保存的模型数量 = num_epochs 。</p>
+</li>
+<li><p>假设测试集的 data_size = 200时，运行模型预测predict任务时，经常设置num_epochs = 1，因为在测试时没必要重复测试样本，是否打乱数据影响也不大，当设置batch_size = 50，测试数据总样本量 = data_size *num_epochs =200仍然是原测试数据集，每步跑batch_size = 50条数据，共200/50=4steps跑完，最终会打印一个accuracy数值。</p>
+</li>
+<li><p>这些参数只对模型训练有效，模型预测的predict任务里的这些参数需要在tf_simnet.py内的predict函数内修改！！！（为自己修改代码把配置参数提到配置文件里埋下伏笔😂）</p>
+</li>
+</ul>
+<p><strong>其它说明：</strong></p>
+<ul>
+<li><p>保存模型文件的路径需要自己手动添加，在目录上新建model和pointwise文件夹：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">simnet</span><br><span class="line">    |-tf</span><br><span class="line">        |- date</span><br><span class="line">        |- examples</span><br><span class="line">        |- layers</span><br><span class="line">        |- losses</span><br><span class="line">        |- nets</span><br><span class="line">        |- tools</span><br><span class="line">        |- util</span><br><span class="line">        </span><br><span class="line">        # 新建下面的文件夹</span><br><span class="line">        |- model</span><br><span class="line">        	|- pointwise</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="sh-任务文件走读"><a href="#sh-任务文件走读" class="headerlink" title=".sh 任务文件走读"></a>.sh 任务文件走读</h2><p>数据准备完毕，配置文件修改完成后，可在Linux执行.sh脚本文件来实现 train / predict / freeze / …等任务。</p>
+<h3 id="run-train-sh"><a href="#run-train-sh" class="headerlink" title="run_train.sh"></a>run_train.sh</h3><p>通过执行脚本run_train.sh可以启动训练任务，打开run_train.sh：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">set -e # set -o errexit</span><br><span class="line">set -u # set -o nounset</span><br><span class="line">set -o pipefail </span><br><span class="line"></span><br><span class="line"># 以下命令用来做训练集和测试集数据转换，转换一次形成convert文件便可以，不需要重复转换</span><br><span class="line">#-----------------------------------------------------------------------</span><br><span class="line"># 将train_pointwise_data转成convert_train_pointwise_data</span><br><span class="line">echo &quot;convert train data&quot;</span><br><span class="line">python ./tools/tf_record_writer.py pointwise ./data/train_pointwise_data ./data/convert_train_pointwise_data 0 32</span><br><span class="line">#-----------------------------------------------------------------------</span><br><span class="line"># 将test_pointwise_data转成convert_test_pointwise_data</span><br><span class="line">echo &quot;convert test data&quot;</span><br><span class="line">python ./tools/tf_record_writer.py pointwise ./data/test_pointwise_data ./data/convert_test_pointwise_data 0 32</span><br><span class="line">echo &quot;convert data finish&quot;</span><br><span class="line">#-----------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">in_task_type=&apos;train&apos;    # 输入任务类型，可选择 train/predict/freeze/convert</span><br><span class="line">in_task_conf=&apos;./examples/cnn-pointwise.json&apos;  # 输入配置文件地址</span><br><span class="line"></span><br><span class="line">#-----------------------------------------------------------------------</span><br><span class="line"># 以下命令运行tf_simnet.py文件，执行train任务，深度语义匹配使用为cnn网络</span><br><span class="line">python tf_simnet.py \</span><br><span class="line">		   --task $in_task_type \</span><br><span class="line">		   --task_conf $in_task_conf</span><br></pre></td></tr></table></figure>
+<p>也可以通过如下方式启动自定义训练，效果与上面的.sh文件是一样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python tf_simnet.py</span><br><span class="line">        --task train</span><br><span class="line">        --task_conf examples/cnn_pointwise.json</span><br></pre></td></tr></table></figure>
+<p>执行完run_train.sh后，在model文件夹内会自动保存各个epoch_iter和final的模型文件。</p>
+<h3 id="run-infer-sh"><a href="#run-infer-sh" class="headerlink" title="run_infer.sh"></a>run_infer.sh</h3><p>通过执行脚本run_infer.sh可以启动预测任务，可以得到模型预测结果或得分，打开.sh文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">set -e # set -o errexit</span><br><span class="line">set -u # set -o nounset</span><br><span class="line">set -o pipefail </span><br><span class="line"></span><br><span class="line">in_task_type=&apos;predict&apos;                         # 选择了predict任务</span><br><span class="line">in_task_conf=&apos;./examples/cnn-pointwise.json&apos;   # 仍然是cnn配置文件路径</span><br><span class="line">python tf_simnet.py \</span><br><span class="line">		   --task $in_task_type \</span><br><span class="line">		   --task_conf $in_task_conf</span><br></pre></td></tr></table></figure>
+<p>也可以通过如下方式启动自定义训练：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python tf_simnet.py</span><br><span class="line">        --task predict</span><br><span class="line">        --task_conf examples/cnn_pointwise.json</span><br></pre></td></tr></table></figure>
+<p>执行完run_infer.sh之后，会自动在路径上生成result文件，可打开查看。</p>
+<h3 id="自定义-sh任务文件"><a href="#自定义-sh任务文件" class="headerlink" title="自定义.sh任务文件"></a>自定义.sh任务文件</h3><p>据观察，.sh文件主要运行tf_simnet.py文件，有两个参数可以自定义。</p>
+<p><strong>参数说明：</strong></p>
+<ul>
+<li><strong>task</strong>: 任务类型 ，可选择 train/predict/freeze/convert 。</li>
+<li><strong>task_conf</strong>: 使用配置文件地址</li>
+</ul>
+<p>接下来尝试生成自定义的.sh任务文件：</p>
+<ul>
+<li><p>可以把转换数据的命令抽取出来，形成 <strong>run_convert_data.sh</strong>文件：</p>
+<p>执行完run_convert_data.sh后，在data文件夹里会自动生成convert前缀的数据文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">set -e # set -o errexit</span><br><span class="line">set -u # set -o nounset</span><br><span class="line">set -o pipefail </span><br><span class="line"></span><br><span class="line"># 将具体的文件名把下面命令里的中文字替换掉即可</span><br><span class="line">echo &quot;convert train data&quot;</span><br><span class="line">python ./tools/tf_record_writer.py pointwise ./data/待转化的训练数据文件名 ./data/已转化的训练数据文件名 0 32</span><br><span class="line">echo &quot;convert test data&quot;</span><br><span class="line">python ./tools/tf_record_writer.py pointwise ./data/待转化的测试数据文件名 ./data/已转化的测试数据文件名 0 32</span><br><span class="line">echo &quot;convert data finish&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义一个cnn配置文件的执行freeze任务的<strong>run_freeze_cnn.sh</strong>：</p>
+<p>执行完run_freeze_cnn.sh后，根据配置文件里“graph”的参数设置，在路径上会自动生成graph文件夹，里面有model_cnn_pairwise.protxt文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">set -e # set -o errexit</span><br><span class="line">set -u # set -o nounset</span><br><span class="line">set -o pipefail </span><br><span class="line"></span><br><span class="line">in_task_type=&apos;freeze&apos;  # 输入任务类型，可选择 train/predict/freeze/convert</span><br><span class="line">in_task_conf=&apos;./examples/cnn-pointwise.json&apos;</span><br><span class="line">python tf_simnet.py \</span><br><span class="line">		   --task $in_task_type \</span><br><span class="line">		   --task_conf $in_task_conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义一个使用lstm网络的训练任务 <strong>run_train_lstm.sh</strong>，同时一定要记得修改配置文件！！：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">set -e # set -o errexit</span><br><span class="line">set -u # set -o nounset</span><br><span class="line">set -o pipefail </span><br><span class="line"></span><br><span class="line">in_task_type=&apos;train&apos;</span><br><span class="line">in_task_conf=&apos;./examples/lstm-pointwise.json&apos; # 修改了配置文件路径，配置文件内参数也得修改好</span><br><span class="line">python tf_simnet.py \</span><br><span class="line">		   --task $in_task_type \</span><br><span class="line">		   --task_conf $in_task_conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当lstm的train任务跑完后，利用其保存的模型文件进行predict任务，新建<strong>run_predict_lstm.sh</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">set -e # set -o errexit</span><br><span class="line">set -u # set -o nounset</span><br><span class="line">set -o pipefail </span><br><span class="line"></span><br><span class="line">in_task_type=&apos;predict&apos;  # 修改了任务类型</span><br><span class="line">in_task_conf=&apos;./examples/lstm-pointwise.json&apos; # 确认lstm配置文件路径</span><br><span class="line">python tf_simnet.py \</span><br><span class="line">		   --task $in_task_type \</span><br><span class="line">		   --task_conf $in_task_conf</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="py-文件走读"><a href="#py-文件走读" class="headerlink" title=".py 文件走读"></a>.py 文件走读</h2><h3 id="tf-simnet-py"><a href="#tf-simnet-py" class="headerlink" title="tf_simnet.py"></a>tf_simnet.py</h3><p>tf_simnet.py是整个深度语义匹配框架的主运行py文件，打开如下，已对主要代码进行一行行的注释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br></pre></td><td class="code"><pre><span class="line">#coding=utf-8</span><br><span class="line"></span><br><span class="line"># Copyright (c) 2018 Baidu, Inc. All Rights Reserved.</span><br><span class="line"># </span><br><span class="line"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span><br><span class="line"># you may not use this file except in compliance with the License.</span><br><span class="line"># You may obtain a copy of the License at</span><br><span class="line"># </span><br><span class="line">#     http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"># </span><br><span class="line"># Unless required by applicable law or agreed to in writing, software</span><br><span class="line"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span><br><span class="line"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line"># See the License for the specific language governing permissions and</span><br><span class="line"># limitations under the License.</span><br><span class="line"></span><br><span class="line">import argparse</span><br><span class="line">import logging</span><br><span class="line">import json</span><br><span class="line">import sys</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">import tensorflow as tf</span><br><span class="line"></span><br><span class="line">from utils import datafeeds</span><br><span class="line">from utils import controler</span><br><span class="line">from utils import utility</span><br><span class="line">from utils import converter</span><br><span class="line"></span><br><span class="line">_WORK_DIR = os.path.split(os.path.realpath(__file__))[0]</span><br><span class="line">sys.path.append(os.path.join(_WORK_DIR, &apos;../../../common&apos;))</span><br><span class="line">import log</span><br><span class="line"></span><br><span class="line"># 加载配置文件信息，形成conf配置字典</span><br><span class="line">def load_config(config_file):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    load config</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    with open(config_file, &quot;r&quot;) as f:</span><br><span class="line">        try:</span><br><span class="line">            conf = json.load(f)</span><br><span class="line">        except Exception:</span><br><span class="line">            logging.error(&quot;load json file %s error&quot; % config_file)</span><br><span class="line">    conf_dict = &#123;&#125;</span><br><span class="line">    unused = [conf_dict.update(conf[k]) for k in conf]</span><br><span class="line">    logging.debug(&quot;\n&quot;.join(</span><br><span class="line">        [&quot;%s=%s&quot; % (u, conf_dict[u]) for u in conf_dict]))</span><br><span class="line">    return conf_dict</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def train(conf_dict):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    train</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    #  根据配置文件先判断data文件是 pairwise 还是 pointwise</span><br><span class="line">    training_mode = conf_dict[&quot;training_mode&quot;]</span><br><span class="line"></span><br><span class="line">    # 根据配置文件输入net网络文件路径 + 网络类型class</span><br><span class="line">    net = utility.import_object(</span><br><span class="line">        conf_dict[&quot;net_py&quot;], conf_dict[&quot;net_class&quot;])(conf_dict)</span><br><span class="line"></span><br><span class="line">    if training_mode == &quot;pointwise&quot;:</span><br><span class="line"></span><br><span class="line">        # 喂数据，从train_file, batch_size, num_epochs, shuffle等配置信息确定数据队列长度和秩序</span><br><span class="line">        datafeed = datafeeds.TFPointwisePaddingData(conf_dict)</span><br><span class="line"></span><br><span class="line">        # 从转换后的数据中拿出一组组 input_l, input_r, label_y, 一步步的拿进来训练</span><br><span class="line">        input_l, input_r, label_y = datafeed.ops()</span><br><span class="line"></span><br><span class="line">        # 做语义匹配预测</span><br><span class="line">        pred = net.predict(input_l, input_r)</span><br><span class="line"></span><br><span class="line">        # 根据配置文件设置loss函数路径 + loss种类</span><br><span class="line">        loss_layer = utility.import_object(</span><br><span class="line">            conf_dict[&quot;loss_py&quot;], conf_dict[&quot;loss_class&quot;])()</span><br><span class="line">        loss = loss_layer.ops(pred, label_y)</span><br><span class="line"></span><br><span class="line">    # pairwise 先忽略</span><br><span class="line">    elif training_mode == &quot;pairwise&quot;:</span><br><span class="line">        datafeed = datafeeds.TFPairwisePaddingData(conf_dict)</span><br><span class="line">        input_l, input_r, neg_input = datafeed.ops()</span><br><span class="line">        pos_score = net.predict(input_l, input_r)</span><br><span class="line">        neg_score = net.predict(input_l, neg_input)</span><br><span class="line">        loss_layer = utility.import_object(</span><br><span class="line">            conf_dict[&quot;loss_py&quot;], conf_dict[&quot;loss_class&quot;])(conf_dict)</span><br><span class="line">        loss = loss_layer.ops(pos_score, neg_score)</span><br><span class="line">    else:</span><br><span class="line">        print &gt;&gt; sys.stderr, &quot;training mode not supported&quot;</span><br><span class="line">        sys.exit(1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    # --------------------</span><br><span class="line">    # define optimizer</span><br><span class="line">    # --------------------</span><br><span class="line">    # 超参数 学习速率的设置</span><br><span class="line">    lr = float(conf_dict[&quot;learning_rate&quot;])</span><br><span class="line">    optimizer = tf.train.AdamOptimizer(learning_rate=lr).minimize(loss)</span><br><span class="line"></span><br><span class="line">    # 运行 controler 的 run_trainer 函数</span><br><span class="line">    controler.run_trainer(loss, optimizer, conf_dict)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def predict(conf_dict):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    predict</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    # 根据配置文件输入net网络文件路径 + 网络类型class</span><br><span class="line">    net = utility.import_object(</span><br><span class="line">        conf_dict[&quot;net_py&quot;], conf_dict[&quot;net_class&quot;])(conf_dict)</span><br><span class="line"></span><br><span class="line">    # 更新/覆盖 conf_dict配置文件 的配置参数 （这里需要手动调整）</span><br><span class="line">    conf_dict.update(&#123;&quot;num_epochs&quot;: &quot;1&quot;, &quot;batch_size&quot;: &quot;1&quot;,</span><br><span class="line">                      &quot;shuffle&quot;: &quot;0&quot;, &quot;train_file&quot;: conf_dict[&quot;test_file&quot;]&#125;)</span><br><span class="line">                    # num_epochs = 1，数据集为样本全量的1倍，仍为原测试样本</span><br><span class="line">                    # batch_size = 1，一次只读一条样本，覆盖掉配置文件batch_size的值</span><br><span class="line">                    # shuffle = 0 /1，样本数据是否随机读取，覆盖掉配置文件shuffle的值</span><br><span class="line">                    # train_file 为 测试集样本路径，覆盖掉配置文件的训练集data路径</span><br><span class="line"></span><br><span class="line">    # 喂数据，从train_file, batch_size, num_epochs, shuffle等配置信息确定数据队列长度和秩序</span><br><span class="line">    test_datafeed = datafeeds.TFPointwisePaddingData(conf_dict)</span><br><span class="line"></span><br><span class="line">    # 从转换后的数据中拿出 test_l, test_r, test_y</span><br><span class="line">    test_l, test_r, test_y = test_datafeed.ops()</span><br><span class="line"></span><br><span class="line">    # test network</span><br><span class="line"></span><br><span class="line">    # 做语义匹配预测</span><br><span class="line">    pred = net.predict(test_l, test_r)</span><br><span class="line">    # 运行 controler 的 run_predict 函数</span><br><span class="line">    controler.run_predict(pred, test_y, conf_dict)  #  run_predict(pred, label, config)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def freeze(conf_dict):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    freeze net for c api predict</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    # 网络文件路径 + 网络类型class</span><br><span class="line">    net = utility.import_object(</span><br><span class="line">        conf_dict[&quot;net_py&quot;], conf_dict[&quot;net_class&quot;])(conf_dict)</span><br><span class="line"></span><br><span class="line">    test_l = dict([(u, tf.placeholder(tf.int32, [None, v], name=u))</span><br><span class="line">                   for (u, v) in dict(conf_dict[&quot;left_slots&quot;]).iteritems()])</span><br><span class="line">    test_r = dict([(u, tf.placeholder(tf.int32, [None, v], name=u))</span><br><span class="line">                   for (u, v) in dict(conf_dict[&quot;right_slots&quot;]).iteritems()])</span><br><span class="line">    pred = net.predict(test_l, test_r)</span><br><span class="line">    controler.graph_save(pred, conf_dict)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def convert(conf_dict):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    convert</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    converter.run_convert(conf_dict)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    # 在tf目录下自动新增log文件夹</span><br><span class="line">    log.init_log(&quot;./log/tensorflow&quot;)</span><br><span class="line"></span><br><span class="line">    # 命令解析</span><br><span class="line">    parser = argparse.ArgumentParser()</span><br><span class="line">    # 增加task命令： 命令选项为 train // predict // freeze // convert</span><br><span class="line">    parser.add_argument(&apos;--task&apos;, default=&apos;train&apos;,</span><br><span class="line">                        help=&apos;task: train/predict/freeze/convert, the default value is train.&apos;)</span><br><span class="line">    # 增加task_conf命令：命令选项为examples目录下的json文件</span><br><span class="line">    parser.add_argument(&apos;--task_conf&apos;, default=&apos;./examples/cnn-pointwise.json&apos;,</span><br><span class="line">                        help=&apos;task_conf: config file for this task&apos;)</span><br><span class="line">    args = parser.parse_args()</span><br><span class="line">    task_conf = args.task_conf</span><br><span class="line">    </span><br><span class="line">    # 加载配置文件，config</span><br><span class="line">    config = load_config(task_conf)</span><br><span class="line">    task = args.task</span><br><span class="line">    </span><br><span class="line">    # 判断任务类型</span><br><span class="line">    if args.task == &apos;train&apos;:</span><br><span class="line">        train(config)</span><br><span class="line">    elif args.task == &apos;predict&apos;:</span><br><span class="line">        predict(config)</span><br><span class="line">    elif args.task == &apos;freeze&apos;:</span><br><span class="line">        freeze(config)</span><br><span class="line">    elif args.task == &apos;convert&apos;:</span><br><span class="line">        convert(config)</span><br><span class="line">    else:</span><br><span class="line">        print &gt;&gt; sys.stderr, &apos;task type error.&apos;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>可直接先看最下面的<code>if __name__ == &quot;__main__&quot;:</code>，两个parser.add_argument分别对应.sh文件的两个task和task_conf参数。选择好任务和配置文件后就运行任务，假如 args.task == ‘train’，那么运行train函数。</p>
+</li>
+<li><p>再跳到<code>def train(conf_dict):</code>这行，看train函数如何运行。前面几行还是比较好理解，<a href="http://codewithzhangyi.com/about/">如有疑问可发私信问我</a>，得到loss，optimizer和配置conf_dict之后，最后一行又运行了一个大函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 运行 controler 的 run_trainer 函数</span><br><span class="line">controler.run_trainer(loss, optimizer, conf_dict)</span><br></pre></td></tr></table></figure>
+<p>那么就再跳到controler这个文件，继续往下看。</p>
+</li>
+</ul>
+<p>需要特殊说明的是，当模型预测执行predict任务运行predict函数时，num_epochs/batch_size/shuffle/…等参数需要在代码里面调整，而配置文件里的参数设置对模型预测不起作用，在tf_simnet.py的predict函数找到如下代码进行设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 更新测试集的 conf_dict配置文件 的配置参数 （这里需要手动调整）</span><br><span class="line">   conf_dict.update(&#123;&quot;num_epochs&quot;: &quot;1&quot;, &quot;batch_size&quot;: &quot;1&quot;,</span><br><span class="line">                     &quot;shuffle&quot;: &quot;0&quot;, &quot;train_file&quot;: conf_dict[&quot;test_file&quot;]&#125;)</span><br><span class="line">                   # num_epochs = 1，数据集为样本全量的1倍，仍为原测试样本</span><br><span class="line">                   # batch_size = 1，一次只读一条样本，覆盖掉原有batch_size的值</span><br><span class="line">                   # shuffle = 0 /1，样本数据是否随机读取，覆盖掉原有shuffle的值</span><br><span class="line">                   # train_file 为 测试集样本路径，覆盖掉原先的训练集data路径</span><br></pre></td></tr></table></figure>
+<h3 id="controler-py"><a href="#controler-py" class="headerlink" title="controler.py"></a>controler.py</h3><p>打开controler.py可以看见，里面有与tf_simnet.py里的train/predict/freeze函数一一对应的run_train/run_predict/graph_save函数，对重要代码已做注释：</p>
+<p>继续上面的思路，直接看run_trainer(loss, optimizer, conf_dict)函数。同样，<a href="http://codewithzhangyi.com/about/">如有疑问可留言或私信我</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br></pre></td><td class="code"><pre><span class="line">#coding=utf-8</span><br><span class="line"></span><br><span class="line"># Copyright (c) 2018 Baidu, Inc. All Rights Reserved.</span><br><span class="line"># </span><br><span class="line"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span><br><span class="line"># you may not use this file except in compliance with the License.</span><br><span class="line"># You may obtain a copy of the License at</span><br><span class="line"># </span><br><span class="line">#     http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line"># </span><br><span class="line"># Unless required by applicable law or agreed to in writing, software</span><br><span class="line"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span><br><span class="line"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line"># See the License for the specific language governing permissions and</span><br><span class="line"># limitations under the License.</span><br><span class="line"></span><br><span class="line">import sys</span><br><span class="line"></span><br><span class="line">import tensorflow as tf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def run_predict(pred, label, config):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    run classification predict function handle</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    mean_acc = 0.0</span><br><span class="line"></span><br><span class="line">    # 执行模型保存任务，需要创建一个Saver对象</span><br><span class="line">    saver = tf.train.Saver()</span><br><span class="line"></span><br><span class="line">    mode = config[&quot;training_mode&quot;]</span><br><span class="line"></span><br><span class="line">    # label输入值为二维的0/1向量，类似将原先的label值onehot化，pred同理为二维向量</span><br><span class="line">    # label = pred = 形如([0,1],[1,0],[1,0],[0,1],...)</span><br><span class="line"></span><br><span class="line">    # 找出数值为1/或者说数值最大的index值，因为是2维，index取值在[0,1]之间，(,1)代表行(,0)代表列</span><br><span class="line">    label_index = tf.argmax(label, 1)  # label_index为向量，形如([1],[0],[0],[1],...)</span><br><span class="line">    if mode == &quot;pointwise&quot;:</span><br><span class="line">        pred_prob = tf.nn.softmax(pred, -1)  # 向量， 将pred变成二分类的概率小数向量，形如([0.73,0.27],[0.1,0.9],[1.0,0],[0.87,0.13],...)</span><br><span class="line">        score = tf.reduce_max(pred_prob, -1) # 向量， 取向量里的最大概率值，而pred结果为大概率值的输出，(,-1)为去掉最后一个向量，形如([0.73],[0.9],[1.0],[0.87],...)</span><br><span class="line">        pred_index = tf.argmax(pred_prob, 1) # 向量， 同理label_index，形如([0],[1],[0],[0],...)</span><br><span class="line">        correct_pred = tf.equal(pred_index, label_index) # 向量， 判断label_index与pred_index是否一致，一致为1，不一致为0</span><br><span class="line">        acc = tf.reduce_mean(tf.cast(correct_pred, &quot;float&quot;))  # 数字，array([0,0,0,1,1])与array([1,0,1,0,1]), 求得correct_pred = 2，acc=2/5= 0.4=求猜对的期望值</span><br><span class="line">    </span><br><span class="line">    # &apos;pairwise&apos;先忽略</span><br><span class="line">    elif mode == &quot;pairwise&quot;:</span><br><span class="line">        score = pred</span><br><span class="line">        pred_index = tf.argmax(pred, 1)</span><br><span class="line">        acc = tf.constant([0.0])</span><br><span class="line">        </span><br><span class="line">    # 找到模型文件路径</span><br><span class="line">    modelfile = config[&quot;test_model_file&quot;]</span><br><span class="line">    #新建result文件，保存预测结果</span><br><span class="line">    result_file = file(config[&quot;test_result&quot;], &quot;w&quot;)</span><br><span class="line">    step = 0</span><br><span class="line">    init = tf.group(tf.global_variables_initializer(),</span><br><span class="line">                    tf.local_variables_initializer())</span><br><span class="line">    with tf.Session(config=tf.ConfigProto(intra_op_parallelism_threads=1)) \</span><br><span class="line">                    as sess:</span><br><span class="line">        sess.run(init) #初始化设置</span><br><span class="line">        saver.restore(sess, modelfile) # 加载模型文件</span><br><span class="line">        coord = tf.train.Coordinator()</span><br><span class="line">        read_thread = tf.train.start_queue_runners(sess=sess, coord=coord)</span><br><span class="line">        while not coord.should_stop():</span><br><span class="line">            step += 1</span><br><span class="line">            try:</span><br><span class="line">                ground, pi, a, prob = sess.run([label_index, pred_index, acc, score]) # 用二维向量来表示label和pred，用数值1在二维向量中的位置是否一致判断label与pred结果是否一致</span><br><span class="line">                mean_acc += a</span><br><span class="line">                for i in range(len(prob)):</span><br><span class="line">                </span><br><span class="line">                    result_file.write(&quot;%d\t%d\t%f\n&quot; % (ground[i], pi[i], prob[i]))</span><br><span class="line">                    # 一步步写result文件，共3列，分别是ground[i], pi[i], prob[i]</span><br><span class="line">                	# ground[i]是测试集label的值，0或1</span><br><span class="line">                	# pi[i]是预测的值，0或1</span><br><span class="line">                	# prob[i]是预测结果的概率</span><br><span class="line">                	</span><br><span class="line">            except tf.errors.OutOfRangeError:</span><br><span class="line">                coord.request_stop()</span><br><span class="line">        coord.join(read_thread)</span><br><span class="line">    sess.close()</span><br><span class="line">    result_file.close()</span><br><span class="line">    if mode == &quot;pointwise&quot;:</span><br><span class="line">        mean_acc = mean_acc / step</span><br><span class="line">        print &gt;&gt; sys.stderr, &quot;accuracy: %4.2f&quot; % (mean_acc * 100) # 输出accuracy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def run_trainer(loss, optimizer, config):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    run classification training function handle</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    thread_num = int(config[&quot;thread_num&quot;])</span><br><span class="line">    model_path = config[&quot;model_path&quot;]           # 模型文件的存储路径</span><br><span class="line">    model_file = config[&quot;model_prefix&quot;]         # 模型文件名的前缀</span><br><span class="line">    print_iter = int(config[&quot;print_iter&quot;])</span><br><span class="line">    data_size = int(config[&quot;data_size&quot;])</span><br><span class="line">    batch_size = int(config[&quot;batch_size&quot;])</span><br><span class="line">    epoch_iter = int(data_size / batch_size)</span><br><span class="line">    avg_cost = 0.0</span><br><span class="line"></span><br><span class="line">    # 执行模型保存任务，需要创建一个Saver对象</span><br><span class="line">    saver = tf.train.Saver(max_to_keep=None)</span><br><span class="line">    # 初始化 global variables</span><br><span class="line">    init = tf.group(tf.global_variables_initializer(),</span><br><span class="line">                    tf.local_variables_initializer())</span><br><span class="line">    with tf.Session(config=tf.ConfigProto(intra_op_parallelism_threads=thread_num, </span><br><span class="line">                                          inter_op_parallelism_threads=thread_num)) \</span><br><span class="line">                    as sess:</span><br><span class="line">        sess.run(init)</span><br><span class="line">        # 创建一个线程管理器（协调器）对象</span><br><span class="line">        coord = tf.train.Coordinator()</span><br><span class="line">        # 把tensor推入内存序列中，供计算单元调用</span><br><span class="line">        read_thread = tf.train.start_queue_runners(sess=sess, coord=coord) #  启动入队线程，由多个或单个线程</span><br><span class="line">        step = 0</span><br><span class="line">        epoch_num = 1</span><br><span class="line">        while not coord.should_stop():  # coord.should_stop() 查询是否应该终止所有线程</span><br><span class="line">            try:</span><br><span class="line">                step += 1</span><br><span class="line">                c, _= sess.run([loss, optimizer])</span><br><span class="line">                avg_cost += c</span><br><span class="line"></span><br><span class="line">				#-----------------------------------------------------------</span><br><span class="line">				# 当step步数是print_iter的倍数时，即每print_iter步时，打印一个loss</span><br><span class="line">                if step % print_iter == 0:</span><br><span class="line">                    print(&quot;loss: %f&quot; % ((avg_cost / print_iter)))</span><br><span class="line">                    avg_cost = 0.0</span><br><span class="line">                    </span><br><span class="line">				#-----------------------------------------------------------</span><br><span class="line">				# 当step步数是epoch_iter的倍数时，即每epoch_iter步时，保存一个model文件</span><br><span class="line">                if step % epoch_iter == 0:</span><br><span class="line">                    print(&quot;save model epoch%d&quot; % (epoch_num))</span><br><span class="line">                    save_path = saver.save(sess, </span><br><span class="line">                            &quot;%s/%s.epoch%d&quot; % (model_path, model_file, epoch_num))</span><br><span class="line">                    epoch_num += 1</span><br><span class="line">            </span><br><span class="line">            except tf.errors.OutOfRangeError:</span><br><span class="line">                # 全部步数走完后，保存一个final的模型文件</span><br><span class="line">                save_path = saver.save(sess, &quot;%s/%s.final&quot; % (model_path, model_file))</span><br><span class="line">                coord.request_stop()   # 发出终止所有线程的命令</span><br><span class="line">        coord.join(read_thread)        # 把线程加入主线程，等待threads结束</span><br><span class="line">    sess.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def graph_save(pred, config):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    run classify predict</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    graph_path=config[&quot;graph_path&quot;]</span><br><span class="line">    graph_name=config[&quot;graph_name&quot;]</span><br><span class="line">    mode = config[&quot;training_mode&quot;]</span><br><span class="line">    if mode == &quot;pointwise&quot;:</span><br><span class="line">        pred_prob = tf.nn.softmax(pred, -1, name=&quot;output_prob&quot;)</span><br><span class="line">    elif mode == &quot;pairwise&quot;:</span><br><span class="line">        pred_prob = tf.identity(pred, name=&quot;output_prob&quot;)</span><br><span class="line">    saver = tf.train.Saver()</span><br><span class="line">    step = 0</span><br><span class="line">    init = tf.group(tf.global_variables_initializer(),</span><br><span class="line">                    tf.local_variables_initializer())</span><br><span class="line">    with tf.Session(config=tf.ConfigProto(intra_op_parallelism_threads=1)) \</span><br><span class="line">                    as sess:</span><br><span class="line">        sess.run(init)</span><br><span class="line">        tf.train.write_graph(sess.graph_def, graph_path, graph_name, as_text=True)</span><br><span class="line">    sess.close()</span><br></pre></td></tr></table></figure>
+<p>跑完run_trainer(loss, optimizer, config)，就自动保存了模型文件，供模型预测使用。</p>
+<p>同理按照这个思路，回到tf_simnet.py可以看predict任务或者freeze(graph)任务的代码流程。同样也会再看到controler.py里面的函数是如何执行任务的。</p>
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><ul>
+<li>不同的.sh文件有不同的task和task_conf参数值，对应的是运行tf_simnet.py和controler.py里不同的函数。</li>
+<li>其它的.py文件点开来应该不太难理解，<a href="http://codewithzhangyi.com/about/">如有疑问可留言或私信我</a>。</li>
+<li>每个模型文件比较大，我跑出来的每个有1.5G左右大小。</li>
+<li>若想观察每一步的数据形状或者变换情况，可自行加入print命令打印出来看看。</li>
+<li>每个任务完成后有自动生成的文件，可以研究看看，比如model文件，result文件，graph文件，log文件。</li>
+<li>代码走读只是理解的第一步，若要扎实掌握还需自己改动代码，再调试调试。</li>
+<li>欢迎打赏😘</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Semantic-Matching/" rel="tag"># Semantic Matching</a>
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/code-review/" rel="tag"># code review</a>
+          
+            <a href="/tags/QA/" rel="tag"># QA</a>
+          
+            <a href="/tags/语义匹配/" rel="tag"># 语义匹配</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/03/NLP笔记-Word-Tokenization-wordcloud/" rel="next" title="NLP笔记 - Word Tokenization // wordcloud 词云图教程">
+                <i class="fa fa-chevron-left"></i> NLP笔记 - Word Tokenization // wordcloud 词云图教程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/09/NLP实战-基于SimNet的Quora问句语义匹配/" rel="prev" title="NLP实战 - 基于SimNet的Quora问句语义匹配">
+                NLP实战 - 基于SimNet的Quora问句语义匹配 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#框架目录"><span class="nav-text">框架目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行环境"><span class="nav-text">运行环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#json-配置文件走读"><span class="nav-text">.json 配置文件走读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sh-任务文件走读"><span class="nav-text">.sh 任务文件走读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#run-train-sh"><span class="nav-text">run_train.sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-infer-sh"><span class="nav-text">run_infer.sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义-sh任务文件"><span class="nav-text">自定义.sh任务文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#py-文件走读"><span class="nav-text">.py 文件走读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tf-simnet-py"><span class="nav-text">tf_simnet.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#controler-py"><span class="nav-text">controler.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写在最后"><span class="nav-text">写在最后</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/09/06/代码走读-百度智能问答开源框架-AnyQ/';
+          this.page.identifier = '2018/09/06/代码走读-百度智能问答开源框架-AnyQ/';
+          this.page.title = '代码走读 - 百度开源智能问答框架 AnyQ';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

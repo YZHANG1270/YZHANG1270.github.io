@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP,getting started,tutorial," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景： Getting started，入门指南。 NLP，natural language processing，无非是对文本数据做处理，可应用于智能对话（聊天机器人，例如 Siri/小冰），智能问答（智能客服），机器翻译，搜索引擎（google），等等。本篇主要介绍入门资料去哪里找，以及学习内容的优先级排序。">
+<meta name="keywords" content="NLP,getting started,tutorial">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP笔记 - Getting Started">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/08/24/NLP笔记-Getting-Started/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="背景： Getting started，入门指南。 NLP，natural language processing，无非是对文本数据做处理，可应用于智能对话（聊天机器人，例如 Siri/小冰），智能问答（智能客服），机器翻译，搜索引擎（google），等等。本篇主要介绍入门资料去哪里找，以及学习内容的优先级排序。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/010.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/001.gif?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/002.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/003.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/004.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/005.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/006.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/007.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/008.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/009.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/011.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/001.png?raw=true">
+<meta property="og:updated_time" content="2019-04-23T04:20:34.726Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NLP笔记 - Getting Started">
+<meta name="twitter:description" content="背景： Getting started，入门指南。 NLP，natural language processing，无非是对文本数据做处理，可应用于智能对话（聊天机器人，例如 Siri/小冰），智能问答（智能客服），机器翻译，搜索引擎（google），等等。本篇主要介绍入门资料去哪里找，以及学习内容的优先级排序。">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/010.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/08/24/NLP笔记-Getting-Started/"/>
+
+
+
+
+
+  <title>NLP笔记 - Getting Started | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/08/24/NLP笔记-Getting-Started/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NLP笔记 - Getting Started</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-24T10:07:51+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/24/NLP笔记-Getting-Started/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/24/NLP笔记-Getting-Started/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>背景：</strong></p>
+<p>Getting started，入门指南。</p>
+<p>NLP，natural language processing，无非是对文本数据做处理，可应用于智能对话（聊天机器人，例如 Siri/小冰），智能问答（智能客服），机器翻译，搜索引擎（google），等等。本篇主要介绍入门资料去哪里找，以及学习内容的优先级排序。</p>
+<a id="more"></a>
+<p><strong>面向读者：</strong></p>
+<ul>
+<li>对nlp方向感兴趣，以做项目为导向的学习者</li>
+<li>nlp零基础，希望快速入门</li>
+<li>python选手</li>
+</ul>
+<h4 id="概念解释"><a href="#概念解释" class="headerlink" title="概念解释"></a>概念解释</h4><p>回顾一下人类是如何理解一段文字的，中英文的处理方式不同，以英文为例。一段话会被拆成一个个句子，一个句子又会被拆成一个个单词，根据单词在句子中的不同位置、单词的单复数、单词的时态等来理解。所以对文字进行分析的操作就很简单明了了。<a href="https://mp.weixin.qq.com/s/8XDXgIm-Zcb3dL-2h9eSjA" target="_blank" rel="noopener">（参考链接）</a></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/010.png?raw=true" alt=""></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/001.gif?raw=true" alt=""></p>
+<ul>
+<li><p><strong>sentence segmentation</strong>（断句）</p>
+<p>一般根据标点符号即可进行断句操作。以上面的动图为例，可以分成四个句子。</p>
+</li>
+<li><p><strong>word tokenization</strong>（分词）</p>
+<p>你可以很快知道“我爱钞票。”里“我”是一个词，“爱”是另外一个，“钞票”是另外另外一个词。但是机器不知道，所以要做分词。相较于中文，英文比较容易辨识词的属性。英文的句子由一个个单词组成，单词之间以空格隔开，因此空格之间就是一个单词。</p>
+<blockquote>
+<p>“London is the capital and most populous city of England and the United Kingdom.”</p>
+</blockquote>
+<p>上面这句话的分词结果如下，包含标点符号：</p>
+<blockquote>
+<p>“London”, “is”, “ the”, “capital”, “and”, “most”, “populous”, “city”, “of”, “England”, “and”, “the”, “United”, “Kingdom”, “.”</p>
+</blockquote>
+</li>
+<li><p><strong>parts-of-speech</strong>（词性标注）</p>
+<p>区分一个单词是动词/名词/形容词/副词等。（想起曾经被语法支配的恐惧😭）这个词性标注的工作可以根据一个词性分类模型得出。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/002.png?raw=true" alt=""></p>
+<p>得出这句话中有名词、动词、限定词、连词、副词、形容词等。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/003.png?raw=true" alt=""></p>
+</li>
+<li><p><strong>text lemmatization</strong>（文本词性还原）</p>
+<p>虽说英语是最简单的语义，但是不同词性的单词的变行还是很多的，比如单复数、be动词变形、动词是现在进行时还是过去时等，都还原成最初的样子。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/004.png?raw=true" alt=""></p>
+</li>
+<li><p><strong>identifying stop-words</strong>（识别停用词）：</p>
+<p>像 “and”, “the”, “a”, “of”, “for” 这种哪里都高频出现会造成统计噪音的词，被称为stop words。下面灰色的“the”, “and”, “most”均为停用词，一般会被直接过滤掉。正如维基所说，现在虽然停用词列表很多，但一定要根据实际情况进行配置。比如英语的<strong>the</strong>，通常情况是停用词，但很多乐队名字里有<strong>the</strong>这个词，The Doors, The Who，甚至有个乐队直接就叫The The！这个时候就不能看做是停用词了。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/005.png?raw=true" alt=""></p>
+</li>
+<li><p><strong>dependency-parsing</strong>（解析依赖关系）</p>
+<p>解析句子中每个词之间的依赖关系，最终建立起一个关系依赖树。这个数的root是关键动词，从这个关键动词开始，把整个句子中的词都联系起来。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/006.png?raw=true" alt=""></p>
+<p>从这个关系树来看，主语是London，它和capital被be联系起来。然后计算机就知道，London is a capital。如此类推，我们的计算机就被训练的掌握越来越多的信息。</p>
+<p><a href="https://explosion.ai/demos/displacy?utm_source=AiHl0" target="_blank" rel="noopener">可以点击这个🔗链接自己尝试这个功能</a></p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/007.png?raw=true" alt=""></p>
+</li>
+<li><p><strong>named entity recognition</strong>（命名实体识别）</p>
+<p>来给名词打标签。比如我们可以把第一句话当中的地理名称识别出来。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/008.png?raw=true" alt=""></p>
+<p><a href="https://explosion.ai/demos/displacy-ent?utm_source=AiHl0" target="_blank" rel="noopener">可以通过这个的链接，在线体验一下。</a>随便复制粘贴一段英文，他会自动识别出里面包含哪些类别的名词。</p>
+</li>
+<li><p><strong>conference resolution</strong>（共指消解）</p>
+<p>指代词，比如他，它，这个，那个，前者，后者等。再比如缩写简称，北京大学通常称为北大，中华人民共和国通常就叫中国。这种现象，被称为共指现象。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/009.png?raw=true" alt=""></p>
+</li>
+<li><p><strong>word embedding</strong>（词嵌入）：通常是深度学习第一步，将文本转换成数字形式，这样才能丢进去训练。将一句话变成一个向量，每个单词与数字一一对应。</p>
+<ul>
+<li>word2vec</li>
+<li>GloVe</li>
+</ul>
+</li>
+<li><p><strong>sentiment analysis</strong>（<a href="https://monkeylearn.com/sentiment-analysis/#how-does-sentiment-analysis-work" target="_blank" rel="noopener">情感分析</a>）：判断一段文字的情绪。比如淘宝评价文字是喜欢还是不喜欢这个商品，影评文字是看好还是不看好这个电影。</p>
+</li>
+<li><p><strong>semantic retrieval</strong>（语义召回）：把意思相同的信息从语料库/知识库中统统找出来。</p>
+</li>
+<li><p><strong>matching</strong>（匹配）</p>
+<ul>
+<li><strong>semantic matching</strong>（语义匹配）：判断两句话说的是不是一个意思。比如在知乎提问后，系统需要搜索出相关问题的答案来显示。</li>
+<li><strong>term matching</strong>：所谓的 Ctrl+F，只匹配是否有这个词。比如搜索词是taxi，那么就算有‘的士’的信息也搜不出来。</li>
+</ul>
+</li>
+</ul>
+<h4 id="智能问答框架一览"><a href="#智能问答框架一览" class="headerlink" title="智能问答框架一览"></a>智能问答框架一览</h4><p><a href="https://github.com/baidu/AnyQ" target="_blank" rel="noopener">以百度的开源AnyQ为例</a>，这是一个问答系统框架：</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/011.png?raw=true" alt=""></p>
+<ul>
+<li>Question Analysis：来了一个问题先进行文字预处理，纠正错别字/命名实体识别/词性标注/词嵌入等。</li>
+<li>Retrieval：可用深度学习神经网络进行语义召回，把相关的信息都找出来。</li>
+<li>Matching：相关信息不一定是正确答案，可用深度学习进行语义匹配，找出最匹配的答案。</li>
+</ul>
+<h4 id="优秀的公开课"><a href="#优秀的公开课" class="headerlink" title="优秀的公开课"></a>优秀的公开课</h4><ul>
+<li><a href="https://www.youtube.com/playlist?list=PL8FFE3F391203C98C" target="_blank" rel="noopener">Dan Jurafsky &amp; Chris Manning: Natural Language Processing</a> [入门视频系列]</li>
+<li><a href="http://cs224d.stanford.edu/syllabus.html" target="_blank" rel="noopener">Stanford CS224d: Deep Learning for Natural Language Processing</a> [斯坦福系列，必看]</li>
+<li><a href="http://web.stanford.edu/class/cs224n/syllabus.html" target="_blank" rel="noopener">Stanford CS224n: Natural Language Processing with Deep Learning</a></li>
+<li><a href="https://search.bilibili.com/all?keyword=CS224N&amp;from_source=banner_search" target="_blank" rel="noopener">Stanford CS224n 在b站上的视频</a></li>
+<li><a href="https://www.bilibili.com/video/av9143821?from=search&amp;seid=4788973912617324689" target="_blank" rel="noopener">Stanford CS224d 在b站上的视频</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLLssT5z_DsK8BdawOVCCaTCO99Ya58ryR" target="_blank" rel="noopener">Coursera: Introduction to Natural Language Processing</a> [出自 University of Michigan]</li>
+</ul>
+<h4 id="Awesome-系列"><a href="#Awesome-系列" class="headerlink" title="Awesome 系列"></a>Awesome 系列</h4><p><strong>awesome-nlp</strong>(<a href="https://github.com/keon/awesome-nlp#user-content-python #awesome-nlp" target="_blank" rel="noopener">website</a>)[包含优秀的nlp教程/库/技术/开源数据/模型等，必看!]</p>
+<p>里面的每一个链接都值得好好翻看翻看。重点介绍下面的几个python库：</p>
+<ul>
+<li><p><strong>spaCy</strong> (<a href="https://github.com/explosion/spaCy" target="_blank" rel="noopener">website</a>, <a href="https://explosion.ai/blog/" target="_blank" rel="noopener">blog</a>) [Python; emerging open-source library with <a href="https://spacy.io/usage/spacy-101" target="_blank" rel="noopener">fantastic usage examples</a>, API documentation, and <a href="https://explosion.ai/demos/displacy" target="_blank" rel="noopener">demo applications</a>]</p>
+<p>这个库的链接博客值得看看，可以在上面的demo application上写自己的句子感受下语言是如何处理的，也可以尝试其他的demo和example，网站还是做的很用心的。</p>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/08/nlp/001.png?raw=true" alt=""></p>
+</li>
+<li><p><strong>Natural Language Toolkit (nltk)</strong> (<a href="http://www.nltk.org/" target="_blank" rel="noopener">website</a>, <a href="http://www.nltk.org/book/" target="_blank" rel="noopener">book</a>) [Python; practical intro to programming for NLP, mainly used for teaching]</p>
+</li>
+<li><p><a href="https://radimrehurek.com/gensim/index.html" target="_blank" rel="noopener">gensim</a> - Python library to conduct unsupervised semantic modelling from plain text 👍</p>
+<p>这个库用来做词嵌入word embedding，将文字转换为数字，生成字典。</p>
+</li>
+<li><p><a href="https://github.com/fxsjy/jieba#jieba-1" target="_blank" rel="noopener">jieba</a> - 适用于中文的分词工具</p>
+</li>
+</ul>
+<h4 id="优秀的博客和资源"><a href="#优秀的博客和资源" class="headerlink" title="优秀的博客和资源"></a>优秀的博客和资源</h4><ul>
+<li><p><a href="https://github.com/andrewt3000/dl4nlp" target="_blank" rel="noopener">Deep Learning for NLP resources</a> </p>
+</li>
+<li><p><a href="https://www.quora.com/How-do-I-learn-Natural-Language-Processing" target="_blank" rel="noopener">Quora: How do I learn Natural Language Processing?</a></p>
+</li>
+<li><p><a href="https://research.googleblog.com/" target="_blank" rel="noopener">Google Research blog</a></p>
+</li>
+<li><p><a href="https://explosion.ai/blog/" target="_blank" rel="noopener">Explosion AI blog</a></p>
+</li>
+<li><p><a href="http://www.52nlp.cn" target="_blank" rel="noopener">52nlp</a></p>
+</li>
+<li><p>Twitter: <a href="https://twitter.com/hashtag/nlproc" target="_blank" rel="noopener">#nlproc</a>, <a href="https://twitter.com/jasonbaldridge/lists/nlpers" target="_blank" rel="noopener">list of NLPers</a> (by Jason Baldrige)</p>
+<p>twitter也是机器学习/深度学习的友好天地，很多post配图配文都很有意思，尤其是吐槽文😜</p>
+</li>
+<li><p>Reddit: <a href="https://www.reddit.com/r/LanguageTechnology" target="_blank" rel="noopener">/r/LanguageTechnology</a></p>
+</li>
+<li><p>Medium: <a href="https://medium.com/tag/nlp" target="_blank" rel="noopener">Nlp</a></p>
+</li>
+</ul>
+<h4 id="优秀的书籍"><a href="#优秀的书籍" class="headerlink" title="优秀的书籍"></a>优秀的书籍</h4><p>个人比较偏向于先看课件，有细节问题再回到书里去找答案。</p>
+<ul>
+<li><a href="https://web.stanford.edu/~jurafsky/slp3/" target="_blank" rel="noopener">Speech and Language Processing</a> (Daniel Jurafsky and James H. Martin) [classic NLP textbook that covers all the basics, 3rd edition coming soon]</li>
+<li><a href="https://nlp.stanford.edu/fsnlp/" target="_blank" rel="noopener">Foundations of Statistical Natural Language Processing</a> (Chris Manning and Hinrich Schütze) [more advanced, statistical NLP methods]</li>
+<li><a href="https://nlp.stanford.edu/IR-book/" target="_blank" rel="noopener">Introduction to Information Retrieval</a> (Chris Manning, Prabhakar Raghavan and Hinrich Schütze) [excellent reference on ranking/search]</li>
+<li><a href="https://www.amazon.com/Network-Methods-Natural-Language-Processing/dp/1627052984" target="_blank" rel="noopener">Neural Network Methods in Natural Language Processing</a> (Yoav Goldberg) [deep intro to NN approaches to NLP, <a href="http://u.cs.biu.ac.il/~yogo/nnlp.pdf" target="_blank" rel="noopener">primer here</a>]</li>
+</ul>
+<h4 id="开源的数据集"><a href="#开源的数据集" class="headerlink" title="开源的数据集"></a>开源的数据集</h4><ul>
+<li>A thorough <a href="https://github.com/niderhoff/nlp-datasets" target="_blank" rel="noopener">list of publicly available NLP data sets</a>[开源数据大全，做项目不用愁数据了~]</li>
+<li><a href="http://qim.ec.quoracdn.net/quora_duplicate_questions.tsv" target="_blank" rel="noopener">Quora问题匹配数据集下载链接</a></li>
+</ul>
+<h4 id="深度学习相关模型"><a href="#深度学习相关模型" class="headerlink" title="深度学习相关模型"></a>深度学习相关模型</h4><p><a href="https://github.com/NTSC-Community/awaresome-neural-models-for-semantic-match" target="_blank" rel="noopener">语义匹配的神经网络模型集合</a></p>
+<p>语义匹配的神经网络相关模型：</p>
+<ul>
+<li>DSSM</li>
+<li>Siamese Network</li>
+<li>RNN</li>
+<li>RNN变种：LSTM、Match-LSTM、Seq-to-Seq、Attention机制</li>
+</ul>
+<h4 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h4><ul>
+<li><a href="https://github.com/crownpku/Awesome-Chinese-NLP" target="_blank" rel="noopener">Awesome-Chinese-NLP 中文自然语言处理相关资料</a></li>
+<li><a href="https://github.com/sebastianruder/NLP-progress" target="_blank" rel="noopener">NLP-progress 各种语言的NLP项目</a></li>
+</ul>
+<h4 id="练手项目"><a href="#练手项目" class="headerlink" title="练手项目"></a>练手项目</h4><ul>
+<li><a href="https://www.kaggle.com/c/word2vec-nlp-tutorial/data" target="_blank" rel="noopener">kaggle - 电影评论的情感分析</a></li>
+<li><a href="https://www.kaggle.com/c/quora-question-pairs/data" target="_blank" rel="noopener">kaggle - Quora问题匹配</a></li>
+<li><a href="https://medium.com/@ageitgey/natural-language-processing-is-fun-9a0bff37854e" target="_blank" rel="noopener">基于 spaCy 的断句/分词/停用词识别等基本操作</a></li>
+</ul>
+<h4 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h4><p>NLP技术的应用范围很广泛，可以抓住其中一个点来深入。根据跑上面几个例子，观察训练数据来对这个处理过程有个大概的理解。由于接触智能问答项目的缘故，接下来的笔记方向也是跟智能问答强相关。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/getting-started/" rel="tag"># getting started</a>
+          
+            <a href="/tags/tutorial/" rel="tag"># tutorial</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/07/Machine Learning笔记 - Pipelines 制作教程/" rel="next" title="Auto Machine Learning笔记 - Pipelines 制作教程">
+                <i class="fa fa-chevron-left"></i> Auto Machine Learning笔记 - Pipelines 制作教程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/24/NLP笔记-Word-Embedding/" rel="prev" title="NLP笔记 - Word Embedding // bag of words">
+                NLP笔记 - Word Embedding // bag of words <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念解释"><span class="nav-text">概念解释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#智能问答框架一览"><span class="nav-text">智能问答框架一览</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优秀的公开课"><span class="nav-text">优秀的公开课</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Awesome-系列"><span class="nav-text">Awesome 系列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优秀的博客和资源"><span class="nav-text">优秀的博客和资源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优秀的书籍"><span class="nav-text">优秀的书籍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开源的数据集"><span class="nav-text">开源的数据集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#深度学习相关模型"><span class="nav-text">深度学习相关模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GitHub"><span class="nav-text">GitHub</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练手项目"><span class="nav-text">练手项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#写在最后"><span class="nav-text">写在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/08/24/NLP笔记-Getting-Started/';
+          this.page.identifier = '2018/08/24/NLP笔记-Getting-Started/';
+          this.page.title = 'NLP笔记 - Getting Started';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="machine learning,auto ml,auto sklearn,hyperparameter,model ensemble," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="auto-sklearn： 基于sklearn/ AutoML 方向/ 免费自动机器学习服务/ GitHub开源/ 2.4k+ stars!!!⭐适读人群：有机器学习算法基础  学完 Machine Learning，又要学 Auto Machine Learning🙄">
+<meta name="keywords" content="machine learning,auto ml,auto sklearn,hyperparameter,model ensemble">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Auto Machine Learning笔记 - Auto-Sklearn">
+<meta property="og:url" content="http://codewithzhangyi.com/2018/07/26/AutoML/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="auto-sklearn： 基于sklearn/ AutoML 方向/ 免费自动机器学习服务/ GitHub开源/ 2.4k+ stars!!!⭐适读人群：有机器学习算法基础  学完 Machine Learning，又要学 Auto Machine Learning🙄">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/001.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/003.jpg?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/005.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/004.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/006.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/007.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/008.png?raw=true">
+<meta property="og:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/009.png?raw=true">
+<meta property="og:updated_time" content="2019-02-11T07:45:46.752Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Auto Machine Learning笔记 - Auto-Sklearn">
+<meta name="twitter:description" content="auto-sklearn： 基于sklearn/ AutoML 方向/ 免费自动机器学习服务/ GitHub开源/ 2.4k+ stars!!!⭐适读人群：有机器学习算法基础  学完 Machine Learning，又要学 Auto Machine Learning🙄">
+<meta name="twitter:image" content="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/001.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2018/07/26/AutoML/"/>
+
+
+
+
+
+  <title>Auto Machine Learning笔记 - Auto-Sklearn | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2018/07/26/AutoML/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Auto Machine Learning笔记 - Auto-Sklearn</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-26T10:55:03+08:00">
+                2018-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/26/AutoML/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/07/26/AutoML/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>auto-sklearn： 基于sklearn/ AutoML 方向/ 免费自动机器学习服务/ GitHub开源/ 2.4k+ stars!!!⭐<br>适读人群：有机器学习算法基础</p>
+<blockquote>
+<p>学完 Machine Learning，又要学 Auto Machine Learning🙄<br><a id="more"></a></p>
+<h2 id="1-auto-sklearn-能-auto-到什么地步？"><a href="#1-auto-sklearn-能-auto-到什么地步？" class="headerlink" title="1. auto-sklearn 能 auto 到什么地步？"></a>1. auto-sklearn 能 auto 到什么地步？</h2><p>在机器学习中的分类模型中：</p>
+<ul>
+<li>常规 ML framework 如下图灰色部分：导入数据-数据清洗-特征工程-分类器-输出预测值</li>
+<li>auto部分如下图绿色方框：在ML framework 左边新增 <strong>meta-learning</strong>，在右边新增 <strong>build-ensemble</strong>，对于调超参数，用的是贝叶斯优化。<ul>
+<li>自动学习样本数据: <strong>meta-learning</strong>，去学习样本数据的模样，自动推荐合适的模型。比如文本数据用什么模型比较好，比如很多的离散数据用什么模型好。</li>
+<li>自动调超参：<strong>Bayesian optimizer</strong>，贝叶斯优化。</li>
+<li>自动模型集成: <strong>build-ensemble</strong>，模型集成，在一般的比赛中都会用到的技巧。多个模型组合成一个更强更大的模型。往往能提高预测准确性。</li>
+</ul>
+</li>
+<li><strong>CASH problem:</strong> AutoML as a Combined Algorithm Selection and Hyperparameter optimization (CASH) problem</li>
+</ul>
+</blockquote>
+<p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/001.png?raw=true" alt=""></p>
+<p>也就是说，一般的分类或者回归的机器学习模型即将或者已经实现了低门槛或者零门槛甚至免费建模的程度。<br>其实机器学习的每个步骤都可以向着自动化方向发展，而且自动化的方式又有很多种。<br>机器学习自动化的难点还是在<strong>数据清洗和特征工程</strong>这些技巧，至于模型筛选、模型集成和超参数调参已经有比较成熟可用的代码了。<br>我们的愿景是 人人都可以用得起机器学习系统🙂 有没有很google！</p>
+<h2 id="2-目前有哪些公司在做AutoML，github上又有哪些开源项目？"><a href="#2-目前有哪些公司在做AutoML，github上又有哪些开源项目？" class="headerlink" title="2. 目前有哪些公司在做AutoML，github上又有哪些开源项目？"></a>2. 目前有哪些公司在做AutoML，github上又有哪些开源项目？</h2><p>业界在 automl 上的进展：</p>
+<ul>
+<li><strong>Google</strong>: <a href="https://cloud.google.com/automl/" target="_blank" rel="noopener">Cloud AutoML</a>, Google’s Prediction API</li>
+<li><strong>Microsoft</strong>: Custom Vision, Azure Machine Learning</li>
+<li><strong>Amazon</strong>: Amazon Machine Learning</li>
+<li><strong>others:</strong> BigML.com, Wise.io, SkyTree.com, RapidMiner.com, Dato.com, Prediction.io, DataRobot.com</li>
+</ul>
+<p>github上的开源项目：</p>
+<ul>
+<li><a href="https://github.com/automl/auto-sklearn" target="_blank" rel="noopener"><strong>auto-sklearn (2.4k stars!)</strong></a>，论文链接：<a href="http://papers.nips.cc/paper/5872-efficient-and-robust-automated-machine-learning.pdf" target="_blank" rel="noopener">Efficient and Robust Automated Machine Learning</a></li>
+<li><a href="https://github.com/ClimbsRocks/auto_ml" target="_blank" rel="noopener"><strong>ClimbsRocks/auto_ml</strong></a>，可以读一下代码学习如何写pipeline</li>
+<li><a href="https://github.com/jhfjhfj1/autokeras" target="_blank" rel="noopener"><strong>autokeras</strong></a>，基于keras的 automl 向开源项目</li>
+</ul>
+<h2 id="3-auto-sklearn的整体框架了解一下？"><a href="#3-auto-sklearn的整体框架了解一下？" class="headerlink" title="3. auto-sklearn的整体框架了解一下？"></a>3. auto-sklearn的整体框架了解一下？</h2><p><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/003.jpg?raw=true" alt=""><br>呃…先凑活看吧，具体的可以到github上翻看文件结构。<br>框架的主轴在第二列，第二列的精华在pipeline，pipeline的重点在components：<br>（截至目前已经超出论文写的内容了，<a href="http://papers.nips.cc/paper/5872-efficient-and-robust-automated-machine-learning.pdf" target="_blank" rel="noopener"><strong>论文链接</strong></a>，相信会越来越丰富）</p>
+<ul>
+<li><strong>16 classifiers</strong>（可以被指定或者筛选，include_estimators=[“random_forest”, ]）<ul>
+<li>adaboost, bernoulli_nb, decision_tree, extra_trees, gaussian_nb, gradient_boosting, k_nearest_neighbors, lda, liblinear_svc, libsvm_svc, multinomial_nb, passive_aggressive, qda, random_forest, sgd, xgradient_boosting</li>
+</ul>
+</li>
+<li><strong>13 regressors</strong>（可以被指定或者筛选，exclude_estimators=None）<ul>
+<li>adaboost, ard_regression, decision_tree, extra_trees, gaussian_process, gradient_boosting, k_nearest_neighbors, liblinear_svr, libsvm_svr, random_forest, ridge_regression, sgd, xgradient_boosting</li>
+</ul>
+</li>
+<li><strong>18 feature preprocessing methods</strong>（这些过程可以被手动关闭全部或者部分，include_preprocessors=[“no_preprocessing”, ]）<ul>
+<li>densifier, extra_trees_preproc_for_classification, extra_trees_preproc_for_regression, fast_ica,feature_agglomeration, kernel_pca, kitchen_sinks, liblinear_svc_preprocessor, no_preprocessing, nystroem_sampler, pca, polynomial, random_trees_embedding, select_percentile, select_percentile_classification, select_percentile_regression, select_rates, truncatedSVD</li>
+</ul>
+</li>
+<li><strong>5 data preprocessing methods</strong>（这些过程不能被手动关闭）<ul>
+<li>balancing, imputation, one_hot_encoding, rescaling, variance_threshold（看到这里已经有点惊喜了！点进去有不少内容）</li>
+</ul>
+</li>
+<li><strong>more than 110 hyperparameters</strong><br>其中参数include_estimators,要搜索的方法,exclude_estimators:为不搜索的方法.与参数include_estimators不兼容<br>而include_preprocessors,可以参考手册中的内容</li>
+</ul>
+<p>auto-sklearn是基于sklearn库，因此会有惊艳强大的模型库和数据/特征预处理库，专业出身的设定。</p>
+<h2 id="4-meta-learning-是什么操作？"><a href="#4-meta-learning-是什么操作？" class="headerlink" title="4. meta-learning 是什么操作？"></a>4. meta-learning 是什么操作？</h2><p><a href="https://ml.informatik.uni-freiburg.de/papers/15-AAAI-MI-SMBO-poster.pdf" target="_blank" rel="noopener">🔗poster</a><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/005.png?raw=true" alt=""></p>
+<ul>
+<li>What is <strong>MI-SMBO</strong>?<br>Meta-learning Initialized Sequential Model-Based Bayesian Optimization</li>
+<li>What is meta-learning?<br>Mimics human domain experts: use configurations which are known to work well on similar datasets<ul>
+<li>仿照人能积累经验的做法，使机器有[配置空间]去记录它们的经验值，有点像迁移学习</li>
+<li>适用的程度，根据数据的相似度</li>
+<li><strong> meta-learning: warmstart the Bayesian optimization procedure</strong></li>
+</ul>
+</li>
+</ul>
+<p>也就是学习算法工程师的建模习惯，比如看到什么类型的数据就会明白套用什么模型比较适合，去生产对于数据的 <strong>metafeatures</strong>：<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/004.png?raw=true" alt=""></p>
+<ul>
+<li>左边：黑色的部分是标准贝叶斯优化流程，红色的是添加meta-learning的贝叶斯优化</li>
+<li>右边：有 <strong>Metafeatures for the Iris dataset</strong>，描述数据长什么样的features，下面的公式是计算数据集与数据集的相似度的，只要发现相似的数据集，就可以根据经验来推荐好用的分类器。再来张大图感受下metafeatures到底长啥样：<br><a href="http://aad.informatik.uni-freiburg.de/papers/15-AAAI-MI-SMBO.pdf" target="_blank" rel="noopener">🔗论文链接：Initializing Bayesian Hyperparameter Optimization via Meta-Learning</a><br><a href="www.automl.org/aaai2015-mi-smbo-supplementary.pdf">🔗supplementary.pdf</a><br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/006.png?raw=true" alt=""></li>
+</ul>
+<h2 id="5-auto-sklearn-如何实现-自动超参数调参？"><a href="#5-auto-sklearn-如何实现-自动超参数调参？" class="headerlink" title="5. auto-sklearn 如何实现 自动超参数调参？"></a>5. auto-sklearn 如何实现 自动超参数调参？</h2><p>概念解释</p>
+<ul>
+<li>SMBO: Sequential Model-based Bayesian/Global Optimization，调超参的大多数方法基于SMBO</li>
+<li>SMAC: Sequential Model-based Algorithm Configuration，机器学习记录经验值的配置空间</li>
+<li>TPE: Tree-structured Parzen Estimator</li>
+</ul>
+<p>超参数调参方法：</p>
+<ol>
+<li><strong>Grid Search</strong> 网格搜索/穷举搜索<br>在高维空间不实用。</li>
+<li><strong>Random Search</strong> 随机搜索<br>很多超参是通过并行选择的，它们之间是相互独立的。一些超参会产生良好的性能，另一些不会。</li>
+<li><strong>Heuristic Tuning</strong> 手动调参<br>经验法，耗时长。（不知道经验法的英文是否可以这样表示）</li>
+<li><strong>Automatic Hyperparameter Tuning</strong><ul>
+<li>Bayesian Optimization<ul>
+<li>能利用先验知识高效地调节超参数</li>
+<li>通过减少计算任务而加速寻找最优参数的进程</li>
+<li>不依赖人为猜测所需的样本量为多少，优化技术基于随机性，概率分布</li>
+<li>在目标函数未知且计算复杂度高的情况下极其强大</li>
+<li>通常适用于连续值的超参，例如 learning rate, regularization coefficient</li>
+</ul>
+</li>
+<li>SMAC</li>
+<li>TPE</li>
+</ul>
+</li>
+</ol>
+<p>在 auto-sklearn 里，一直出现的 bayesian optimizer 就是答案。是利用贝叶斯优化进行自动调参的。<br><a href="http://codewithzhangyi.com/2018/07/31/Auto%20Hyperparameter%20Tuning%20-%20Bayesian%20Optimization/">🔗具体的贝叶斯优化原理链接</a><br><a href="https://pdfs.semanticscholar.org/681e/518fd8e3e986ba25bc1fb33aac8873b521e7.pdf" target="_blank" rel="noopener">🔗论文链接</a></p>
+<h2 id="6-auto-sklearn-如何实现-自动模型集成？"><a href="#6-auto-sklearn-如何实现-自动模型集成？" class="headerlink" title="6. auto-sklearn 如何实现 自动模型集成？"></a>6. auto-sklearn 如何实现 自动模型集成？</h2><p>官方回答：<strong>automated ensemble construction: use all classifiers that were found by Bayesian optimization</strong><br>目前在库中有16个分类器，根据贝叶斯优化找出最佳分类器组合，比如是（0.4 random forest + 0.2 sgd + 0.4 xgboost)<br>可以根据fit完的分类器打印结果看最终的模型是由什么分类器组成，以及它们的参数数值：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import autoskleran.classification</span><br><span class="line">automl = autosklearn.classification.AutoSklearnClassifier()</span><br><span class="line">automl.fit(X_train, y_train)</span><br><span class="line"></span><br><span class="line">automl.show_models()</span><br></pre></td></tr></table></figure></p>
+<p>打印automl.show_models()就能打印出所谓的自动集成模型有哪些，权重分布，以及超参数数值。<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/007.png?raw=true" alt=""></p>
+<h2 id="7-如何使用-auto-sklearn？"><a href="#7-如何使用-auto-sklearn？" class="headerlink" title="7. 如何使用 auto-sklearn？"></a>7. 如何使用 auto-sklearn？</h2><ul>
+<li>适用系统：Linux</li>
+<li><a href="http://automl.github.io/auto-sklearn/stable/installation.html" target="_blank" rel="noopener">👍installation</a></li>
+<li><a href="http://automl.github.io/auto-sklearn/stable/index.html" target="_blank" rel="noopener">官方文档🔗</a></li>
+<li><a href="http://automl.github.io/auto-sklearn/stable/api.html" target="_blank" rel="noopener">接口文档🔗</a></li>
+<li><a href="http://automl.github.io/auto-sklearn/stable/manual.html" target="_blank" rel="noopener">举个栗子🔗</a></li>
+<li><a href="http://automl.github.io/auto-sklearn/stable/examples/example_regression.html#sphx-glr-examples-example-regression-py" target="_blank" rel="noopener">再举个栗子🔗</a></li>
+<li><p>使用套路如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 4行代码搞定</span><br><span class="line">import autosklearn.classification</span><br><span class="line">automl = autosklearn.classification.AutoSKlearnClassifier()</span><br><span class="line">automl.fit(X_train, y_train) </span><br><span class="line">predictions = automl.predict(X_test)   # 打印出0，1结果</span><br><span class="line"></span><br><span class="line">predictions_prob = automl.predict_proba(X_test)  # 打印出0-1之间的概率值</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>亲测 X_train, y_train 内不能含有非数值型数据，比如Male/Female字母就报错。</p>
+</li>
+<li>训练集有哪些特征，测试集就必须有哪些特征，可以理解为不做特征筛选，所以最初导入训练集的特征越粗糙越好。<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/008.png?raw=true" alt=""></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">automl.cv_results_</span><br></pre></td></tr></table></figure>
+<p>会打印出非常非常多的东西，耐心看，会找到类似下面的规律。<br><img src="https://github.com/YZHANG1270/Markdown_pic/blob/master/2018/07/automl/009.png?raw=true" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">automl.sprint_statistics()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 打印结果如下：</span><br><span class="line"># &apos;auto-sklearn results:</span><br><span class="line">#  Dataset name: 46b7545efa67d8cd76f70e71eb67b72e </span><br><span class="line">#  Metric: accuracy</span><br><span class="line">#  Best validation score: 0.955932 </span><br><span class="line">#  Number of target algorithm runs: 1278</span><br><span class="line">#  Number of successful target algorithm runs: 1252</span><br><span class="line">#  Number of crashed target algorithm runs: 23</span><br><span class="line">#  Number of target algorithms that exceeded the time limit: 3 </span><br><span class="line">#  Number of target algorithms that exceeded the memory limit: 0&apos;</span><br><span class="line"></span><br><span class="line">automl._get_automl_class()</span><br><span class="line"></span><br><span class="line"># 打印结果</span><br><span class="line"># autosklearn.automl.AutoMLClassifier</span><br></pre></td></tr></table></figure>
+<p>其他可以尝试的操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">automl.score(X,y)</span><br><span class="line"></span><br><span class="line">automl.get_models_with_weights()</span><br><span class="line"></span><br><span class="line">automl.get_configuration_space(X,y)</span><br></pre></td></tr></table></figure>
+<h2 id="8-auto-sklearn-目前有什么缺点"><a href="#8-auto-sklearn-目前有什么缺点" class="headerlink" title="8. auto-sklearn 目前有什么缺点"></a>8. auto-sklearn 目前有什么缺点</h2><ul>
+<li>不支持深度学习，但是貌似会有AutoNet出来，像谷歌的cloud AutoML那样</li>
+<li>计算时长往往一个小时以上</li>
+<li>在数据清洗这块还需要人为参与，目前对非数值型数据不友好</li>
+</ul>
+<h2 id="9-AutoML-的发展情况"><a href="#9-AutoML-的发展情况" class="headerlink" title="9. AutoML 的发展情况"></a>9. AutoML 的发展情况</h2><p>随着这两天谷歌发布它们的 Cloud AutoML 各种惊艳的功能，对于这块的关注度会越来越高的吧~<br>machine learning的比赛已经不足为奇啦，现在已经有很多有关AutoML的比赛了：<br><a href="http://automl.chalearn.org" target="_blank" rel="noopener">http://automl.chalearn.org</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+          
+            <a href="/tags/auto-ml/" rel="tag"># auto ml</a>
+          
+            <a href="/tags/auto-sklearn/" rel="tag"># auto sklearn</a>
+          
+            <a href="/tags/hyperparameter/" rel="tag"># hyperparameter</a>
+          
+            <a href="/tags/model-ensemble/" rel="tag"># model ensemble</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/12/25岁学到的25件事情/" rel="next" title="25岁学到的25件事情">
+                <i class="fa fa-chevron-left"></i> 25岁学到的25件事情
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/31/Auto Hyperparameter Tuning - Bayesian Optimization/" rel="prev" title="Auto Machine Learning笔记 - Bayesian Optimization">
+                Auto Machine Learning笔记 - Bayesian Optimization <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-auto-sklearn-能-auto-到什么地步？"><span class="nav-text">1. auto-sklearn 能 auto 到什么地步？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-目前有哪些公司在做AutoML，github上又有哪些开源项目？"><span class="nav-text">2. 目前有哪些公司在做AutoML，github上又有哪些开源项目？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-auto-sklearn的整体框架了解一下？"><span class="nav-text">3. auto-sklearn的整体框架了解一下？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-meta-learning-是什么操作？"><span class="nav-text">4. meta-learning 是什么操作？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-auto-sklearn-如何实现-自动超参数调参？"><span class="nav-text">5. auto-sklearn 如何实现 自动超参数调参？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-auto-sklearn-如何实现-自动模型集成？"><span class="nav-text">6. auto-sklearn 如何实现 自动模型集成？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-如何使用-auto-sklearn？"><span class="nav-text">7. 如何使用 auto-sklearn？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-auto-sklearn-目前有什么缺点"><span class="nav-text">8. auto-sklearn 目前有什么缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-AutoML-的发展情况"><span class="nav-text">9. AutoML 的发展情况</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2018/07/26/AutoML/';
+          this.page.identifier = '2018/07/26/AutoML/';
+          this.page.title = 'Auto Machine Learning笔记 - Auto-Sklearn';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

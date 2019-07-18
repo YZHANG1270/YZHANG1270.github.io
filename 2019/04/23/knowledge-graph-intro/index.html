@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.cat.net/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="knowledge graph," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="挖个坑先。最近对知识图谱有个入门级的了解，希望以后还会有项目继续探究。年初实践了下怎么搭建一个最基本的知识图谱，顺便尝试了下使用Neo4j 搭建图数据库，在此稍作记录。入门选手可以看这篇科普帖：知识图谱的技术与应用">
+<meta name="keywords" content="knowledge graph">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知识图谱">
+<meta property="og:url" content="http://codewithzhangyi.com/2019/04/23/knowledge-graph-intro/index.html">
+<meta property="og:site_name" content="Coding is the New Sexy">
+<meta property="og:description" content="挖个坑先。最近对知识图谱有个入门级的了解，希望以后还会有项目继续探究。年初实践了下怎么搭建一个最基本的知识图谱，顺便尝试了下使用Neo4j 搭建图数据库，在此稍作记录。入门选手可以看这篇科普帖：知识图谱的技术与应用">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/YZHANG1270/Marvel_KnowledgeGraph/master/img/hero.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/YZHANG1270/Marvel_KnowledgeGraph/master/img/hero.png">
+<meta property="og:image" content="https://github.com/YZHANG1270/starwar_visualization/raw/master/img/circle.png?raw=true">
+<meta property="og:updated_time" content="2019-04-24T02:33:12.749Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="知识图谱">
+<meta name="twitter:description" content="挖个坑先。最近对知识图谱有个入门级的了解，希望以后还会有项目继续探究。年初实践了下怎么搭建一个最基本的知识图谱，顺便尝试了下使用Neo4j 搭建图数据库，在此稍作记录。入门选手可以看这篇科普帖：知识图谱的技术与应用">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/YZHANG1270/Marvel_KnowledgeGraph/master/img/hero.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://codewithzhangyi.com/2019/04/23/knowledge-graph-intro/"/>
+
+
+
+
+
+  <title>知识图谱 | Coding is the New Sexy</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Coding is the New Sexy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Inspired</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-summary">
+          <a href="/summary/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-list-ul"></i> <br />
+            
+            Summary
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            Posts
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://codewithzhangyi.com/2019/04/23/knowledge-graph-intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ZhangYi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Coding is the New Sexy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">知识图谱</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-23T14:51:26+08:00">
+                2019-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/23/knowledge-graph-intro/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/04/23/knowledge-graph-intro/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>visitors
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>挖个坑先。最近对知识图谱有个入门级的了解，希望以后还会有项目继续探究。年初实践了下怎么搭建一个最基本的知识图谱，顺便尝试了下使用Neo4j 搭建图数据库，在此稍作记录。入门选手可以看这篇科普帖：<a href="https://zhuanlan.zhihu.com/p/38056557" target="_blank" rel="noopener">知识图谱的技术与应用</a> </p>
+<p><img src="https://raw.githubusercontent.com/YZHANG1270/Marvel_KnowledgeGraph/master/img/hero.png" alt=""></p>
+<a id="more"></a>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>知识图谱到底是个什么东西？说到底就是拥有一定知识，可以进行相关知识问答的系统，这个系统可以不停地输入知识，也可以输出知识。其实，每个人都是一个行走的知识图谱。我们从小就被问“几岁啦？”，“叫什么名字呀？”，当我们进行回答时就是知识输出的过程。</p>
+<p>本质上知识图谱的建立有如下几个过程：知识存储、知识融合、知识验证、知识计算。</p>
+<ul>
+<li><strong>知识存储：</strong> 信息获取及存储的过程，比如3岁的时候学会背唐诗，8岁的时候学会加减乘除，15岁开始学物理，可以源源不断地获取不同的知识，语文、数学、英文等等。</li>
+<li><strong>知识融合：</strong> 很多知识都是相互关联的，比如方程求解时会用到四则运算，求微分积分也会用到四则运算，很多知识都需要不断整合。</li>
+<li><strong>知识验证：</strong> 对知识的正确性、实时性、整个体系的逻辑一致性的检验。比如2018年对于“小朋友你今年几岁啦？”的回答是3岁，那么到2019年这个回答的知识要更新为4岁了。</li>
+<li><strong>知识计算：</strong> 一个知识体系是很庞大的，有很多很多的关系。比如“小朋友今年几岁了？”，需要对语义进行计算，明白问的问题是年龄相关，而且是当前年龄，需要计算当前时间与出生时间的差值。计算问题要的是什么样的答案，而不是问年龄要数字时返回一个“天空的颜色”的答案。</li>
+</ul>
+<p>先分享下两个有趣的可视化图谱：</p>
+<ol>
+<li><p>漫威英雄的知识图谱可视化 [<a href="https://graphics.straitstimes.com/STI/STIMEDIA/Interactives/2018/04/marvel-cinematic-universe-whos-who-interactive/index.html" target="_blank" rel="noopener">demo link</a>] </p>
+<p><img src="https://raw.githubusercontent.com/YZHANG1270/Marvel_KnowledgeGraph/master/img/hero.png" alt=""> </p>
+</li>
+<li><p>星际战争知识图谱可视化 [<a href="http://codewithzhangyi.com/starwar_visualization/">demo link</a>]</p>
+<p><img src="https://github.com/YZHANG1270/starwar_visualization/raw/master/img/circle.png?raw=true" alt=""> </p>
+</li>
+</ol>
+<h3 id="搭建图数据库"><a href="#搭建图数据库" class="headerlink" title="搭建图数据库"></a>搭建图数据库</h3><p>虽然这两demo很大程度是前端写的好，对于我这种前端白痴，市面上已经有了相似的很好上手的开源工具（图数据库Neo4j），多用于金融的反欺诈，社交关系图谱等等。接下来我也尝试搭建一个基础的知识图谱。</p>
+<p>需要思考几个基本问题：</p>
+<ol>
+<li>哪里来的数据？</li>
+<li>选择哪种数据库？数据存储格式</li>
+<li>如何将数据导入数据库？</li>
+<li>如何做到知识融合？进行数据库的增删改查？</li>
+<li>如何做知识计算？</li>
+</ol>
+<h4 id="数据来源"><a href="#数据来源" class="headerlink" title="数据来源"></a>数据来源</h4><p>介绍一个基于中文的知识图谱开源网站：<a href="http://openkg.cn" target="_blank" rel="noopener">开放的中文知识图谱 openkg.cn</a> </p>
+<p>这个网站里有图谱数据，图谱工具，资源涵盖：常识、金融、农业、社交、物联网、气象、生活、出行、科教、医疗等等。总之是比较全面的中文知识图谱开源库了。比如我用过的是四大名著里的西游记人物关系数据：<a href="http://openkg.cn/dataset/ch4masterpieces" target="_blank" rel="noopener">中国四大名著人物关系知识图谱和OWL本体</a> ，在数据与资源那边可自行下载。然后解压即可，就有csv格式的人物关系表格。</p>
+<p>顺便介绍个openkg里的一个比较成型的知识图谱工具：<a href="https://www.ownthink.com" target="_blank" rel="noopener">思知（OwnThink）</a> ，体验入口：<a href="https://robot.ownthink.com" target="_blank" rel="noopener">思知机器人</a> </p>
+<h4 id="数据库选择"><a href="#数据库选择" class="headerlink" title="数据库选择"></a>数据库选择</h4><p>虽然我一开始已经选定了<strong>图数据库</strong> ，这里还是将各种 <strong>数据结构 和 数据库</strong> 做个简单的对比：</p>
+<p>数据类型可能是：</p>
+<ul>
+<li><strong>多元 结构化表格：</strong> 就像excel表格一样整整齐齐</li>
+<li><strong>JSON 键值 ：</strong> key-value 组</li>
+<li><strong>RDF 三元组：</strong> 三元组就是两个实体，中间有一个关系。比如“中国的首都是北京”，两个实体分别是“中国”和“北京”，它们之间的关系是“的首都”，这两个实体加一个关系就是三元组。</li>
+</ul>
+<p>不同的数据库：</p>
+<ul>
+<li><strong>MySQL：</strong> 适合结构化数据，像excel表格</li>
+<li><strong>MongoDB：</strong> 适合json格式数据</li>
+<li><strong>Neo4j：</strong> 图数据库，可视化，适合三元组，并且实体和关系可以包含属性。</li>
+</ul>
+<p>因此，选择什么样的数据库，是基于你的数据打算以什么样的格式存储。选择什么样的数据库以及怎么设计 schema。选<strong>关系数据库</strong>还是<strong>NoSQL 数据库</strong>？要不要用<strong>内存数据库</strong>？要不要用<strong>图数据库</strong>？这些都需要根据数据场景慎重选择。西游记的人物关系数据是三元组合格，这里我们选择尝试用Neo4j 图数据库。</p>
+<h4 id="图数据库：Neo4j"><a href="#图数据库：Neo4j" class="headerlink" title="图数据库：Neo4j"></a>图数据库：Neo4j</h4><p>Neo4j 是一个图数据库，主要包括节点和关系。节点和关系都可以包含属性。介绍文档 [<a href="http://neo4j.com.cn/public/docs/index.html" target="_blank" rel="noopener">doc</a>], 社区[<a href="http://neo4j.com.cn" target="_blank" rel="noopener">community</a>]。</p>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><p>社区版下载链接：<a href="https://neo4j.com/download-thanks/?edition=community&amp;release=3.5.2&amp;flavour=winzip&amp;_ga=2.190945954.961878394.1548140621-1486946031.1548140621" target="_blank" rel="noopener">neo4j-community-3.5.2 </a> </p>
+<p>解压后在bin目录下运行命令：<code>neo4j console</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">D:\&gt;cd D:\neo4j-community-3.5.2\bin</span><br><span class="line"></span><br><span class="line">D:\neo4j-community-3.5.2\bin&gt;neo4j console</span><br><span class="line">2019-04-23 12:23:39.692+0000 INFO  ======== Neo4j 3.5.2 ========</span><br><span class="line">2019-04-23 12:23:39.708+0000 INFO  Starting...</span><br><span class="line">2019-04-23 12:23:42.950+0000 INFO  Bolt enabled on 127.0.0.1:7687.</span><br><span class="line">2019-04-23 12:23:44.544+0000 INFO  Started.</span><br><span class="line">2019-04-23 12:23:45.696+0000 INFO  Remote interface available at http://localhost:7474/</span><br></pre></td></tr></table></figure>
+<p>浏览器Chrome访问：localhost:7474，第一次访问会提示修改密码。</p>
+<p>第一次玩可以参考这个入门小教程：<a href="https://blog.csdn.net/hxg117/article/details/79929579" target="_blank" rel="noopener">Neo4j 简单入门</a><br>更详细的安装以及其他信息：<a href="https://github.com/leondgarse/Atom_notebook/blob/master/public/2018/07-09_neo4j.md#%E5%AE%89%E8%A3%85" target="_blank" rel="noopener">neo4j 安装</a>  </p>
+<h4 id="Cypher-语法总结"><a href="#Cypher-语法总结" class="headerlink" title="Cypher 语法总结"></a>Cypher 语法总结</h4><p>Cypher入门：<a href="https://www.jianshu.com/p/53e2a67e9f40" target="_blank" rel="noopener">tutorial</a> </p>
+<p>cypher就像MySQL的sql语言，demo示例：<a href="https://github.com/leondgarse/Atom_notebook/blob/master/public/2018/neo4j_movie_graph.cypher" target="_blank" rel="noopener">neo4j_movie_graph.cypher</a> 。cypher可对数据库做增删改查。更多的操作参考：<a href="https://github.com/leondgarse/Atom_notebook/blob/master/public/2018/07-09_neo4j.md#cypher-basic" target="_blank" rel="noopener">Cypher Basic</a> ，可以自己跑几行命令找找感觉。</p>
+<h4 id="Py2neo-doc"><a href="#Py2neo-doc" class="headerlink" title="Py2neo [doc]"></a>Py2neo [<a href="https://py2neo.org/v4/index.html" target="_blank" rel="noopener">doc</a>]</h4><p>毕竟写sql或者写cypher不是我擅长的事，所幸可以通过Python API <strong>py2neo</strong> 来访问neo4j。</p>
+<p><a href="https://github.com/leondgarse/Atom_notebook/blob/master/public/2018/07-09_neo4j.md#py2neo" target="_blank" rel="noopener">py2neo使用教程-1</a><br><a href="https://blog.csdn.net/sinat_26917383/article/details/79901207" target="_blank" rel="noopener">py2neo使用教程-2</a><br><a href="https://www.jianshu.com/p/da84712ef62b" target="_blank" rel="noopener">py2neo使用教程-3</a> </p>
+<p>贴一些使用过的代码，要配合合适的数据集一起使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">from</span> py2neo <span class="keyword">import</span> Graph,Node,Relationship,NodeMatcher</span><br><span class="line"></span><br><span class="line"><span class="comment"># 终端运行 neo4j console之后就可以从py2neo连接neo4j数据库</span></span><br><span class="line">graph = Graph(<span class="string">"http://localhost:7474"</span>,username=<span class="string">"neo4j"</span>,password=<span class="string">"neo4j"</span>)</span><br><span class="line">matcher = NodeMatcher(graph)</span><br><span class="line"></span><br><span class="line"><span class="comment"># graph.delete_all()  # 清空本地数据库的命令，慎用</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============================================================</span></span><br><span class="line"><span class="comment"># Demo1: Product</span></span><br><span class="line"><span class="comment"># 目的：把能展示的应用都展示出来</span></span><br><span class="line"></span><br><span class="line">prod = pd.read_excel(<span class="string">'type.xlsx'</span>)</span><br><span class="line">list(prod)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置基础信息</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> np.unique(prod[<span class="string">'分组类型'</span>]):</span><br><span class="line">    node_a = Node(<span class="string">'Type'</span>, name=i)</span><br><span class="line">    </span><br><span class="line">    df = prod[prod[<span class="string">'分组类型'</span>] == i]    </span><br><span class="line">    _p = np.unique(df[<span class="string">'产品类型'</span>])</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> _p:</span><br><span class="line">        node_b = Node(<span class="string">'Product'</span>,name=j)</span><br><span class="line">        rela = Relationship(node_a,<span class="string">'includes'</span>,node_b)</span><br><span class="line">        </span><br><span class="line">        graph.create(rela)</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"><span class="comment"># 因为点Node需要定义性质，所以建议 key-value 和 rela-node分开建表</span></span><br><span class="line"><span class="comment"># add property/relationship时需要第一列的产品已存在，否则需要更多信息</span></span><br><span class="line"><span class="comment"># ------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># add property</span></span><br><span class="line">prop = pd.read_excel(<span class="string">'data/add_property.xlsx'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _prod <span class="keyword">in</span> np.unique(prop[<span class="string">'product'</span>]):</span><br><span class="line">    </span><br><span class="line">    df = prop[prop[<span class="string">'product'</span>] == _prod].reset_index(drop=<span class="keyword">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 如果库内没有该产品，进行Node建立</span></span><br><span class="line">    <span class="keyword">if</span> matcher.match(name=_prod).first() <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        node_target = Node(<span class="string">'Product'</span>, name = _prod) <span class="comment"># 'Product'是固定的</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        node_target = matcher.match(name=_prod).first() <span class="comment"># 'Product'是固定的</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> idx <span class="keyword">in</span> range(len(df)):</span><br><span class="line">        node_target[df[<span class="string">'key'</span>][idx]] = df[<span class="string">'value'</span>][idx]</span><br><span class="line">    graph.push(node_target)</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line"><span class="comment"># add relationship</span></span><br><span class="line">rel = pd.read_excel(<span class="string">'add_relationship.xlsx'</span>)</span><br><span class="line"><span class="comment"># 检查是否存在节点 !!!希望后期的制表规则完善后可以省去检查这一步</span></span><br><span class="line"><span class="comment"># 如果不存在，就创建</span></span><br><span class="line"><span class="comment"># head 与 tail 如何区分</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#nodes = list(itertools.chain.from_iterable([np.unique(rel['product']), np.unique(rel['node_name'])]))</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ind <span class="keyword">in</span> range(len(rel)):</span><br><span class="line">    <span class="comment"># 如果不想重复遍历，就建chunk df</span></span><br><span class="line">    <span class="keyword">if</span> matcher.match(name=rel[<span class="string">'node_head'</span>][ind]).first() <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        node_head = Node(rel[<span class="string">'head_type'</span>][ind], name = rel[<span class="string">'node_head'</span>][ind])</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        node_head = matcher.match(name=rel[<span class="string">'node_head'</span>][ind]).first()</span><br><span class="line">    node_tail = matcher.match(name=rel[<span class="string">'node_tail'</span>][ind]).first()</span><br><span class="line">    r = rel[<span class="string">'rela'</span>][ind]</span><br><span class="line">    <span class="comment"># 检查关系是否存在，若不存在，建立关系</span></span><br><span class="line">    cmd = <span class="string">"MATCH a=()-[:%s]-&gt;( &#123;name: '%s'&#125;) RETURN a"</span> %(r,rel[<span class="string">'node_tail'</span>][ind])</span><br><span class="line">    <span class="keyword">if</span> len(graph.run(cmd).data()) == <span class="number">0</span>:</span><br><span class="line">        relatp = Relationship(node_head,r,node_tail)</span><br><span class="line">        graph.create(relatp)</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="comment"># ==============================================================</span></span><br><span class="line"><span class="comment"># Demo2: Room</span></span><br><span class="line"></span><br><span class="line">room = pd.read_excel(<span class="string">'room.xlsx'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> np.unique(room[<span class="string">'owner'</span>]):</span><br><span class="line">    node_a = Node(<span class="string">'Owner'</span>,name=i)</span><br><span class="line">    df = room[room[<span class="string">'owner'</span>] == i]</span><br><span class="line">    </span><br><span class="line">    _r = np.unique(df[<span class="string">'room_name'</span>])</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> _r:</span><br><span class="line">        node_b = Node(<span class="string">'Room'</span>,name=j)</span><br><span class="line">        rela = Relationship(node_a,<span class="string">'lives'</span>,node_b)  </span><br><span class="line">        graph.create(rela)</span><br><span class="line">      </span><br><span class="line">      </span><br><span class="line">        _df = df[df[<span class="string">'room_name'</span>]==j]</span><br><span class="line">        _p = np.unique(_df[<span class="string">'product_id'</span>])</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> _p:</span><br><span class="line">            node_c = Node(<span class="string">'Prod'</span>,name=k)</span><br><span class="line">            relatp = Relationship(node_b,<span class="string">'has'</span>,node_c)</span><br><span class="line">            graph.create(relatp)</span><br><span class="line">            </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> np.unique(room[<span class="string">'product_id'</span>]):</span><br><span class="line">    <span class="comment"># 这些点已经存在，只需要匹配</span></span><br><span class="line">    node_a = matcher.match(<span class="string">'Prod'</span>,name=i).first()</span><br><span class="line">    df = room[room[<span class="string">'product_id'</span>] == i]    </span><br><span class="line">    </span><br><span class="line">    _c = np.unique(df[<span class="string">'control'</span>])</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> _c:</span><br><span class="line">        node_b = Node(<span class="string">'Ctrl'</span>,name=j)</span><br><span class="line">        <span class="comment"># 把node的答案作为属性填充上去，然后，方便用作cypher查询        </span></span><br><span class="line">        rela = Relationship(node_a,<span class="string">'controls'</span>,node_b)</span><br><span class="line">        </span><br><span class="line">        graph.create(rela)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ==============================================================</span></span><br><span class="line"><span class="comment"># Demo3: 西游记</span></span><br><span class="line">xyj = pd.read_csv(<span class="string">'./西游记/triples.csv'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#所有人物创建完，直接搜索建关系</span></span><br><span class="line">n = [np.unique(xyj[<span class="string">'head'</span>]),np.unique(xyj[<span class="string">'tail'</span>])]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> n:</span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> i:</span><br><span class="line">        node = Node(<span class="string">'Person'</span>, name=p)</span><br><span class="line">        graph.create(node)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> idx <span class="keyword">in</span> range(len(xyj)):</span><br><span class="line">    print(idx)</span><br><span class="line">    node_a = matcher.match(<span class="string">'Person'</span>,name=xyj[<span class="string">'tail'</span>][idx]).first()</span><br><span class="line">    node_b = matcher.match(<span class="string">'Person'</span>,name=xyj[<span class="string">'head'</span>][idx]).first()</span><br><span class="line">    relatp = Relationship(node_a,xyj[<span class="string">'label'</span>][idx],node_b)</span><br><span class="line">    graph.create(relatp)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="comment"># 查询 '孙悟空的师傅是谁'</span></span><br><span class="line"></span><br><span class="line">len(graph.nodes)</span><br><span class="line">len(graph.nodes.match(<span class="string">"Person"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 'PERSON'根据命名实体匹配</span></span><br><span class="line">test = matcher.match(<span class="string">'Person'</span>,name=<span class="string">'唐僧'</span>).first()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> rel <span class="keyword">in</span> matcher.match(start_node=test, rel_type=<span class="string">"徒弟"</span>):</span><br><span class="line">    print(rel.end_node()[<span class="string">"name"</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><h4 id="大批量数据导入参考："><a href="#大批量数据导入参考：" class="headerlink" title="大批量数据导入参考："></a>大批量数据导入参考：</h4><p><a href="https://blog.csdn.net/quiet_girl/article/details/71155442" target="_blank" rel="noopener">csv文件导入Neo4j(包括结点和关系的导入)</a><br><a href="https://blog.csdn.net/sinat_26917383/article/details/82424508" target="_blank" rel="noopener">neo4j批量导入neo4j-import</a><br><a href="http://paradoxlife.me/how-to-insert-bulk-data-into-neo4j" target="_blank" rel="noopener">如何将大规模数据导入Neo4j</a> </p>
+<h4 id="删空属性"><a href="#删空属性" class="headerlink" title="删空属性"></a>删空属性</h4><p>一般节点和关系可以通过py2neo删空，但是属性会存留：<br><a href="https://stackoverflow.com/questions/33982639/neo4j-how-to-delete-unused-property-keys-from-browser" target="_blank" rel="noopener">Neo4j - How to delete unused property keys from browser?</a> </p>
+<h4 id="别人开发的有趣的图谱成果-refer"><a href="#别人开发的有趣的图谱成果-refer" class="headerlink" title="别人开发的有趣的图谱成果 [refer]"></a>别人开发的有趣的图谱成果 [<a href="https://blog.csdn.net/sinat_26917383/article/details/66473253" target="_blank" rel="noopener">refer</a>]</h4><ul>
+<li>一家做NLP的公司：<a href="https://www.wisers.ai/zh-cn/browse/relation-extraction/demo/" target="_blank" rel="noopener">wisers AI lab</a> </li>
+<li><a href="http://zhishi.me" target="_blank" rel="noopener">zhishi.me</a> </li>
+<li><a href="http://acemap.sjtu.edu.cn/" target="_blank" rel="noopener">Acemap</a>  交大<ul>
+<li>贼有意思的网站以及随便点开的链接：<a href="https://acemap.info" target="_blank" rel="noopener">acemap.info</a> </li>
+<li><a href="https://www.acemap.info/ConferenceStatistics/MainPage?name=NIPS&amp;year=2018" target="_blank" rel="noopener">main page 2018</a> </li>
+<li><a href="https://www.acemap.info/conference?confID=43319DD4" target="_blank" rel="noopener">NeurIPS 2018</a> </li>
+<li><a href="https://www.acemap.info/topic?topicID=0304C748" target="_blank" rel="noopener">https://www.acemap.info/topic?topicID=0304C748</a></li>
+<li><a href="https://www.acemap.info/paper-map?topicID=0304C748" target="_blank" rel="noopener">https://www.acemap.info/paper-map?topicID=0304C748</a></li>
+<li>有趣的算法介绍：<a href="https://www.acemap.info/acenap/algorithms" target="_blank" rel="noopener">https://www.acemap.info/acenap/algorithms</a></li>
+</ul>
+</li>
+<li><a href="http://kw.fudan.edu.cn/cndbpedia/" target="_blank" rel="noopener">CN-DBpedia</a>  复旦大学，我现在点开属于网站维护中，所以这块以后再补充<br>样例数据文件是txt格式，每行一条数据，每条数据是一个(实体名称，属性名称，属性值)的三元组，中间用tab分隔，具体如下所示。<br>【复旦大学 简称 复旦】<br>包含900万+的百科实体以及6700万+的三元组关系。其中mention2entity信息110万+，摘要信息400万+，标签信息1980万+，infobox信息4100万+。复旦大学还有个knowledge works <a href="http://kw.fudan.edu.cn/" target="_blank" rel="noopener">http://kw.fudan.edu.cn/</a></li>
+<li>可以下载数据集的网站：<a href="https://grouplens.org/datasets/movielens/" target="_blank" rel="noopener">grouplens</a> </li>
+<li>一个中草药的知识服务系统：<a href="http://zcy.ckcest.cn/tcm/" target="_blank" rel="noopener">http://zcy.ckcest.cn/tcm/</a><ul>
+<li>逆天<a href="http://zcy.ckcest.cn/tcm/qaos/profilenet" target="_blank" rel="noopener">http://zcy.ckcest.cn/tcm/qaos/profilenet</a></li>
+</ul>
+</li>
+<li>NLPIR：<a href="http://ictclas.nlpir.org/nlpir/" target="_blank" rel="noopener">http://ictclas.nlpir.org/nlpir/</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>would you buy me a coffee☕~</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="ZhangYi WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/knowledge-graph/" rel="tag"># knowledge graph</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/23/convert-jupyter-to-other-formats/" rel="next" title="convert-jupyter-to-other-formats">
+                <i class="fa fa-chevron-left"></i> convert-jupyter-to-other-formats
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/25/gephi/" rel="prev" title="漫威英雄图谱 - gephi">
+                漫威英雄图谱 - gephi <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="ZhangYi" />
+            
+              <p class="site-author-name" itemprop="name">ZhangYi</p>
+              <p class="site-description motion-element" itemprop="description">花时间做那些别人看不见的事~！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">77</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/YZHANG1270" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:YZHANG1270@gmail.com" target="_blank" title="邮箱">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/p/1005053340707810?is_all=1" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搭建图数据库"><span class="nav-text">搭建图数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据来源"><span class="nav-text">数据来源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库选择"><span class="nav-text">数据库选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图数据库：Neo4j"><span class="nav-text">图数据库：Neo4j</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装"><span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cypher-语法总结"><span class="nav-text">Cypher 语法总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Py2neo-doc"><span class="nav-text">Py2neo [doc]</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拓展"><span class="nav-text">拓展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#大批量数据导入参考："><span class="nav-text">大批量数据导入参考：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删空属性"><span class="nav-text">删空属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#别人开发的有趣的图谱成果-refer"><span class="nav-text">别人开发的有趣的图谱成果 [refer]</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZhangYi</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+  
+
+
+  
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://codewithzhangyi.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://codewithzhangyi.com/2019/04/23/knowledge-graph-intro/';
+          this.page.identifier = '2019/04/23/knowledge-graph-intro/';
+          this.page.title = '知识图谱';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://codewithzhangyi.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
