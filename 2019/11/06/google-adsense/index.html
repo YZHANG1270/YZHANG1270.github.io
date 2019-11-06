@@ -111,19 +111,20 @@
 
 
 
-<meta name="description" content="前两天又开始折腾网站   首先介绍下AdSense，谷歌联盟">
+<meta name="description" content="快到年底又开始折腾网站。经常在别人的网站里看到google的广告，也想通过自己的网站实现一丢丢变现（蚊子腿再小也是肉啊…嘿嘿）后来跟一个妹子提起说是叫“谷歌联盟”，于是自己查阅了相关的资料，整理了一份完整的，接入谷歌广告联盟google adsense的一套完整流程，供大家参考～">
 <meta name="keywords" content="ads,google">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo接入谷歌广告 Google AdSense">
 <meta property="og:url" content="http://codewithzhangyi.com/2019/11/06/google-adsense/index.html">
 <meta property="og:site_name" content="Zhang Yi">
-<meta property="og:description" content="前两天又开始折腾网站   首先介绍下AdSense，谷歌联盟">
+<meta property="og:description" content="快到年底又开始折腾网站。经常在别人的网站里看到google的广告，也想通过自己的网站实现一丢丢变现（蚊子腿再小也是肉啊…嘿嘿）后来跟一个妹子提起说是叫“谷歌联盟”，于是自己查阅了相关的资料，整理了一份完整的，接入谷歌广告联盟google adsense的一套完整流程，供大家参考～">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://github.com/YZHANG1270/YZHANG1270.github.io/blob/master/img/google_ad/01.png?raw=true">
-<meta property="og:updated_time" content="2019-11-06T04:22:21.355Z">
+<meta property="og:image" content="https://github.com/YZHANG1270/YZHANG1270.github.io/blob/master/img/google_ad/02.png?raw=true">
+<meta property="og:updated_time" content="2019-11-06T06:39:52.343Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo接入谷歌广告 Google AdSense">
-<meta name="twitter:description" content="前两天又开始折腾网站   首先介绍下AdSense，谷歌联盟">
+<meta name="twitter:description" content="快到年底又开始折腾网站。经常在别人的网站里看到google的广告，也想通过自己的网站实现一丢丢变现（蚊子腿再小也是肉啊…嘿嘿）后来跟一个妹子提起说是叫“谷歌联盟”，于是自己查阅了相关的资料，整理了一份完整的，接入谷歌广告联盟google adsense的一套完整流程，供大家参考～">
 <meta name="twitter:image" content="https://github.com/YZHANG1270/YZHANG1270.github.io/blob/master/img/google_ad/01.png?raw=true">
 
 
@@ -435,9 +436,61 @@
       
 
       
-        <p>前两天又开始折腾网站</p>
-<p><img src="https://github.com/YZHANG1270/YZHANG1270.github.io/blob/master/img/google_ad/01.png?raw=true" alt=""> </p>
-<p>首先介绍下AdSense，谷歌联盟</p>
+        <p>快到年底又开始折腾网站。经常在别人的网站里看到google的广告，也想通过自己的网站实现一丢丢变现（蚊子腿再小也是肉啊…嘿嘿）后来跟一个妹子提起说是叫“谷歌联盟”，于是自己查阅了相关的资料，整理了一份完整的，接入谷歌广告联盟google adsense的一套完整流程，供大家参考～</p>
+<p><img src="https://github.com/YZHANG1270/YZHANG1270.github.io/blob/master/img/google_ad/01.png?raw=true" width="50%/"></p>
+<a id="more"></a>
+<h2 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h2><ul>
+<li>google adsense对网站内容有要求：首先你要有个网站，必须有文章有内容，否则会被拒</li>
+<li>需要一个可以翻墙的环境 </li>
+</ul>
+<h2 id="注册账号"><a href="#注册账号" class="headerlink" title="注册账号"></a>注册账号</h2><p>google adsense注册账号流程比较简单，入口在这里：<a href="https://www.google.com/adsense/" target="_blank" rel="noopener">Google Adsense</a></p>
+<h2 id="添加广告代码"><a href="#添加广告代码" class="headerlink" title="添加广告代码"></a>添加广告代码</h2><ol>
+<li>注册账号完成之后，google会生成一段代码。</li>
+<li>需要将谷歌提供给你的一份代码添加到你网站的中，因为我目前是next主题，因此放到<em>\themes\next\layout_partials\head.swig</em> 任意一个位置(本人放在了最后)即可。</li>
+<li>在你添加完成之后，hexo deploy网站，点击确认，谷歌会到你的网站上进行核查和验收，一般没问题的话几分钟就会出结果，有问题的话要等待一段时间</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script data-ad-client=&quot;ca-pub-2691877571661707&quot; async src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>根据我个人申请的流程，总结了一些经验，供大家参考：</p>
+<ol>
+<li>网站文章不要太少，至少大于10篇博客以上。</li>
+<li>网站上架半年以上，如果是新申请的网站，一般不容易过审。(这里建议大家有接入google adsense的新站长，等网站稍微成熟点再去申请)</li>
+</ol>
+<h2 id="个性化配置广告位"><a href="#个性化配置广告位" class="headerlink" title="个性化配置广告位"></a>个性化配置广告位</h2><p>待通过审核之后，就可以开始考虑在自己的网站上进行广告位置的筛选和设计了，目前google adsense主要提供了自动广告和广告单元两种形式的广告添加方式。</p>
+<h3 id="自动广告"><a href="#自动广告" class="headerlink" title="自动广告"></a>自动广告</h3><p>自动广告是google adsense近来提供的一种广告形式，它能够通过分析你的博客布局结构，自定义的在你的网站中插入合适的广告，无论是内容，还是广告尺寸，都是完全契合网站内容本身的，算是一种比较高质量的广告。</p>
+<p>但是根据我的使用经验，这种广告投放的几率比较小，往往好几篇文章或页面才会投放一个广告内容，效率比较低(唯一的好处是，如果你的网站支持移动端查看的话，会自动投放移动端自适应的广告)</p>
+<p>具体的代码插入方法，其实就是上述的用来检验的代码，一旦上述代码审核通过，其实已经自动接入了google adsense的自动广告。</p>
+<h3 id="广告单元"><a href="#广告单元" class="headerlink" title="广告单元"></a>广告单元</h3><p>为了能够最高效的利用自己博客的广告位，adsense还提供了三种固定广告位</p>
+<ol>
+<li>文字广告和展示广告(即侧边栏，评论区之类的固定广告位)</li>
+<li>信息流广告(插入在信息流内容的广告位置)</li>
+<li>文章内嵌广告(主要是插入在每篇文章内部的开始，中间，结尾部分，展示次数比较多，强烈推荐)</li>
+</ol>
+<p>由于本人的是博客网站，所以第二种信息流广告没有投入使用，这里主要使用了第三种。具体的操作流程是:</p>
+<ol>
+<li>在网站上，选择广告单元-&gt;新建广告位-&gt;选择对应的广告类型-&gt;生成对应的广告代码。</li>
+<li>在themes/next/layout/_custom下新建google_adsense.swig文件，将代码复制过去。</li>
+<li>google_adsense.swig文件引用位置决定广告展示位置，位置自己决定。<ul>
+<li>插入评论区：将代码插入<em>\themes\next\layout\_partials\comments.swig</em> 中的末尾即可。</li>
+</ul>
+</li>
+<li>hexo deploy代码到github pages上，可能需要20-30分钟广告才会显示在网页上。我的很快，基本1-2分钟就显示了。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;script async src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;ins class=&quot;adsbygoogle&quot;</span><br><span class="line">     style=&quot;display:block; text-align:center;&quot;</span><br><span class="line">     data-ad-layout=&quot;in-article&quot;</span><br><span class="line">     data-ad-format=&quot;fluid&quot;</span><br><span class="line">     data-ad-client=&quot;ca-pub-2691877571661707&quot;</span><br><span class="line">     data-ad-slot=&quot;1301633292&quot;&gt;&lt;/ins&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">     (adsbygoogle = window.adsbygoogle || []).push(&#123;&#125;);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>在成功接入AdSense广告之后，并不算结束，Google会根据几种方式和数据判断广告点击是否作弊，从而注销你的账号。所以不要心存侥幸心理，好好发原创文章，提高网站的质量才是王道。</p>
+<ol>
+<li>作弊广告点击者的IP地址与你Adsense账户登录IP地址相同</li>
+<li>作弊广告点击的CTR数据太高</li>
+<li>作弊广告点击者的IP地址来自同一个地理区域</li>
+<li>根据Cookies判断作弊Adsense广告点击</li>
+<li>作弊广告点击者页面停留时间太短</li>
+<li>直接访问者的广告点击率过高</li>
+<li>流量小但广告点击率高</li>
+<li>在网页上用文字提示请求鼓动点击广告</li>
+<li>务必不要点自己的google adsense广告(听闻很危险)</li>
+<li>务必不要让公司内部的同事去点击广告(听闻也很危险)</li>
+</ol>
+<h2 id="说在最后"><a href="#说在最后" class="headerlink" title="说在最后"></a>说在最后</h2><p>下面就是我的账面初始化了，只能说，都是通过各种方法来鼓励自己好好写文章，好好维护网站，初心带来快乐和成长~<br><img src="https://github.com/YZHANG1270/YZHANG1270.github.io/blob/master/img/google_ad/02.png?raw=true" width="50%/"></p>
+<p>加油！</p>
 
       
     </div>
@@ -450,9 +503,9 @@
     
       <div>
         <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>would you buy me a coffee☕~</div>
+  <div>您的支持将鼓励我继续创作☕~</div>
   <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>Donate</span>
+    <span>赏</span>
   </button>
   <div id="QR" style="display: none;">
 
@@ -579,8 +632,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -664,6 +726,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备环境"><span class="nav-text">准备环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册账号"><span class="nav-text">注册账号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加广告代码"><span class="nav-text">添加广告代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#个性化配置广告位"><span class="nav-text">个性化配置广告位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自动广告"><span class="nav-text">自动广告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#广告单元"><span class="nav-text">广告单元</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意事项"><span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说在最后"><span class="nav-text">说在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
