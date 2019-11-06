@@ -122,7 +122,7 @@
 <meta property="og:image" content="https://github.com/YZHANG1270/YZHANG1270.github.io/blob/master/img/google_ad/01.png?raw=true">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190102124613131.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N0b3JtZG9ueQ==,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://github.com/YZHANG1270/YZHANG1270.github.io/blob/master/img/google_ad/02.png?raw=true">
-<meta property="og:updated_time" content="2019-11-06T06:51:26.385Z">
+<meta property="og:updated_time" content="2019-11-06T06:54:09.673Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo接入谷歌广告 Google AdSense">
 <meta name="twitter:description" content="快到年底又开始折腾网站。经常在别人的网站里看到google的广告，也想通过自己的网站实现一丢丢变现（蚊子腿再小也是肉啊…嘿嘿）后来跟一个妹子提起说是叫“谷歌联盟”，于是自己查阅了相关的资料，整理了一份接入谷歌广告联盟google adsense的流程，供大家参考～">
@@ -447,11 +447,11 @@
 <h2 id="注册账号"><a href="#注册账号" class="headerlink" title="注册账号"></a>注册账号</h2><p>google adsense注册账号流程比较简单，入口在这里：<a href="https://www.google.com/adsense/" target="_blank" rel="noopener">Google Adsense</a></p>
 <h2 id="添加广告代码"><a href="#添加广告代码" class="headerlink" title="添加广告代码"></a>添加广告代码</h2><ol>
 <li>注册账号完成之后，google会生成一段代码。</li>
-<li><p>需要将谷歌提供给你的一份代码添加到你网站的中，因为我目前是next主题，因此放到<em>\themes\next\layout_partials\head.swig</em> 任意一个位置(本人放在了最后)即可。</p>
+<li>需要将谷歌提供给你的一份代码添加到你网站的中，因为我目前是next主题，因此放到<em>\themes\next\layout_partials\head.swig</em> 任意一个位置(本人放在了最后)即可。</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script data-ad-client=&quot;ca-pub-2691877571661707&quot; async src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在你添加完成之后，hexo deploy网站，点击确认，谷歌会到你的网站上进行核查和验收，一般没问题的话几分钟就会出结果，有问题的话要等待一段时间。</p>
-</li>
+<ol>
+<li>在你添加完成之后，hexo deploy网站，点击确认，谷歌会到你的网站上进行核查和验收，一般没问题的话几分钟就会出结果，有问题的话要等待一段时间。</li>
 </ol>
 <h2 id="个性化配置广告位"><a href="#个性化配置广告位" class="headerlink" title="个性化配置广告位"></a>个性化配置广告位</h2><p>待通过审核之后，就可以开始考虑在自己的网站上进行广告位置的筛选和设计了，目前google adsense主要提供了自动广告和广告单元两种形式的广告添加方式。<img src="https://img-blog.csdnimg.cn/20190102124613131.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3N0b3JtZG9ueQ==,size_16,color_FFFFFF,t_70" alt=""></p>
 <h3 id="自动广告（不推荐）"><a href="#自动广告（不推荐）" class="headerlink" title="自动广告（不推荐）"></a>自动广告（不推荐）</h3><p>自动广告是google adsense近来提供的一种广告形式，它能够通过分析你的博客布局结构，自定义的在你的网站中插入合适的广告，无论是内容，还是广告尺寸，都是完全契合网站内容本身的，算是一种比较高质量的广告。</p>
