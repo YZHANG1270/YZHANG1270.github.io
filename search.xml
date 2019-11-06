@@ -6,9 +6,9 @@
     <content type="text"><![CDATA[在写文章时，经常需要插入一些本地的截图到文章中，在本地编辑文章的时候自然可以将本地图片的链接插入到文章中，但这就面临一个问题：本地的链接在文章发布之后必然失效，该怎么办？ 按照经验，解决的办法自然是将图片上传到某个图片空间，然后将图片空间中图片的链接插入文章中。 这当然可以解决问题，但是未免太麻烦。介绍两种方法： 第一种方法 在配置文件_config.yml里修改：post_asset_folder: true 在Hexo安装目录下执行:npm install hexo-asset-image --save，这是下载安装一个可以上传本地图片的插件 等待一段时间之后，再运行hexo n &quot;文章标题&quot;来生成博文时，/source/_post文件夹中除了文章标题.md外，还有一个同名文件夹。 在新的博文中想引入图片时，可以先把图片复制到博文的同名文件夹，然后在.md中按照常规的方式饮用图片即可，如![你想输入的替代文字](博文标题/图片名.jpg)。注意，此处的图片路径必须使用相对路径 执行hexo g,检查生成的页面中图片的src地址。此时生成页面中图片src地址应该与页面的相对路径一致（具体路径取决于页面路径格式设置） 第二种方法以上方法可以解决本地图片上传和引用的问题，但是在每个文章下建立资源文件夹好处是分类清楚，缺点是图片复用不方便，也不符合网站设计的一般规范。 所以我们可以第二种方案： 在本地source中建立img文件夹，将引用到的图片全部放在此文件夹中。这样操作也便于图片的复用。 注意，采用这种方法时无需修改_config.yml,也无需安装hexo-asset-image]]></content>
   </entry>
   <entry>
-    <title><![CDATA[google-adsense]]></title>
+    <title><![CDATA[Hexo接入谷歌广告 Google AdSense]]></title>
     <url>%2F2019%2F11%2F06%2Fgoogle-adsense%2F</url>
-    <content type="text"><![CDATA[test]]></content>
+    <content type="text"><![CDATA[前两天又开始折腾网站 首先介绍下AdSense，谷歌联盟]]></content>
       <tags>
         <tag>ads</tag>
         <tag>google</tag>
